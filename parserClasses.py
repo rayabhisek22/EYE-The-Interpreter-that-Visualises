@@ -117,18 +117,83 @@ def myMinus(x):
 def myNot(x):
     return not x
 
+#for expressions
 class Expression():
+    def __init__(self):
+        #constructor makes blank list
+        self.elements = []
+
+    def addElement(self, element):
+        #to add a class to the element
+        self.elements.append(element)
+
+    def eval(self):
+        #to evaluate, check if there is one or more simplex...if more, call eval of binary operator with args as left 
+        #and right operands
+        if len(self.elements) == 1:
+            return self.elements[0].eval()
+        elif len(self.elements) == 3:
+            return self.elements[1].eval(self.elements[0].eval(), self.elements[2].eval())
+        else:
+            print("error")
+
+# for simple expressions
+class Simplex():
+    #constructor just makes blank list
     def __init__(self):
         self.elements = []
 
-class Simplex():
-    def __init__(self):
-        self.elements = []
+    #to add a class to the list of classes
+    def addElement(self, element):
+        self.elements.append(element)
+
+    #to evaluate, check if there is a minus at beginning or not, and if there is one or more terms after that
+    def eval(self):
+        if self.elements[0].__class__ == UnaryOp:
+            if len(self.elements) == 2:
+                return self.elements[0].eval(self.elements[1].eval())
+            elif len(self.elements) == 4:
+                return self.elements[0].eval(self.elements[2].eval(self.elements[1], self.elements[3]))
+            else:
+                print("error")
+        else:
+            if len(self.elements) == 1:
+                return self.elements[0].eval()
+            elif len(self.elements) == 3:
+                return self.elements[1].eval(self.elements[0], self.elements[2])
+            else:
+                print("error")
 
 class Term():
     def __init__(self):
         self.elements = []
 
+<<<<<<< HEAD
+=======
+    def addElement(self, element):
+        self.elements.append(element)
+
+    def eval(self):
+        #same as Expression
+        if len(self.elements) == 1:
+            return self.elements[0].eval()
+        elif len(self.elements) == 3:
+            return self.elements[1].eval(self.elements[0].eval(), self.elements[2].eval())
+        else:
+            print("error")
+
+>>>>>>> 96c5aa936a8ae17ebca7e80c1b915f8f461341a3
 class Factor():
     def __init__(self):
         self.elements = []
+
+    def addElement(self, element):
+        self.elements.append(element)
+
+    def eval(self):
+        if self.elements[0].__class__ == UnaryOp and len(self.elements) == 2:
+            return self.elements[0].eval(self.elements[1])
+        elif len(self.elements) == 1:
+            return self.elements[0].eval()
+        else:
+            print("error")
