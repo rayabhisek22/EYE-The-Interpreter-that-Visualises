@@ -1,5 +1,5 @@
 from lexer import lexer
 
-a = lexer.lex("true")
+a = lexer.lex("bool a = true")
 while(True):
 	print(a.next())
