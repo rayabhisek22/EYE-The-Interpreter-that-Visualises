@@ -11,13 +11,24 @@ class PrimitiveDT():
     def __init__(self, value):
         self.value = value
 
-    def eval():
+    def eval(self):
         return self.value
 
 class Variable():
-    def __init__(self,name):
+    def __init__(self,name,obj):
         self.name=name
+        self.value=obj
 
+    def eval(self):
+        return self.value.eval()
+
+    def update(obj2):
+        self.value=obj2
+
+def Assignment():
+    def __init__(self,left,right):
+        self.left=left
+        self.right=right
 
 #########################################################
 class Int(PrimitiveDT):
