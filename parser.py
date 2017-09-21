@@ -1,29 +1,32 @@
-from rply.token import BaseBox
+#from rply.token import 
 
-class Number(BaseBox):
+class Number():
     def __init__(self, value):
         self.value = value
 
     def eval(self):
         return self.value
 
-class PrimitiveDT(BaseBox):
+class PrimitiveDT():
     def __init__(self, value):
         self.value = value
+
+    def getValue():
+        return self.value
 
 class Int(PrimitiveDT):
     def value():
         return self.value
 
     def giveType():
-        return int;
+        return int
 
 class Float(PrimitiveDT):
     def value():
         return self.value
 
     def giveType():
-        return double
+        return float
 
 class String(PrimitiveDT):
     def value():
@@ -32,7 +35,7 @@ class String(PrimitiveDT):
     def giveType():
         return str
 
-class BinaryOp(BaseBox):
+class BinaryOp():
     def __init__(self, left, right):
         self.left = left
         self.right = right
