@@ -1,5 +1,5 @@
 from lexer import lexer
 
-a = lexer.lex("bool a = true")
+a = lexer.lex("""string x="aman"  + "fool"; """)
 while(True):
 	print(a.next())
