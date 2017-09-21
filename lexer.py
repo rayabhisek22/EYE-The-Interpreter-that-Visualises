@@ -1,0 +1,20 @@
+from rply import LexerGenerator
+lg = LexerGenerator()
+lg.ignore('\s+')
+lg.add('NUMBER', r'\d+')
+lg.add('PLUS', r'\+')
+lg.add('MINUS', r'-')
+lg.add('MUL', r'\*')
+lg.add('DIV', r'/')
+lg.add('OPEN_PARENS', r'\(')
+lg.add('CLOSE_PARENS', r'\)')
+lg.add('INT', r'int')
+lg.add('FLOAT', r'flaot')
+lg.add('DOUBLE', r'double')
+lg.add('LONG', r'long')
+lg.add('STRING', r'string')
+lg.add('OPEN_ANGLE', r'<')
+lg.add('CLOSE_ANGLE', r'>')
+
+lexer = lg.build()
+
