@@ -37,26 +37,87 @@ class Bool(PrimitiveDT):
         return bool
 ######################################################
 class BinaryOp():
-    def __init__(self, left, right):
-        self.left = left
-        self.right = right
+    def __init__(self, operator):
+        self.operator = operator
 
-class Add(BinaryOp):
-    def eval(self):
-        return self.left.eval() + self.right.eval()
+    def eval(self, left, right):
+        return self.operator(left, right)
 
-class Sub(BinaryOp):
-    def eval(self):
-        return self.left.eval() - self.right.eval()
+    def getOperator(self):
+        return self.operator
 
-class Mul(BinaryOp):
-    def eval(self):
-        return self.left.eval() * self.right.eval()
+def myAdd(x, y):
+    return x + y
 
-class Div(BinaryOp):
-    def eval(self):
-        return self.left.eval() / self.right.eval()
+def mySub(x, y):
+    return x - y
 
-class Rem(BinaryOp):
-    def eval(self):
-        return self.left.eval.eval() % self.right.eval()
+def myMult(x, y):
+    return x*y
+
+def myDiv(x, y):
+    return x/y
+
+def myMod(x, y):
+    return x%y
+
+def myOR(x, y):
+    return x or y
+
+def myAND(x, y):
+    return x and y
+
+def myLessThan(x, y):
+    return x < y
+
+def myLessThanEqualTo(x, y):
+    return x <= y
+
+def myGreaterThan(x, y):
+    return x > y
+
+def myGreaterThanEqualTo(x, y):
+    return x >= y
+
+def myIsEqual(x, y):
+    return x == y
+
+def myIsNotEqual(x, y):
+    return x != y
+
+###############################################################
+
+class UnaryOp():
+    def __init__(self, operator):
+        self.operator = operator
+
+    def eval(self, operand):
+        return self.operator(operand)
+
+    def getOperator(self):
+        return self.operator
+
+def myPlus(x):
+    return x
+
+def myMinus(x):
+    return -x
+
+def myNot(x):
+    return not x
+
+class Expression():
+    def __init__(self):
+        self.elements = []
+
+class Simplex():
+    def __init__(self):
+        self.elements = []
+
+class Term():
+    def __init__(self):
+        self.elements = []
+
+clas Factor():
+    def __init__(self):
+        self.elements = []
