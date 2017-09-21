@@ -1,7 +1,7 @@
 from rply import LexerGenerator
 lg = LexerGenerator()
 lg.ignore('\s+')
-
+lg.add('SEMICOLON',r";")
 lg.add('PLUS', r'\+')
 lg.add('MINUS', r'-')
 lg.add('MUL', r'\*')
