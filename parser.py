@@ -11,30 +11,31 @@ class PrimitiveDT():
     def __init__(self, value):
         self.value = value
 
-    def getValue():
+    def eval():
         return self.value
 
+class Variable():
+    def __init__(self,name):
+        self.name=name
+
+
+#########################################################
 class Int(PrimitiveDT):
-    def value():
-        return self.value
-
     def giveType():
         return int
 
 class Float(PrimitiveDT):
-    def value():
-        return self.value
-
     def giveType():
         return float
 
 class String(PrimitiveDT):
-    def value():
-        return self.value
-
     def giveType():
         return str
 
+class Bool(PrimitiveDT):
+    def giveType():
+        return bool
+######################################################
 class BinaryOp():
     def __init__(self, left, right):
         self.left = left
