@@ -129,6 +129,6 @@ class Term():
     def __init__(self):
         self.elements = []
 
-clas Factor():
+class Factor():
     def __init__(self):
         self.elements = []
