@@ -168,8 +168,6 @@ class Term():
     def __init__(self):
         self.elements = []
 
-<<<<<<< HEAD
-=======
     def addElement(self, element):
         self.elements.append(element)
 
@@ -182,7 +180,6 @@ class Term():
         else:
             print("error")
 
->>>>>>> 96c5aa936a8ae17ebca7e80c1b915f8f461341a3
 class Factor():
     def __init__(self):
         self.elements = []
