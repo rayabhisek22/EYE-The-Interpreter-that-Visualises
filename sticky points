@@ -1,1 +1,4 @@
 myIsEqual opertor for complex data structs
+bool initialized to false.......
+check for bool in factor..... not done as not given in book
+not created plus term or term, becuase boolean terms can't be preceded by a plus

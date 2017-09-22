@@ -48,11 +48,13 @@ class Bool(PrimitiveDT):
         return bool
 ######################################################
 class BinaryOp():
-    def __init__(self, operator):
+    def __init__(self, operator, left, right):
         self.operator = operator
+        self.left = left
+        self.right = right
 
-    def eval(self, left, right):
-        return self.operator(left, right)
+    def eval(self):
+        return self.operator(self.left.eval(), self.right.eval())
 
     def getOperator(self):
         return self.operator
@@ -72,10 +74,10 @@ def myDiv(x, y):
 def myMod(x, y):
     return x%y
 
-def myOR(x, y):
+def myOr(x, y):
     return x or y
 
-def myAND(x, y):
+def myAnd(x, y):
     return x and y
 
 def myLessThan(x, y):
@@ -99,11 +101,12 @@ def myIsNotEqual(x, y):
 ###############################################################
 
 class UnaryOp():
-    def __init__(self, operator):
+    def __init__(self, operator, operand):
         self.operator = operator
+        self.operand = operand
 
-    def eval(self, operand):
-        return self.operator(operand)
+    def eval(self):
+        return self.operator(self.operand.eval())
 
     def getOperator(self):
         return self.operator
