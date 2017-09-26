@@ -76,7 +76,7 @@ def plus_term_plus_term_to_simplex(argList):
 @parser.production('simplex :  MINUS term MINUS simplex')
 def plus_term_plus_term_to_simplex(argList):
 	return BinaryOp(mySub, UnaryOp(myMinus, argList[1]), argList[3])
-
+	
 @parser.production('simplex : term PLUS simplex')
 def plus_term_plus_term_to_simplex(argList):
 	return BinaryOp(myAdd, argList[0], argList[2])
