@@ -38,8 +38,26 @@ def function(p):
 @parser.production('simplex : INT PLUS INT')
 def second(p):
 	return int(p[2].getstr()) + int(p[0].getstr())
+
+
 """
 
+#########################################################################################################################
+# all parser rules for Expression
+@parser.production('main : assignment')
+@parser.production('main : expression')
+@parser.production('main : variable')
+def main_p(argList):
+	return argList[0]
+
+
+@parser.production('assignment : VARIABLE EQUAL INT')
+def assign_variable(argList):
+	if argList[0].getstr() not in variable_dictionary:
+		raise Exception("Variable "+argList[0].getstr() + " needs to be declared before initialization")
+	else:
+		variable_dictionary[argList[0].getstr()].update(expression.eval())
+	return None
 #########################################################################################################################
 # all parser rules for Expression
 
@@ -195,6 +213,9 @@ def search_variable(argList):
 		raise Exception('Variable '+var_name+' not declared')
 	return variable_dictionary[var_name]
 
+@parser.error
+def error_handler(token):
+    raise ValueError("Ran into a %s where it wasn't expected" % token.gettokentype())
 #########################################################################################################################
 mainparser = parser.build()
 #stream = lexer.lex(initial)
