@@ -1,3 +1,4 @@
+from headersForDataStructures import *
 #######################################################################################################################
 # 															QUEUE
 
@@ -30,6 +31,12 @@ class QueueNode:
 		self.circle.move(-(arrowLength + 2*circleRadius), 0)
 		self.text.move(-(arrowLength + 2*circleRadius), 0)
 		self.arrow.shiftBehindInQueue()
+
+	def delete(self):
+		self.circle.undraw()
+		self.text.undraw()
+		self.arrow.undraw()
+		del self
 
 class Queue:
 	def __init__(self, x, y, modelType, name): # modelType is an object of the type that is to be stored in the 
@@ -99,7 +106,7 @@ class Queue:
 				the queue " + self.name + " : " + str(self.type) + " are not the same")
 
 	def front(self):
-		#return the element at the front of the list, if queue is empty then raise an error
+		#return the element at the front of the queue, if queue is empty then raise an error
 		headerText.setText("Access the element at the beginning of the queue " + self.name)
 		headerText.draw(canvas)
 		if self.size == 0:
@@ -113,3 +120,66 @@ class Queue:
 			headerText.undraw()
 			return self.tail.data
 
+	def back(self):
+		#return the element at the end of the queue, if queue is empty then raise an error
+		headerText.setText("Access the element at the end of the queue " + self.name)
+		headerText.draw(canvas)
+		if self.size == 0:
+			wait()
+			headerText.undraw()
+			raise Exception("You are trying to access the last element of the empty queue " + self.name )
+		else:
+			self.head.changeColor("blue")
+			wait()
+			self.head.changeColor("light green")
+			headerText.undraw()
+			return self.head.data
+
+	def popFront(self):
+		#pop the element at the front of the queue, if queue is empty, then raise an error:
+		headerText.setText("Pop the element at the front of the queue " + self.name)
+		headerText.draw(canvas)
+		if self.size == 0:
+			wait()
+			headerText.undraw()
+			raise Exception("You are trying to pop the front element of the empty queue " + self.name)
+		else:
+			self.tail.changeColor("light blue")
+			wait()
+			current = self.head
+			while current != self.tail:
+				current.shiftAhead()
+				prev = current
+				current = current.next
+			ans = self.tail.data
+			self.tail.delete()
+			wait()
+			headerText.undraw()
+			self.size -= 1
+			if (self.size == 0):
+				self.head = self.tail = None
+			else:
+				self.tail = prev
+			return ans
+
+	def popBack(self):
+		#pop the element at the back of the queue, if the queue is empty, then raise an error:
+		headerText.setText("Pop the element at the back of the queue " + self.name)
+		headerText.draw(canvas)
+		if self.size == 0:
+			wait()
+			headerText.undraw()
+			raise Exception("You are trying to pop the front element of the empty queue " + self.name)
+		else:
+			self.head.changeColor("light blue")
+			wait()
+			temp = self.head
+			self.head = self.head.next
+			ans = temp.data
+			temp.delete()
+			self.size -= 1
+			if self.size == 0:
+				self.head = self.tail = None
+			wait()
+			headerText.undraw()
+			return ans

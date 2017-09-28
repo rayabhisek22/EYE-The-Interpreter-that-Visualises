@@ -1,11 +1,22 @@
+from Queue import Queue
+from SinglyLinkedList import SinglyLinkedList
+from Stack import Stack
+from headersForDataStructures import wait
+
 a = Queue(1000, 300, 10, "myQueue")
 a.pushFront(10)
-#print(a.head.data, a.tail.data)
+print(a.head.data, a.tail.data)
 a.pushFront(100)
-#print(a.head.data, a.tail.data)
+print(a.head.data, a.tail.data)
 a.pushFront(20)
-a.front()
-#print(a.head.data, a.tail.data)
+print(a.head.data, a.tail.data)
+print(a.popFront())
+print(a.head.data, a.tail.data)
+print(a.popBack())
+print(a.head.data, a.tail.data)
+print(a.popFront())
+print(a.head.data, a.tail.data)
+
 
 """
 a = Stack(500, 500, 10, "myStack")
