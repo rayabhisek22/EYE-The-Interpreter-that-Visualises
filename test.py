@@ -1,5 +1,3 @@
 {
-	int x = 3;
-	float y = 7.5;
-	x = y + 5;
+	int z = 3;
 }

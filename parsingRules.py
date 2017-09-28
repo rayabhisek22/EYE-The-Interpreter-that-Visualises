@@ -30,7 +30,6 @@ parser = ParserGenerator(
         ('left', ['MUL', 'DIV'])
     ]
 )
-variable_dictionary = {}
 oper_to_funcname_dict = {'==': myIsEqual, '!=' : myIsNotEqual, '>=': myGreaterThanEqualTo, '<':myLessThan, '>':myGreaterThan, '<=': myLessThanEqualTo}
 keyword_dictionary = {'int' : Int, 'bool' : Bool, 'float' : Float, 'string' : String } 
 keyword_default_value_dict = {'int' : 0, 'bool' : False, 'float' : 0.0, 'string' : "" } 
@@ -82,12 +81,16 @@ def main_p(argList):
 @parser.production('block : OPEN_BRACES statements CLOSE_BRACES')
 def exec_all_statements(argList):
 	"""executes all the statements inside a given block"""
-	return;
+	return Block(argList[1])
 
 #########################################################################################################################
 # all parser rules for statements
 @parser.production('statements : statement statements')
+def multiple_statement(argList):
+	return argList[0] + argList[1]
 @parser.production('statements : statement')
+def single_statement(argList):
+	return argList[0]
 def exec_curr_statement(argList):
 	"""execute current statement"""
 	return
@@ -99,10 +102,15 @@ def exec_curr_statement(argList):
 #########################################################################################################################
 # all parser rules for a single statement
 @parser.production('statement : declaration SEMICOLON')
+def declaration_statement(argList):
+	return argList[0]
 @parser.production('statement : assignment SEMICOLON')
+def assignment_statement(argList):
+	return [argList[0]]
 #@parser.production('statement : if-block elif-blocks else-block')
 #@parser.production('statement : if-block else-block')
-@parser.production('statement : if-block')
+#@parser.production('statement : if-block')
+@parser.production('statement : for-block')
 def exec_type_of_statement(argList):
 	""" executes particualar type of statement"""
 	return
@@ -115,17 +123,46 @@ def exec_type_of_statement(argList):
 
 
 
+
+#########################################################################################################################
+
+ 												#FOR-BLOCK STARTS
+
+#########################################################################################################################
+# all parser rules for a if block which can either be a single statement or a block
+@parser.production('for-block : keyFOR OPEN_PARENS declaration SEMICOLON expression SEMICOLON assignment CLOSE_PARENS ')
+def block_of_if(argList):
+	""" function for if with a block"""
+	if not argList[2].eval():
+		return 5
+
+
+#@parser.production('if-block : keyIF OPEN_PARENS expression CLOSE_PARENS statement')
+
+
+
+
+
+#########################################################################################################################
+
+ 												#FOR-BLOCK ENDS
+
+#########################################################################################################################
+
+
+
+
 #########################################################################################################################
 
  												#IF-BLOCK STARTS
 
 #########################################################################################################################
 # all parser rules for a if block which can either be a single statement or a block
-@parser.production('if-block : keyIF OPEN_PARENS expression CLOSE_PARENS block')
-def block_of_if(argList):
-	""" function for if with a block"""
-	if not argList[2].eval():
-		return 5
+#@parser.production('if-block : keyIF OPEN_PARENS expression CLOSE_PARENS block')
+#def block_of_if(argList):
+#	""" function for if with a block"""
+#	if not argList[2].eval():
+#		return 5
 
 
 #@parser.production('if-block : keyIF OPEN_PARENS expression CLOSE_PARENS statement')
@@ -155,14 +192,20 @@ def declare_variables(argList):
 		default_assigns is a list of tuples
 		each tuple is a 2 element tuple which
 		contains a string of name and value"""
+	executionList = []
 	for eachVar in argList[1]:
-		if eachVar[0] in variable_dictionary:
+		if len(eachVar) == 3:
+			if eachVar[0] in list_variable_dict[mainIndex]:
+				raise Exception("\n\nVariable " + eachVar[0] + " already declared")
+			else:
+				executionList.append(ArrayDeclaration(eachVar[0], keyword_dictionary[argList[0]], eachVar[1], keyword_dictionary[argList[0]](keyword_default_value_dict[argList[0]]))) #list_variable_dict[mainIndex][eachVar[0]] = Array(keyword_dictionary[argList[0]](), eachVar[1])
+		elif eachVar[0] in list_variable_dict[mainIndex]:
 			raise Exception("\n\nVariable " + eachVar[0] + " already declared")
 		elif eachVar[1] == None:
-			variable_dictionary[eachVar[0]] = keyword_dictionary[argList[0]](keyword_default_value_dict[argList[0]])
+			executionList.append(PrimitiveDeclaration(eachVar[0], keyword_dictionary[argList[0]], keyword_dictionary[argList[0]](keyword_default_value_dict[argList[0]]))) #list_variable_dict[mainIndex][eachVar[0]] = keyword_dictionary[argList[0]](keyword_default_value_dict[argList[0]])
 		else:
-			variable_dictionary[eachVar[0]] = keyword_dictionary[argList[0]](eachVar[1])
-	return
+			executionList.append(PrimitiveDeclaration(eachVar[0], keyword_dictionary[argList[0]], eachVar[1])) #list_variable_dict[mainIndex][eachVar[0]] = keyword_dictionary[argList[0]](eachVar[1])
+	return executionList
 
 #########################################################################################################################
 # all parser rules for a keyword
@@ -185,10 +228,13 @@ def keyword_to_string(argList):
 #########################################################################################################################
 # all parser rules for default_assigns
 
+@parser.production('default_assigns : VARIABLE OPEN_SQUARE expression CLOSE_SQUARE COMMA default_assigns')
+def default_assign_array(argList):
+	return argList[4] + [(argList[0].getstr(), argList[2], [])]
 @parser.production('default_assigns : VARIABLE EQUAL expression COMMA default_assigns')
 def default_assign_with_value(argList):
 	"""appends the variable along with value in the list of default_assigns"""
-	return argList[4] + [(argList[0].getstr(), argList[2].eval())]
+	return argList[4] + [(argList[0].getstr(), argList[2])]
 
 
 @parser.production('default_assigns : VARIABLE COMMA default_assigns')
@@ -196,11 +242,14 @@ def default_assign_without_value(argList):
 	"""appends the variable without value in the list of default_assigns"""
 	return argList[2] + [(argList[0].getstr(), None)]
 
+@parser.production('default_assigns : VARIABLE OPEN_SQUARE expression CLOSE_SQUARE')
+def default_assign_array(argList):
+	return [(argList[0].getstr(), argList[2], [])]
 
 @parser.production('default_assigns : VARIABLE EQUAL expression')
 def default_assign_without_value(argList):
 	"""returns a list of variable with value tuple"""
-	return [(argList[0].getstr(), argList[2].eval())]
+	return [(argList[0].getstr(), argList[2])]
 
 
 @parser.production('default_assigns : VARIABLE')
@@ -230,12 +279,12 @@ def default_assign_without_value(argList):
 #########################################################################################################################
 # all parser rules for assignment
 
-@parser.production('assignment : VARIABLE EQUAL expression')
+@parser.production('assignment : variable EQUAL expression')
 def assign_variable(argList):
-	if argList[0].getstr() not in variable_dictionary:
-		raise Exception("\n\nVariable "+argList[0].getstr() + " needs to be declared before initialization")
+	if argList[0][0] not in list_variable_dict[mainIndex]:
+		raise Exception("\n\nVariable "+argList[0][0] + " needs to be declared before initialization")
 	else:
-		variable_dictionary[argList[0].getstr()].update(argList[2].eval())
+		return Assignment(argList[0][1],argList[2])
 	return None
 
 #########################################################################################################################
@@ -345,7 +394,7 @@ def factor_to_term(argList):
 
 @parser.production('factor : variable')
 def variable_to_factor(argList):
-	return argList[0]
+	return argList[0][1]
 
 @parser.production('factor : INT')
 def int_to_factor(argList):
@@ -395,15 +444,20 @@ def paren_expression_to_factor(argList):
 
 #@parser.production('variable : variable OPEN_SQUARE expression CLOSE_SQUARE')
 #def search_array_varialbe(argList):
+@parser.production('variable : VARIABLE OPEN_SQUARE expression CLOSE_SQUARE')
+def search_arra_variable(argList):
+	""" searches for the array element at the given index"""
+	result = argList[2].eval()
+	if not argList[0].getstr() in list_variable_dict[mainIndex]:
+		raise Exception('\n\nVariable '+ argList[0].getstr() +' not declared')
+	return [argList[0].getstr(),list_variable_dict[mainIndex][argList[0].getstr()].get(result)]
 
 @parser.production('variable : VARIABLE')
 def search_variable(argList):
 	"""searches for the variable in the variable dictionary and if found
 		return the corresponding object"""
 	var_name = argList[0].getstr()
-	if  var_name not in variable_dictionary:
-		raise Exception('\n\nVariable '+var_name+' not declared')
-	return variable_dictionary[var_name]
+	return [var_name, list_variable_dict[mainIndex][var_name]]
 
 
 #########################################################################################################################
@@ -429,10 +483,12 @@ def error_handler(token):
 
 
 mainparser = parser.build()
-print(mainparser.parse(lexer.lex(initial)))
-for item in variable_dictionary:
-	print(item, variable_dictionary[item].eval())
-
-
+mainparser.parse(lexer.lex(initial)).exec()
+for item in list_variable_dict[mainIndex]:
+	if type(list_variable_dict[mainIndex][item]).__name__ == 'Array':
+		for i in range(list_variable_dict[mainIndex][item].length):
+			print(item + " at index " + str(i) + " = " + str(list_variable_dict[mainIndex][item].get(i).eval()))
+	else:
+		print(item, list_variable_dict[mainIndex][item].eval())
 
 

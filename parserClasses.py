@@ -1,5 +1,8 @@
 #from rply.token import 
 
+list_variable_dict = [{}]
+mainIndex = 0
+
 class Number():
     def __init__(self, value):
         self.value = value
@@ -18,35 +21,87 @@ class PrimitiveDT():
         self.value = val
 
 class Variable():
-    def __init__(self,name,obj):
+    def __init__(self,name):
         self.name=name
-        self.value=obj
 
     def eval(self):
-        return self.value.eval()
+        if  self.name not in list_variable_dict[mainIndex]:
+            raise Exception('\n\nVariable '+ self.name +' not declared')
+        return list_variable_dict[mainIndex][self.name].eval()
 
     def update(obj2):
         self.value=obj2
-
-def Assignment():
+#################################################################
+class Assignment():
     def __init__(self,left,right):
         self.left=left
         self.right=right
 
+    def exec(self):
+        left.update(right.eval())
+
+class PrimitiveDeclaration():
+    def __init__(self, varName, varType, varValue):
+        self.varType=varType
+        self.varValue=varValue
+        self.varName = varName
+
+    def exec(self):
+        list_variable_dict[mainIndex][self.varName] = self.varType(self.varValue.eval())
+
+class ArrayDeclaration():
+    def __init__(self, varName, varType, length, varValue):
+        self.varType = varType
+        self.length = length
+        self.varValue = varValue
+        self.varName = varName
+
+    def exec(self):
+        list_variable_dict[mainIndex][self.varName] = Array(self.varType(self.varValue.eval()), self.length)
+
+class Array():
+    def __init__(self, initClass, length):
+        self.array = []
+        for i in range(length):
+            self.array.append(initClass.__class__(initClass.eval()))
+        self.length = length
+
+    def get(self, i):
+        return self.array[i]
+
+    def update(self, i, value):
+        self.array[i].update(value)
+
+class Block():
+    def __init__(self, listExecutables):
+        self.listExecutables = listExecutables
+
+    def exec(self):
+        for executable in self.listExecutables:
+            executable.exec()
+
 #########################################################
 class Int(PrimitiveDT):
+    def __init__(self, value=0):
+        self.value = value
     def giveType():
         return int
 
 class Float(PrimitiveDT):
+    def __init__(self, value=0.0):
+        self.value = value
     def giveType():
         return float
 
 class String(PrimitiveDT):
+    def __init__(self, value=""):
+        self.value = value
     def giveType():
         return str
 
 class Bool(PrimitiveDT):
+    def __init__(self, value=False):
+        self.value = value
     def giveType():
         return bool
 ######################################################
