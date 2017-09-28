@@ -1,5 +1,5 @@
-from lexer import lexer
-
-a = lexer.lex("""string x="aman"  + "fool"; """)
-while(True):
-	print(a.next())
+{
+	int x = 3;
+	float y = 7.5;
+	x = y + 5;
+}

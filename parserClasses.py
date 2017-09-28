@@ -14,6 +14,9 @@ class PrimitiveDT():
     def eval(self):
         return self.value
 
+    def update(self, val):
+        self.value = val
+
 class Variable():
     def __init__(self,name,obj):
         self.name=name
