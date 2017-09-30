@@ -2,7 +2,28 @@ from Queue import Queue
 from SinglyLinkedList import SinglyLinkedList
 from Stack import Stack
 from headersForDataStructures import wait
+from BinarySearchTree import BinarySearchTree
 
+
+a = BinarySearchTree(300, 300, 10, "MyBinaryTree")
+a.insert(10)
+a.insert(20)
+a.insert(30)
+a.insert(5)
+a.insert(14)
+#a.search(14)
+#a.search(31)
+#a.erase(110)
+a.erase(5)
+
+
+for i in range(100):
+	wait()
+
+
+
+
+"""
 a = Queue(1000, 300, 10, "myQueue")
 a.pushFront(10)
 print(a.head.data, a.tail.data)
@@ -16,7 +37,7 @@ print(a.popBack())
 print(a.head.data, a.tail.data)
 print(a.popFront())
 print(a.head.data, a.tail.data)
-
+"""
 
 """
 a = Stack(500, 500, 10, "myStack")

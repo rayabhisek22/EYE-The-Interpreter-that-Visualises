@@ -4,6 +4,8 @@
 #####    					TODO:
 #Add names of the data structures underneath them
 #Add delete function to all classes
+# in the binary tree, when node is dark blue, line comes on top
+# can try to make delet in the bst more efficient, it calculates height everytime yu delete anything
 
 import graphics
 import time
