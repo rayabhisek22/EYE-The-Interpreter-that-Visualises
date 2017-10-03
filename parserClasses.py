@@ -1,7 +1,14 @@
 from rply.token import *
 
-list_variable_dict = [{}]
-mainIndex = 0
+list_variable_dict = []
+mainIndex = -1
+
+def variableLookup(name, index):
+    while index >= 0:
+        if name in list_variable_dict[index]:
+            return index
+        index = index - 1
+    raise Exception("Variable " + name + " not in scope")
 
 class Number():
     def __init__(self, value):
@@ -26,28 +33,20 @@ class ArrayVariable():
         self.index = index
 
     def eval(self):
-        if  self.name not in list_variable_dict[mainIndex]:
-            raise Exception('\n\nVariable '+ self.name +' not declared')
-        return list_variable_dict[mainIndex][self.name].get(self.index.eval()).eval()
+        return list_variable_dict[variableLookup(self.name, mainIndex)][self.name].get(self.index.eval()).eval()
 
     def update(self, value):
-        if  self.name not in list_variable_dict[mainIndex]:
-            raise Exception('\n\nVariable '+ self.name +' not declared')
-        list_variable_dict[mainIndex][self.name].update(self.index.eval(), value.eval())
+        list_variable_dict[variableLookup(self.name, mainIndex)][self.name].update(self.index.eval(), value.eval())
 
 class Variable():
     def __init__(self,name):
         self.name=name
 
     def eval(self):
-        if  self.name not in list_variable_dict[mainIndex]:
-            raise Exception('\n\nVariable '+ self.name +' not declared')
-        return list_variable_dict[mainIndex][self.name].eval()
+        return list_variable_dict[variableLookup(self.name, mainIndex)][self.name].eval()
 
     def update(self,obj2):
-        if  self.name not in list_variable_dict[mainIndex]:
-            raise Exception('\n\nVariable '+ self.name +' not declared')
-        list_variable_dict[mainIndex][self.name].update(obj2.eval())
+        list_variable_dict[variableLookup(self.name, mainIndex)][self.name].update(obj2.eval())
 #################################################################
 class Assignment():
     def __init__(self,left,right):
@@ -64,6 +63,8 @@ class PrimitiveDeclaration():
         self.varName = varName
 
     def exec(self):
+        if self.varName in list_variable_dict[mainIndex]:
+            raise Exception("Variable "+self.varName + " already declared")
         list_variable_dict[mainIndex][self.varName] = self.varType(self.varValue.eval())
 
 class ArrayDeclaration():
@@ -74,6 +75,8 @@ class ArrayDeclaration():
         self.varName = varName
 
     def exec(self):
+        if self.varName in list_variable_dict[mainIndex]:
+            raise Exception("Variable "+self.varName + " already declared")
         list_variable_dict[mainIndex][self.varName] = Array(self.varType(self.varValue.eval()), self.length.eval())
 
 class Array(): #variable class of array
@@ -94,6 +97,9 @@ class Block():
         self.listExecutables = listExecutables
 
     def exec(self):
+        global mainIndex, list_variable_dict
+        mainIndex = mainIndex + 1
+        list_variable_dict.append({})
         for executable in self.listExecutables:
             # if type(executable) is list:
             #     if executable[0] == 'FOR':
@@ -103,6 +109,8 @@ class Block():
             #                 item.exec()
             #             executable[3].eval()
             executable.exec()
+        mainIndex = mainIndex - 1
+        list_variable_dict.pop()
 
 class ForLoop():
     def __init__(self, declare, express, assign, statementList):
@@ -117,6 +125,8 @@ class ForLoop():
         while self.express.eval():
             self.statementList.exec()
             self.assign.exec()
+        for declareStatement in self.declare:
+            del list_variable_dict[mainIndex][declareStatement.varName]
 
 class WhileLoop():
     def __init__(self, express, statementList):

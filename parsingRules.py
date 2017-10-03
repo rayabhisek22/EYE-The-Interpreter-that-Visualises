@@ -101,6 +101,9 @@ def exec_curr_statement(argList):
 
 #########################################################################################################################
 # all parser rules for a single statement
+@parser.production('statement : block')
+def statement_block(argList):
+	return argList[0]
 @parser.production('statement : declaration SEMICOLON')
 def declaration_statement(argList):
 	return argList[0]
@@ -234,12 +237,14 @@ def else_block(argList):
 #########################################################################################################################
 
 
+
 #########################################################################################################################
 
  												#DECLARATION STARTS
 
 #########################################################################################################################
 # all parser rules for a single declaration
+
 @parser.production('declaration : keyword default_assigns')
 def declare_variables(argList):
 	""" declares one or more than one variables
@@ -250,12 +255,7 @@ def declare_variables(argList):
 	executionList = []
 	for eachVar in argList[1]:
 		if len(eachVar) == 3:
-			if eachVar[0] in list_variable_dict[mainIndex]:
-				raise Exception("\n\nVariable " + eachVar[0] + " already declared")
-			else:
-				executionList.append(ArrayDeclaration(eachVar[0], keyword_dictionary[argList[0]], eachVar[1], keyword_dictionary[argList[0]](keyword_default_value_dict[argList[0]]))) #list_variable_dict[mainIndex][eachVar[0]] = Array(keyword_dictionary[argList[0]](), eachVar[1])
-		elif eachVar[0] in list_variable_dict[mainIndex]:
-			raise Exception("\n\nVariable " + eachVar[0] + " already declared")
+			executionList.append(ArrayDeclaration(eachVar[0], keyword_dictionary[argList[0]], eachVar[1], keyword_dictionary[argList[0]](keyword_default_value_dict[argList[0]]))) #list_variable_dict[mainIndex][eachVar[0]] = Array(keyword_dictionary[argList[0]](), eachVar[1])
 		elif eachVar[1] == None:
 			executionList.append(PrimitiveDeclaration(eachVar[0], keyword_dictionary[argList[0]], keyword_dictionary[argList[0]](keyword_default_value_dict[argList[0]]))) #list_variable_dict[mainIndex][eachVar[0]] = keyword_dictionary[argList[0]](keyword_default_value_dict[argList[0]])
 		else:
