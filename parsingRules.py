@@ -20,7 +20,8 @@ parser = ParserGenerator(
     'COMMA','SEMICOLON','PLUS','MINUS','MUL','DIV','OR','AND','MOD','NOT','LESSEQUAL','GREATEREQUAL',
     'LESS','GREATER','EQUAL','ISEQUAL','NOTEQUAL','OPEN_PARENS','CLOSE_PARENS','OPEN_BRACES','CLOSE_BRACES',
     'OPEN_SQUARE','CLOSE_SQUARE','keyINT','keyINT','keyINT','keyINT','keyINT','keyINT','keyFLOAT','keyFLOAT',
-    'keySTRING','keyBOOL','FLOAT','INT','STRING','CHAR','BOOL','VARIABLE', 'keyIF', 'keyFOR', 'keyWHILE'
+    'keySTRING','keyBOOL','FLOAT','INT','STRING','CHAR','BOOL','VARIABLE', 'keyIF', 'keyFOR', 'keyWHILE',
+    'keyELSE', 'keyELIF', 'keyCIN', 'keyCOUT', 'CINOPER', 'COUTOPER', 'ENDL'
     ],
     # A list of precedence rules with ascending precedence, to
     # disambiguate ambiguous production rules.
@@ -76,7 +77,6 @@ def main_p(argList):
 
 #########################################################################################################################
 
-
 # all parser rules for block
 @parser.production('block : OPEN_BRACES statements CLOSE_BRACES')
 def exec_all_statements(argList):
@@ -107,13 +107,31 @@ def declaration_statement(argList):
 @parser.production('statement : assignment SEMICOLON')
 def assignment_statement(argList):
 	return [argList[0]]
-#@parser.production('statement : if-block elif-blocks else-block')
-#@parser.production('statement : if-block else-block')
-#@parser.production('statement : if-block')
 @parser.production('statement : for-block')
+@parser.production('statement : while-block')
 def exec_type_of_statement(argList):
 	""" executes particualar type of statement"""
-	return
+	return [argList[0]]
+
+@parser.production('statement : if-block elif-blocks else-block')
+def if_elifs_else(argList):
+	return [IfStatement(argList[0] + argList[1] + argList[2])]
+@parser.production('statement : if-block elif-blocks')
+def if_elifs(argList):
+	return [IfStatement(argList[0] + argList[1])]
+@parser.production('statement : if-block else-block')
+def if_else(argList):
+	return [IfStatement(argList[0] + argList[1])]
+@parser.production('statement : if-block')
+def if_only(argList):
+	return [IfStatement(argList[0])]
+
+# @parser.production('statement : input-stream')
+# def take_input(argList):
+
+@parser.production('statement : output-stream SEMICOLON')
+def output_stream(argList):
+	return [CoutStatement(argList[0])]
 
 #########################################################################################################################
 
@@ -130,18 +148,9 @@ def exec_type_of_statement(argList):
 
 #########################################################################################################################
 # all parser rules for a if block which can either be a single statement or a block
-@parser.production('for-block : keyFOR OPEN_PARENS declaration SEMICOLON expression SEMICOLON assignment CLOSE_PARENS ')
-def block_of_if(argList):
-	""" function for if with a block"""
-	if not argList[2].eval():
-		return 5
-
-
-#@parser.production('if-block : keyIF OPEN_PARENS expression CLOSE_PARENS statement')
-
-
-
-
+@parser.production('for-block : keyFOR OPEN_PARENS declaration SEMICOLON expression SEMICOLON assignment CLOSE_PARENS block')
+def block_of_for(argList):
+	return ForLoop(argList[2], argList[4], argList[6], argList[8])
 
 #########################################################################################################################
 
@@ -150,6 +159,49 @@ def block_of_if(argList):
 #########################################################################################################################
 
 
+#########################################################################################################################
+
+ 												#WHILE-BLOCK STARTS
+
+#########################################################################################################################
+# all parser rules for a if block which can either be a single statement or a block
+@parser.production('while-block : keyWHILE OPEN_PARENS expression CLOSE_PARENS block')
+def block_of_for(argList):
+	return WhileLoop(argList[2], argList[4])
+
+#########################################################################################################################
+
+ 												#WHILE-BLOCK ENDS
+
+#########################################################################################################################
+
+#########################################################################################################################
+
+ 												#COUT-BLOCK STARTS
+
+#########################################################################################################################
+# all parser rules for a if block which can either be a single statement or a block
+@parser.production('output-stream : keyCOUT coutopers')
+def output_stream(argList):
+	return argList[1]
+@parser.production('coutopers : COUTOPER ENDL coutopers')
+def coutoper_endl_coutopers(argList):
+	return [String("\n")] + argList[2]
+@parser.production('coutopers : COUTOPER expression coutopers')
+def coutoper_expression_coutopers(argList):
+	return [argList[1]] + argList[2]
+@parser.production('coutopers : COUTOPER ENDL')
+def coutoper_endl(argList):
+	return [String('"\n"')]
+@parser.production('coutopers : COUTOPER expression')
+def coutoper_expression(argList):
+	return [argList[1]]
+
+#########################################################################################################################
+
+ 												#COUT-BLOCK ENDS
+
+#########################################################################################################################
 
 
 #########################################################################################################################
@@ -158,25 +210,28 @@ def block_of_if(argList):
 
 #########################################################################################################################
 # all parser rules for a if block which can either be a single statement or a block
-#@parser.production('if-block : keyIF OPEN_PARENS expression CLOSE_PARENS block')
-#def block_of_if(argList):
-#	""" function for if with a block"""
-#	if not argList[2].eval():
-#		return 5
+@parser.production('if-block : keyIF OPEN_PARENS expression CLOSE_PARENS block')
+def if_statement_runner(argList):
+	return [[argList[2], argList[4]]]
 
-
-#@parser.production('if-block : keyIF OPEN_PARENS expression CLOSE_PARENS statement')
-
-
-
-
+@parser.production('elif-blocks : elif-block elif-blocks')
+def elif_blocks1(argList):
+	return argList[0] + argList[1]
+@parser.production('elif-blocks : elif-block')
+def elif_blocks2(argList):
+	return argList[0]
+@parser.production('elif-block : keyELIF OPEN_PARENS expression CLOSE_PARENS block')
+def elif_block(argList):
+	return [[argList[2], argList[4]]]
+@parser.production('else-block : keyELSE block')
+def else_block(argList):
+	return [[Bool(True), argList[1]]]
 
 #########################################################################################################################
 
  												#IF-BLOCK ENDS
 
 #########################################################################################################################
-
 
 
 #########################################################################################################################
@@ -480,11 +535,11 @@ def error_handler(token):
 
 mainparser = parser.build()
 mainparser.parse(lexer.lex(initial)).exec()
-for item in list_variable_dict[mainIndex]:
-	if type(list_variable_dict[mainIndex][item]).__name__ == 'Array':
-		for i in range(list_variable_dict[mainIndex][item].length):
-			print(item + " at index " + str(i) + " = " + str(list_variable_dict[mainIndex][item].get(i).eval()))
-	else:
-		print(item, list_variable_dict[mainIndex][item].eval())
+# for item in list_variable_dict[mainIndex]:
+# 	if type(list_variable_dict[mainIndex][item]).__name__ == 'Array':
+# 		for i in range(list_variable_dict[mainIndex][item].length):
+# 			print(item + " at index " + str(i) + " = " + str(list_variable_dict[mainIndex][item].get(i).eval()))
+# 	else:
+# 		print(item, list_variable_dict[mainIndex][item].eval())
 
 

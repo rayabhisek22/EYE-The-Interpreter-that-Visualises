@@ -95,8 +95,55 @@ class Block():
 
     def exec(self):
         for executable in self.listExecutables:
+            # if type(executable) is list:
+            #     if executable[0] == 'FOR':
+            #         executable[1].exec()
+            #         while(executable[1].eval()):
+            #             for item in executable[2]:
+            #                 item.exec()
+            #             executable[3].eval()
             executable.exec()
 
+class ForLoop():
+    def __init__(self, declare, express, assign, statementList):
+        self.declare = declare
+        self.express = express
+        self.assign = assign
+        self.statementList = statementList
+
+    def exec(self):
+        for declareStatement in self.declare:
+            declareStatement.exec()
+        while self.express.eval():
+            self.statementList.exec()
+            self.assign.exec()
+
+class WhileLoop():
+    def __init__(self, express, statementList):
+        self.express = express
+        self.statementList = statementList
+
+    def exec(self):
+        while self.express.eval():
+            self.statementList.exec()
+
+class IfStatement():
+    def __init__(self, listofConditionals):
+        self.listofConditionals = listofConditionals
+
+    def exec(self):
+        for pair in self.listofConditionals:
+            if pair[0].eval():
+                pair[1].exec()
+                break
+
+class CoutStatement():
+    def __init__(self, listOfExpress):
+        self.listOfExpress = listOfExpress
+
+    def exec(self):
+        for expresses in self.listOfExpress:
+            print(expresses.eval(), end='')
 #########################################################
 class Int(PrimitiveDT):
     def __init__(self, value=0):
@@ -111,8 +158,8 @@ class Float(PrimitiveDT):
         return float
 
 class String(PrimitiveDT):
-    def __init__(self, value=""):
-        self.value = value
+    def __init__(self, value='""'):
+        self.value = value[1:-1]
     def giveType():
         return str
 
