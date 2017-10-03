@@ -281,11 +281,8 @@ def default_assign_without_value(argList):
 
 @parser.production('assignment : variable EQUAL expression')
 def assign_variable(argList):
-	if argList[0][0] not in list_variable_dict[mainIndex]:
-		raise Exception("\n\nVariable "+argList[0][0] + " needs to be declared before initialization")
-	else:
-		return Assignment(argList[0][1],argList[2])
-	return None
+	#if argList[0]
+	return Assignment(argList[0],argList[2])
 
 #########################################################################################################################
 
@@ -394,7 +391,7 @@ def factor_to_term(argList):
 
 @parser.production('factor : variable')
 def variable_to_factor(argList):
-	return argList[0][1]
+	return argList[0]
 
 @parser.production('factor : INT')
 def int_to_factor(argList):
@@ -445,19 +442,18 @@ def paren_expression_to_factor(argList):
 #@parser.production('variable : variable OPEN_SQUARE expression CLOSE_SQUARE')
 #def search_array_varialbe(argList):
 @parser.production('variable : VARIABLE OPEN_SQUARE expression CLOSE_SQUARE')
-def search_arra_variable(argList):
+def search_array_variable(argList):
 	""" searches for the array element at the given index"""
-	result = argList[2].eval()
-	if not argList[0].getstr() in list_variable_dict[mainIndex]:
-		raise Exception('\n\nVariable '+ argList[0].getstr() +' not declared')
-	return [argList[0].getstr(),list_variable_dict[mainIndex][argList[0].getstr()].get(result)]
+	result = argList[2]
+	return ArrayVariable(argList[0].getstr(), result)
 
 @parser.production('variable : VARIABLE')
 def search_variable(argList):
 	"""searches for the variable in the variable dictionary and if found
 		return the corresponding object"""
 	var_name = argList[0].getstr()
-	return [var_name, list_variable_dict[mainIndex][var_name]]
+	return Variable(var_name)
+	#return [var_name, list_variable_dict[mainIndex][var_name]] #one
 
 
 #########################################################################################################################

@@ -1,4 +1,4 @@
-#from rply.token import 
+from rply.token import *
 
 list_variable_dict = [{}]
 mainIndex = 0
@@ -20,6 +20,21 @@ class PrimitiveDT():
     def update(self, val):
         self.value = val
 
+class ArrayVariable():
+    def __init__(self, name, index):
+        self.name = name
+        self.index = index
+
+    def eval(self):
+        if  self.name not in list_variable_dict[mainIndex]:
+            raise Exception('\n\nVariable '+ self.name +' not declared')
+        return list_variable_dict[mainIndex][self.name].get(self.index.eval()).eval()
+
+    def update(self, value):
+        if  self.name not in list_variable_dict[mainIndex]:
+            raise Exception('\n\nVariable '+ self.name +' not declared')
+        list_variable_dict[mainIndex][self.name].update(self.index.eval(), value.eval())
+
 class Variable():
     def __init__(self,name):
         self.name=name
@@ -29,8 +44,10 @@ class Variable():
             raise Exception('\n\nVariable '+ self.name +' not declared')
         return list_variable_dict[mainIndex][self.name].eval()
 
-    def update(obj2):
-        self.value=obj2
+    def update(self,obj2):
+        if  self.name not in list_variable_dict[mainIndex]:
+            raise Exception('\n\nVariable '+ self.name +' not declared')
+        list_variable_dict[mainIndex][self.name].update(obj2.eval())
 #################################################################
 class Assignment():
     def __init__(self,left,right):
@@ -38,7 +55,7 @@ class Assignment():
         self.right=right
 
     def exec(self):
-        left.update(right.eval())
+        self.left.update(self.right)
 
 class PrimitiveDeclaration():
     def __init__(self, varName, varType, varValue):
@@ -57,9 +74,9 @@ class ArrayDeclaration():
         self.varName = varName
 
     def exec(self):
-        list_variable_dict[mainIndex][self.varName] = Array(self.varType(self.varValue.eval()), self.length)
+        list_variable_dict[mainIndex][self.varName] = Array(self.varType(self.varValue.eval()), self.length.eval())
 
-class Array():
+class Array(): #variable class of array
     def __init__(self, initClass, length):
         self.array = []
         for i in range(length):

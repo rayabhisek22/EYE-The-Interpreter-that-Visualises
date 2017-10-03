@@ -1,6 +1,18 @@
 from lexer import lexer
 
-initial = input("give me the input\n")
+lines = []
+while True:
+	try:
+		line = input()
+		if line:
+			lines.append(line)
+		else:
+			break
+	except:
+		break
+
+initial = ''.join(lines)
+del lines
 stream = lexer.lex(initial)
 while(True):
 	try:
