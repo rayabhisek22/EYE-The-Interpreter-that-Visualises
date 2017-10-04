@@ -1,19 +1,13 @@
 from lexer import lexer
 from parserClasses import *
 from rply import ParserGenerator
+import sys
 lines = []
-while True:
-	try:
-		line = input()
-		if line:
-			lines.append(line)
-		else:
-			break
-	except:
-		break
-
+for line in sys.stdin:
+    lines.append(line)
 initial = ''.join(lines)
 del lines
+
 parser = ParserGenerator(
     # A list of all token names, accepted by the parser.
     [

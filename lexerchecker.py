@@ -1,18 +1,12 @@
 from lexer import lexer
+import sys
 
 lines = []
-while True:
-	try:
-		line = input()
-		if line:
-			lines.append(line)
-		else:
-			break
-	except:
-		break
-
+for line in sys.stdin:
+    lines.append(line)
 initial = ''.join(lines)
 del lines
+
 stream = lexer.lex(initial)
 while(True):
 	try:

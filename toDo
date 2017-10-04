@@ -4,4 +4,15 @@ Erros in eval functions
 
 precedence order is not added for now
 
-multi dimensional array are now included for now
+multi dimensional array are not included for now
+
+cin statement
+
+for loop with assignments in place of declaration and missing statements
+
+___Extras__
+++ and -- operators
+
+array initializations
+
+loops and if statements without brackes for one statement
