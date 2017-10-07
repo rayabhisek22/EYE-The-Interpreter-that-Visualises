@@ -44,6 +44,10 @@ class Node:
 		self.data[key].draw(canvas)
 		wait()
 
+	def delt(self,key):
+		self.data[key].undraw()
+		del self.data[key]
+
 	def delete(self):
 		for element in self.data:
 			self.data[element].undraw()
@@ -72,6 +76,14 @@ class ExecutionStack:
 			temp = temp.next
 			index -=1
 		temp.modifyData(key, val)
+
+	def deleteData(self,key,index):
+		temp = self.head
+		while (index > 0):
+			temp = temp.next
+			index -=1
+		temp.delt(key)
+
 
 	def pop(self):
 		temp = self.head

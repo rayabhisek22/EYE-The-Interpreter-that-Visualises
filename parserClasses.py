@@ -157,6 +157,7 @@ class ForLoop():
 			self.statementList.exec()
 			self.assign.exec()
 		for declareStatement in self.declare:
+			exec_stack.deleteData(declareStatement.varName,len(list_variable_dict)-variableLookup(declareStatement.varName,mainIndex)-1)
 			del list_variable_dict[mainIndex][declareStatement.varName]
 
 class WhileLoop():
