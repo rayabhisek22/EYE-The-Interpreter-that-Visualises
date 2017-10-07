@@ -1,5 +1,13 @@
 from headersForDataStructures import *
 
+def drawHeader():
+	try:
+		headerText.draw(canvas)
+	except:
+		headerText.undraw()
+		headerText.draw(canvas)
+	
+
 nodeSpace = 3*circleRadius
 verticalGap = 3*circleRadius
 
@@ -191,7 +199,7 @@ class BinarySearchTree:
 				" and the type of the value that is to be inserted are not the same")
 		else:
 			headerText.setText("Inserting " + str(val) + " into the binary tree " + self.name)
-			headerText.draw(canvas)
+			drawHeader()
 			if self.root == None:
 				self.height = 1
 				self.root = BinaryTreeNode(None, None, val, self.rootLocation.x, self.rootLocation.y)
@@ -233,7 +241,7 @@ class BinarySearchTree:
 				that are stored in the binary search tree " + self.name + " : " + self.type + " are not the same")
 		else:
 			headerText.setText("Searching for " + str(val) + " in the binary search tree " + self.name)
-			headerText.draw(canvas)
+			drawHeader()
 			if self.height == 0:
 				wait()
 				headerText.undraw()
@@ -296,7 +304,7 @@ class BinarySearchTree:
 				that are stored in the binary search tree " + self.name + " : " + self.type + " are not the same")
 		else:
 			headerText.setText("Deleting the value: " + str(val) + " from the binary tree " + self.name)
-			headerText.draw(canvas)
+			drawHeader()
 			if self.height == 0:
 				wait()
 				headerText.undraw()

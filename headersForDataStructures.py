@@ -10,6 +10,8 @@
 import graphics
 import time
 
+
+
 canvas = graphics.GraphWin("My Interpreter", 1300, 1000)
 boxLength = 20
 circleRadius = 15

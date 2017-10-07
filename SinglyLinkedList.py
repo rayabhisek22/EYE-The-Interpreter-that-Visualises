@@ -84,6 +84,7 @@ class SinglyLinkedList:
 		self.baseRectangle.setFill("green")
 		self.baseRectangle.draw(canvas)
 		self.baseText.draw(canvas)
+		wait()
 
 	def size(self):
 		return self.size

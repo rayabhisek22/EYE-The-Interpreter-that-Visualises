@@ -4,7 +4,7 @@ from Stack import Stack
 from headersForDataStructures import wait
 from BinarySearchTree import BinarySearchTree
 
-
+"""
 a = BinarySearchTree(300, 300, 10, "MyBinaryTree")
 a.insert(10)
 a.insert(20)
@@ -16,9 +16,7 @@ a.insert(14)
 #a.erase(110)
 a.erase(5)
 
-
-for i in range(100):
-	wait()
+"""
 
 
 
@@ -47,16 +45,16 @@ a.top()
 a.pop()
 a.pop()
 """
-for i in range(2):
-	wait()
-"""
-a = SinglyLinkedList(1000, 100, 10)
-a.insert(0,9)
-a.insert(0,10)
-a.insert(0,13)
-a.insert(0, 20)
-print (a.get(10))
-#print(a.indexOf(20))
-a.erase(9)
-a.insert(2, 1)
-b = input()"""
+a = SinglyLinkedList(1000, 100, 10, "pp")
+# a.insert(0,9)
+# a.insert(0,10)
+# a.insert(0,13)
+# a.insert(0, 20)
+# print (a.get(10))
+# #print(a.indexOf(20))
+# a.erase(9)
+# a.insert(2, 1)
+# b = input()
+
+# for i in range(100):
+# 	wait()

@@ -15,7 +15,7 @@ parser = ParserGenerator(
     'LESS','GREATER','EQUAL','ISEQUAL','NOTEQUAL','OPEN_PARENS','CLOSE_PARENS','OPEN_BRACES','CLOSE_BRACES',
     'OPEN_SQUARE','CLOSE_SQUARE','keyINT','keyINT','keyINT','keyINT','keyINT','keyINT','keyFLOAT','keyFLOAT',
     'keySTRING','keyBOOL','FLOAT','INT','STRING','CHAR','BOOL','VARIABLE', 'keyIF', 'keyFOR', 'keyWHILE',
-    'keyELSE', 'keyELIF', 'keyCIN', 'keyCOUT', 'CINOPER', 'COUTOPER', 'ENDL'
+    'keyELSE', 'keyELIF', 'keyCIN', 'keyCOUT', 'CINOPER', 'COUTOPER', 'ENDL','LINKEDLIST', 'DOT','STACK','QUEUE','BST'
     ],
     # A list of precedence rules with ascending precedence, to
     # disambiguate ambiguous production rules.
@@ -27,6 +27,7 @@ parser = ParserGenerator(
 )
 oper_to_funcname_dict = {'==': myIsEqual, '!=' : myIsNotEqual, '>=': myGreaterThanEqualTo, '<':myLessThan, '>':myGreaterThan, '<=': myLessThanEqualTo}
 keyword_dictionary = {'int' : Int, 'bool' : Bool, 'float' : Float, 'string' : String } 
+data_struct_dictionary={'linkedList':SinglyLinkedList, 'queue':Queue, 'stack':Stack, 'binarySearchTree':BinarySearchTree}
 keyword_default_value_dict = {'int' : 0, 'bool' : False, 'float' : 0.0, 'string' : "" } 
 """
 @parser.production('expression : simplex ISEQUAL simplex')
@@ -129,12 +130,35 @@ def if_only(argList):
 @parser.production('statement : output-stream SEMICOLON')
 def output_stream(argList):
 	return [CoutStatement(argList[0])]
+@parser.production('statement : class-functions SEMICOLON')
+def make_exec(argList):
+	if len(argList[0])==2:
+		return [Member_function(argList[0])]
+	else:
+		return [Multiple_member_function(argList[0])]
+
 
 #########################################################################################################################
 
  												#BLOCKS AND STATEMENTS ENDS
 
 #########################################################################################################################
+
+@parser.production('class-functions : VARIABLE DOT VARIABLE OPEN_PARENS CLOSE_PARENS')
+def function_call(argList):
+	return [argList[0].getstr(),argList[2].getstr()]
+
+@parser.production('class-functions : VARIABLE DOT VARIABLE OPEN_PARENS expressions CLOSE_PARENS')
+def function_call_2(argList):
+	return [argList[0].getstr(),argList[2].getstr(),argList[4]]
+
+@parser.production('expressions : expression COMMA expressions')
+def list_of_expression(argList):
+	return [argList[0]]+ argList[2]
+
+@parser.production('expressions : expression')
+def list_of_expression(argList):
+	return [argList[0]]
 
 
 
@@ -256,6 +280,26 @@ def declare_variables(argList):
 			executionList.append(PrimitiveDeclaration(eachVar[0], keyword_dictionary[argList[0]], eachVar[1])) #list_variable_dict[mainIndex][eachVar[0]] = keyword_dictionary[argList[0]](eachVar[1])
 	return executionList
 
+@parser.production('declaration : LINKEDLIST LESS keyword GREATER new_variables')
+@parser.production('declaration : STACK LESS keyword GREATER new_variables')
+@parser.production('declaration : QUEUE LESS keyword GREATER new_variables')
+@parser.production('declaration : BST LESS keyword GREATER new_variables')
+def data_structure_init(argList):
+	executionList=[]
+	for eachVar in argList[4]:
+		executionList.append(DataStructureDeclaration(data_struct_dictionary[argList[0].getstr()], eachVar,argList[2]))
+	return executionList
+
+@parser.production('new_variables : VARIABLE COMMA new_variables')
+def list_of_variables(argList):
+	return argList[2]+[argList[0].getstr()]
+
+@parser.production('new_variables : VARIABLE')
+def list_of_variables(argList):
+	return [argList[0].getstr()]
+
+
+
 #########################################################################################################################
 # all parser rules for a keyword
 @parser.production('keyword : keyINT')
@@ -271,7 +315,7 @@ def keyword_to_string(argList):
 		return 'float'
 	elif argList[0].gettokentype() == 'keyBOOL':
 		return 'bool'
-	if argList[0].gettokentype() == 'keySTRING':
+	elif argList[0].gettokentype() == 'keySTRING':
 		return 'string'
 
 #########################################################################################################################

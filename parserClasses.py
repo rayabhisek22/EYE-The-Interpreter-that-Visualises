@@ -1,4 +1,6 @@
 from rply.token import *
+#from headersForDataStructures import SinglyLinkedList, Queue, Stack, BinarySearchTree
+from dataStructures import *
 
 list_variable_dict = []
 mainIndex = -1
@@ -78,6 +80,20 @@ class ArrayDeclaration():
         if self.varName in list_variable_dict[mainIndex]:
             raise Exception("Variable "+self.varName + " already declared")
         list_variable_dict[mainIndex][self.varName] = Array(self.varType(self.varValue.eval()), self.length.eval())
+
+modelTypeDict = {'int':10, 'float':0.2, 'string':"as", 'bool':True}
+
+class DataStructureDeclaration():
+	def __init__(self,className,name,vartype):
+		self.name=name
+		self.vartype=vartype
+		self.theClass=className
+
+	def exec(self):
+		if self.name in list_variable_dict[mainIndex]:
+			raise Exception("varialble" +self.name + "already declared")
+		else:
+			list_variable_dict[mainIndex][self.name]=self.theClass(1000, 100, modelTypeDict[self.vartype], self.name)
 
 class Array(): #variable class of array
     def __init__(self, initClass, length):
@@ -329,3 +345,21 @@ class Factor():
             return self.elements[0].eval()
         else:
             print("error")
+
+class Member_function():
+	def __init__(self,reqData):
+		self.name = reqData[0]
+		self.functname = reqData[1]
+
+	def exec(self):
+		getattr(list_variable_dict[variableLookup(self.name,mainIndex)][self.name], self.functname)()
+
+class Multiple_member_function():
+	def __init__(self,reqData):
+		self.name=reqData[0]
+		self.functname=reqData[1]
+		self.arguements=reqData[2]
+
+	def exec(self):
+		getattr(list_variable_dict[variableLookup(self.name,mainIndex)][self.name], self.functname)(*map(lambda x: x.eval(),self.arguements))
+
