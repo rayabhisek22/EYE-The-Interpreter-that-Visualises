@@ -1,9 +1,9 @@
 from rply.token import *
 #from headersForDataStructures import SinglyLinkedList, Queue, Stack, BinarySearchTree
 from dataStructures import *
-from executionStack import ExecutionStack
+from executionStack import ExecutionStack, VisualArray
 
-
+array_dict={}
 exec_stack =ExecutionStack()
 list_variable_dict = []
 mainIndex = -1
@@ -87,7 +87,9 @@ class ArrayDeclaration():
 	def exec(self):
 		if self.varName in list_variable_dict[mainIndex]:
 			raise Exception("Variable "+self.varName + " already declared")
-		list_variable_dict[mainIndex][self.varName] = Array(self.varType(self.varValue.eval()), self.length.eval())
+		x=self.length.eval()
+		array_dict[self.varName]=VisualArray(x,self.varName)
+		list_variable_dict[mainIndex][self.varName] = Array(self.varType(self.varValue.eval()), x,self.varName)
 
 modelTypeDict = {'int':10, 'float':0.2, 'string':"as", 'bool':True}
 
@@ -104,16 +106,19 @@ class DataStructureDeclaration():
 			list_variable_dict[mainIndex][self.name]=self.theClass(1000, 100, modelTypeDict[self.vartype], self.name)
 
 class Array(): #variable class of array
-	def __init__(self, initClass, length):
+	def __init__(self, initClass, length,name):
+		self.name=name
 		self.array = []
 		for i in range(length):
 			self.array.append(initClass.__class__(initClass.eval()))
 		self.length = length
 
 	def get(self, i):
+		array_dict[self.name].probe(i)
 		return self.array[i]
 
 	def update(self, i, value):
+		array_dict[self.name].update(i,value)
 		self.array[i].update(value)
 
 class Block():

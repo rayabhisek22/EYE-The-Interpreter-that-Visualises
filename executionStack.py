@@ -2,10 +2,16 @@ import graphics
 from headersForDataStructures import canvas, wait, headerText
 
 bottomx = 20
-bottomy = 500
+bottomy = 600
 nodeWidth = 600
 nodeHeight = 100
 textHeight = 14
+
+arrayElementWidth = arrayElementHeight = 20
+arrayBegy=60
+arrayBegx=20
+numberOfArrays=0
+arrayOffset = 50
 
 class Node:
 	def __init__(self, x, y, nxt):
@@ -73,3 +79,68 @@ class ExecutionStack:
 		self.head = self.head.next
 		temp.delete()
 		wait()
+
+
+######################################################################################################################
+
+												#ARRAYS
+
+######################################################################################################################
+
+class ArrayNode:
+	def __init__(self, x, y, val):
+		self.data = val
+		self.rectangle = graphics.Rectangle(graphics.Point(x,y), graphics.Point(x + arrayElementWidth, y\
+		 + arrayElementHeight))
+		self.rectangle.setFill("grey")
+		self.text = graphics.Text(graphics.Point(x + arrayElementWidth/2, y + arrayElementHeight/2), str(val))
+		self.text.setSize(10)
+		self.rectangle.draw(canvas)
+		self.text.draw(canvas)
+
+	def update(self, newVal):
+		self.text.undraw()
+		self.val = newVal
+		self.text.setText(str(newVal))
+		self.text.draw(canvas)
+
+	def delete(self):
+		self.rectangle.undraw()
+		self.text.undraw()
+
+	def changeColor(self, color):
+		self.rectangle.undraw()
+		self.rectangle.setFill(color)
+		self.text.undraw()
+		self.rectangle.draw(canvas)
+		self.text.draw(canvas)
+
+class VisualArray:
+	def __init__(self, size, name):
+		global numberOfArrays
+		self.name = name
+		self.y = arrayBegy + numberOfArrays*3*arrayElementHeight/2
+		self.x = arrayBegx + arrayOffset
+		self.nameText = graphics.Text(graphics.Point(arrayBegx/2 + arrayOffset/2, self.y + arrayElementHeight/2)\
+			, name)
+		self.nameText.setSize(11)
+		self.nameText.draw(canvas)
+		self.size = size
+		self.array = []
+		for i in range(size):
+			self.array.append(ArrayNode(self.x + i*arrayElementWidth, self.y,""))
+		numberOfArrays += 1
+
+	def update(self, index, val):
+		self.array[index].update(val)
+		self.probe(index)
+
+	def probe(self, index):
+		#print(index)
+		self.array[index].changeColor("lightblue")
+		wait()
+		self.array[index].changeColor("gray")
+
+	def delete(self):
+		for i in range(self.size):
+			self.array[index].delete()
