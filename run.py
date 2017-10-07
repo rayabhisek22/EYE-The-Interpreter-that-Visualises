@@ -17,7 +17,8 @@ a.insert(14)
 a.erase(5)
 
 """
-
+for i in range (100):
+	wait()
 
 
 

@@ -1,9 +1,10 @@
 {
-	binarySearchTree<string>a;
-		a.insert("a");
-		a.insert("b");
-a.insert("c");
-a.erase("a");
-a.erase("b");
-a.insert("a");
+	int x=3,y=5;
+	y=x+3;
+	for (int i = 0 ; i< 2 ; i = i +1)
+	{
+		int temp = x;
+		x = y;
+		y = temp;
+	}
 }

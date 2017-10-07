@@ -1,6 +1,7 @@
 from lexer import lexer
 from parserClasses import *
 from rply import ParserGenerator
+
 import sys
 lines = []
 for line in sys.stdin:
