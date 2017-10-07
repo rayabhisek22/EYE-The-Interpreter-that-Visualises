@@ -1,5 +1,5 @@
 from Queue import Queue
-urom SinglyLinkedList import SinglyLinkedList
+from SinglyLinkedList import SinglyLinkedList
 from Stack import Stack
 from headersForDataStructures import wait
 from BinarySearchTree import BinarySearchTree
