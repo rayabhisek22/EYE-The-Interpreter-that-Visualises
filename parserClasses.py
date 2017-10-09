@@ -114,6 +114,9 @@ class Array(): #variable class of array
 		self.length = length
 
 	def get(self, i):
+		if i >= self.length:
+			raise Exception("You are trying to accesss index " + str(i) + " of array " + str(self.name)\
+				+ " which is of length " + str(self.length))
 		array_dict[self.name].probe(i)
 		return self.array[i]
 
