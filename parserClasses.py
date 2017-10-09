@@ -7,6 +7,9 @@ array_dict={}
 exec_stack =ExecutionStack()
 list_variable_dict = []
 mainIndex = -1
+
+#Looks for the variable in dictionary
+
 stacky=650
 stackx=1210
 numberofstacks=0
@@ -20,6 +23,7 @@ linkedlistx=1150
 linkedlisty=150
 numberoflinkedlist=0
 
+
 def variableLookup(name, index):
 	while index >= 0:
 		if name in list_variable_dict[index]:
@@ -27,6 +31,7 @@ def variableLookup(name, index):
 		index = index - 1
 	raise Exception("Variable " + name + " not in scope")
 
+# Creates classes for basic data types which can be evaluated and updated(mainly for arrays)
 class Number():
 	def __init__(self, value):
 		self.value = value
@@ -68,6 +73,8 @@ class Variable():
 		list_variable_dict[i][self.name].update(y)
 		exec_stack.modifyData(self.name,y,len(list_variable_dict)-i-1)
 #################################################################
+
+#the executable class for assignment which contains the variable and the expression
 class Assignment():
 	def __init__(self,left,right):
 		self.left=left
@@ -76,6 +83,7 @@ class Assignment():
 	def exec(self):
 		self.left.update(self.right)
 
+#the  executable declaration for basic variables 
 class PrimitiveDeclaration():
 	def __init__(self, varName, varType, varValue):
 		self.varType=varType
@@ -89,6 +97,7 @@ class PrimitiveDeclaration():
 		list_variable_dict[mainIndex][self.varName] = self.varType(x)
 		exec_stack.addData(self.varName,x)
 
+#the executable array declarartion containing parameters like length and name
 class ArrayDeclaration():
 	def __init__(self, varName, varType, length, varValue):
 		self.varType = varType
@@ -106,6 +115,8 @@ class ArrayDeclaration():
 
 modelTypeDict = {'int':10, 'float':0.2, 'string':"as", 'bool':True}
 
+
+#initialization for our data structures
 class DataStructureDeclaration():
 	def __init__(self,className,name,vartype):
 		self.name=name
@@ -137,7 +148,7 @@ class DataStructureDeclaration():
 
 
 
-class Array(): #variable class of array
+class Array(): #variable class of array which can be probed and updated
 	def __init__(self, initClass, length,name):
 		self.name=name
 		self.array = []
@@ -156,6 +167,7 @@ class Array(): #variable class of array
 		array_dict[self.name].update(i,value)
 		self.array[i].update(value)
 
+#the basic block containing list of executable statements that can be run
 class Block():
 	def __init__(self, listExecutables):
 		self.listExecutables = listExecutables
@@ -178,6 +190,7 @@ class Block():
 		list_variable_dict.pop()
 		exec_stack.pop()
 
+#the class for for-loop containing declaration,conditions,block and updation
 class ForLoop():
 	def __init__(self, declare, express, assign, statementList):
 		self.declare = declare
@@ -195,6 +208,7 @@ class ForLoop():
 			exec_stack.deleteData(declareStatement.varName,len(list_variable_dict)-variableLookup(declareStatement.varName,mainIndex)-1)
 			del list_variable_dict[mainIndex][declareStatement.varName]
 
+#similar to for-loop having required arguements
 class WhileLoop():
 	def __init__(self, express, statementList):
 		self.express = express
@@ -204,6 +218,7 @@ class WhileLoop():
 		while self.express.eval():
 			self.statementList.exec()
 
+#class representing control flow which executes first statement whose condition is found true
 class IfStatement():
 	def __init__(self, listofConditionals):
 		self.listofConditionals = listofConditionals
@@ -214,6 +229,7 @@ class IfStatement():
 				pair[1].exec()
 				break
 
+#class for cout statement
 class CoutStatement():
 	def __init__(self, listOfExpress):
 		self.listOfExpress = listOfExpress
@@ -222,6 +238,7 @@ class CoutStatement():
 		for expresses in self.listOfExpress:
 			print(expresses.eval(), end='')
 #########################################################
+#class for basic datatypes
 class Int(PrimitiveDT):
 	def __init__(self, value=0):
 		self.value = value
@@ -246,6 +263,7 @@ class Bool(PrimitiveDT):
 	def giveType():
 		return bool
 ######################################################
+#class for binary operator containg operands and the relevant function
 class BinaryOp():
 	def __init__(self, operator, left, right):
 		self.operator = operator
@@ -257,7 +275,7 @@ class BinaryOp():
 
 	def getOperator(self):
 		return self.operator
-
+#functions for binary-ops
 def myAdd(x, y):
 	return x + y
 
@@ -298,7 +316,7 @@ def myIsNotEqual(x, y):
 	return x != y
 
 ###############################################################
-
+#class for unary op with function and operand
 class UnaryOp():
 	def __init__(self, operator, operand):
 		self.operator = operator
@@ -402,8 +420,11 @@ class Member_function():
 		self.name = reqData[0]
 		self.functname = reqData[1]
 
+	def eval(self):
+		return getattr(list_variable_dict[variableLookup(self.name,mainIndex)][self.name], self.functname)()
+
 	def exec(self):
-		getattr(list_variable_dict[variableLookup(self.name,mainIndex)][self.name], self.functname)()
+		self.eval()
 
 class Multiple_member_function():
 	def __init__(self,reqData):
