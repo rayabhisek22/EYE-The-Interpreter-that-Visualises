@@ -15,8 +15,9 @@ parser = ParserGenerator(
     'COMMA','SEMICOLON','PLUS','MINUS','MUL','DIV','OR','AND','MOD','NOT','LESSEQUAL','GREATEREQUAL',
     'LESS','GREATER','EQUAL','ISEQUAL','NOTEQUAL','OPEN_PARENS','CLOSE_PARENS','OPEN_BRACES','CLOSE_BRACES',
     'OPEN_SQUARE','CLOSE_SQUARE','keyINT','keyINT','keyINT','keyINT','keyINT','keyINT','keyFLOAT','keyFLOAT',
-    'keySTRING','keyBOOL','FLOAT','INT','STRING','CHAR','BOOL','VARIABLE', 'keyIF', 'keyFOR', 'keyWHILE',
-    'keyELSE', 'keyELIF', 'keyCIN', 'keyCOUT', 'CINOPER', 'COUTOPER', 'ENDL','LINKEDLIST', 'DOT','STACK','QUEUE','BST'
+    'keySTRING','keyBOOL','FLOAT','INT','STRING','BOOL','VARIABLE', 'keyIF', 'keyFOR', 'keyWHILE',
+    'keyELSE', 'keyELIF', 'keyCOUT', 'COUTOPER', 'ENDL','LINKEDLIST', 'DOT','STACK','QUEUE',
+    'BST', 'MAIN'
     ],
     # A list of precedence rules with ascending precedence, to
     # disambiguate ambiguous production rules.
@@ -60,9 +61,9 @@ def second(p):
  												#START POINT OF PARSER
 
 # all parser rules for main
-@parser.production('main : block') #block for now... will change it as we proceed
+@parser.production('main : MAIN block') #block for now... will change it as we proceed
 def main_p(argList):
-	return argList[0]
+	return argList[1]
 
 #########################################################################################################################
 
@@ -416,31 +417,31 @@ def simplex_to_expression(argList):
 #########################################################################################################################
 # all parser rules for Simple Expression
 
-@parser.production('simplex :  PLUS term PLUS simplex')
+@parser.production('simplex :  PLUS simplex PLUS term')
 def plus_term_plus_term_to_simplex(argList):
 	return BinaryOp(myAdd, UnaryOp(myPlus, argList[1]), argList[3])
 
-@parser.production('simplex :  PLUS term MINUS simplex')
+@parser.production('simplex :  PLUS simplex MINUS term')
 def plus_term_plus_term_to_simplex(argList):
 	return BinaryOp(mySub, UnaryOp(myPlus, argList[1]), argList[3])
 
-@parser.production('simplex :  MINUS term PLUS simplex')
+@parser.production('simplex :  MINUS simplex PLUS term')
 def plus_term_plus_term_to_simplex(argList):
 	return BinaryOp(myAdd, UnaryOp(myMinus, argList[1]), argList[3])
 
-@parser.production('simplex :  MINUS term MINUS simplex')
+@parser.production('simplex :  MINUS simplex MINUS term')
 def plus_term_plus_term_to_simplex(argList):
 	return BinaryOp(mySub, UnaryOp(myMinus, argList[1]), argList[3])
 	
-@parser.production('simplex : term PLUS simplex')
+@parser.production('simplex : simplex PLUS term')
 def plus_term_plus_term_to_simplex(argList):
 	return BinaryOp(myAdd, argList[0], argList[2])
 
-@parser.production('simplex : term MINUS simplex')
+@parser.production('simplex : simplex MINUS term')
 def plus_term_plus_term_to_simplex(argList):
 	return BinaryOp(mySub, argList[0], argList[2])
 
-@parser.production('simplex :  term OR simplex')
+@parser.production('simplex :  simplex OR term')
 def plus_term_plus_term_to_simplex(argList):
 	return BinaryOp(myOr, argList[0], argList[2])
 
@@ -459,19 +460,19 @@ def plus_term_to_simplex(argList):
 #########################################################################################################################
 # all parser rules for term
 
-@parser.production('term : factor MUL term')
-@parser.production('term : factor DIV term')
+@parser.production('term : term MUL factor')
+@parser.production('term : term DIV factor')
 def factor_mul_to_term(argList):
 	if argList[1].getstr() == '*':
 		return BinaryOp(myMult, argList[0], argList[2])
 	else:
 		return BinaryOp(myDiv, argList[0], argList[2])
 
-@parser.production('term : factor MOD term')
+@parser.production('term : term MOD factor')
 def factor_mod_to_term(argList):
 	return BinaryOp(myMod, argList[0], argList[2])
 
-@parser.production('term : factor AND term')
+@parser.production('term : term AND factor')
 def factor_and_to_term(argList):
 	return BinaryOp(myAnd, argList[0], argList[2])
 

@@ -17,7 +17,7 @@ canvas = graphics.GraphWin("My Interpreter", 1300, 1000)
 boxLength = 20
 circleRadius = 15
 arrowLength = 10
-headerPoint = graphics.Point(650, 50)#point where current action will be displayed
+headerPoint = graphics.Point(650, 20)#point where current action will be displayed
 headerText = graphics.Text(headerPoint, "")#header text
 
 def wait():

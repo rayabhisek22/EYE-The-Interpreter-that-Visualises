@@ -17,8 +17,6 @@ a.insert(14)
 a.erase(5)
 
 """
-for i in range (100):
-	wait()
 
 
 
@@ -47,15 +45,15 @@ a.pop()
 a.pop()
 """
 a = SinglyLinkedList(1000, 100, 10, "pp")
-# a.insert(0,9)
-# a.insert(0,10)
-# a.insert(0,13)
-# a.insert(0, 20)
-# print (a.get(10))
-# #print(a.indexOf(20))
-# a.erase(9)
-# a.insert(2, 1)
-# b = input()
+a.insert(0,9)
+a.insert(0,10)
+a.insert(0,13)
+a.insert(0, 20)
+print (a.get(10))
+#print(a.indexOf(20))
+a.erase(9)
+a.insert(2, 1)
+b = input()
 
-# for i in range(100):
-# 	wait()
+for i in range(100):
+	wait()

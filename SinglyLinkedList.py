@@ -1,6 +1,13 @@
 from headersForDataStructures import *
 ##################################################################################################################
 
+def drawHeader():
+	try:
+		headerText.draw(canvas)
+	except:
+		headerText.undraw()
+		headerText.draw(canvas)
+
 class SinglyLinkedListNode:
 	#data and next is stored
 	def __init__(self, val, x1, y1, nxt):
@@ -79,11 +86,13 @@ class SinglyLinkedList:
 		self.startingPoint = graphics.Point(x, y)
 		self.baseRectangle = graphics.Rectangle(graphics.Point(x,y), graphics.Point(x + 2*boxLength,\
 		 y + boxLength))
-		self.baseText = graphics.Text(graphics.Point(x + boxLength, y + boxLength/2), "NULL")
+		self.baseText = graphics.Text(graphics.Point(x + boxLength, y + boxLength/2), "HEAD")
 		self.baseText.setSize(11)
 		self.baseRectangle.setFill("green")
 		self.baseRectangle.draw(canvas)
 		self.baseText.draw(canvas)
+		self.nameText = graphics.Text(graphics.Point(x + 70, y + boxLength/2), "List " + self.name)
+		self.nameText.draw(canvas)
 		wait()
 
 	def size(self):
@@ -94,7 +103,7 @@ class SinglyLinkedList:
 
 	def push(self, val):
 		headerText.setText("Inserting " + str(val) + " at index 0 in the singly linked list " + self.name)
-		headerText.draw(canvas)
+		drawHeader()
 		if type(val) == self.type:
 			wait()
 			temp = SinglyLinkedListNode(val, self.startingPoint.x + arrowLength - 2*boxLength- \
@@ -121,7 +130,7 @@ class SinglyLinkedList:
 
 	def get(self, val):#returns None is not found, else returns the node.
 		headerText.setText("get(" + str(val) + ") in singly linked list " + self.name)
-		headerText.draw(canvas)
+		drawHeader()
 		temp = self.head
 		if (temp == None):
 			self.changeBaseRectangleColor("light blue")
@@ -149,7 +158,7 @@ class SinglyLinkedList:
 
 	def indexOf(self, val):#returns -1 if not found
 		headerText.setText("indexOf(" + str(val) + ") in singly linked list " + self.name)
-		headerText.draw(canvas)
+		drawHeader()
 		temp = self.head
 		if (temp == None):
 			self.changeBaseRectangleColor("light blue")
@@ -187,12 +196,12 @@ class SinglyLinkedList:
 	def erase(self, val):
 		headerText.setText("erase(" + str(val) + ") in a singly linked list " + self.name)
 		time.sleep(1)
-		headerText.draw(canvas)
+		drawHeader()
 		target = self.find(val)
 		if target == None:
 			headerText.undraw()
 			headerText.setText(str(val) + " not in the singly linked list " + self.name + " => do nothing")
-			headerText.draw()
+			drawHeader()
 			wait()
 			headerText.undraw()
 			return
@@ -220,7 +229,7 @@ class SinglyLinkedList:
 			return
 		ogIndex = index
 		headerText.setText("Inserting " + str(val) + " at index " + str(index) + " in the singly linked list "+self.name)
-		headerText.draw(canvas)
+		drawHeader()
 		wait()
 		temp = self.head
 		self.size += 1

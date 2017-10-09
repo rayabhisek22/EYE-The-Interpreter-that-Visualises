@@ -2,6 +2,13 @@ from headersForDataStructures import *
 #######################################################################################################################
 # 															QUEUE
 
+def drawHeader():
+	try:
+		headerText.draw(canvas)
+	except:
+		headerText.undraw()
+		headerText.draw(canvas)
+
 class QueueNode:
 	def __init__(self, x, y, val, nxt):
 		self.data = val
@@ -41,13 +48,16 @@ class QueueNode:
 class Queue:
 	def __init__(self, x, y, modelType, name): # modelType is an object of the type that is to be stored in the 
 	#stack...to check and raise errors at appropriate times
+		self.startingPoint = graphics.Point(x, y)
+		self.nameText = graphics.Text(graphics.Point(self.startingPoint.x + 65, self.startingPoint.y\
+			), name)
+		self.nameText.draw(canvas)
 		self.name = name
 		self.type = type(modelType)
 		self.head = None
 		self.tail = None
 		self.size = 0
-		self.startingPoint = graphics.Point(x, y)
-		self.text = graphics.Text(graphics.Point(self.startingPoint.x + 25, self.startingPoint.y), "FRONT")
+		self.text = graphics.Text(graphics.Point(self.startingPoint.x + 25, self.startingPoint.y), "QUEUE")
 		self.text.setSize(10)
 		self.text.draw(canvas)
 
@@ -60,7 +70,7 @@ class Queue:
 	def pushBack(self, val):
 		#push to the end of the queue
 		headerText.setText("Pushing " + str(val) + " to the back of the queue " + self.name)
-		headerText.draw(canvas)
+		drawHeader()
 		if self.type == type(val):
 			temp = QueueNode(self.startingPoint.x - self.size*(2*circleRadius + arrowLength) - circleRadius - arrowLength\
 			, self.startingPoint.y, val, self.head)
@@ -80,7 +90,7 @@ class Queue:
 	def pushFront(self, val):
 		#push to the front of the queue
 		headerText.setText("Pushing " + str(val) + " to the front of the queue " + self.name)
-		headerText.draw(canvas)
+		drawHeader()
 		if self.type == type(val) and self.size > 0:
 			current = self.head
 			while current != None:
@@ -108,7 +118,7 @@ class Queue:
 	def front(self):
 		#return the element at the front of the queue, if queue is empty then raise an error
 		headerText.setText("Access the element at the beginning of the queue " + self.name)
-		headerText.draw(canvas)
+		drawHeader()
 		if self.size == 0:
 			wait()
 			headerText.undraw()
@@ -123,7 +133,7 @@ class Queue:
 	def back(self):
 		#return the element at the end of the queue, if queue is empty then raise an error
 		headerText.setText("Access the element at the end of the queue " + self.name)
-		headerText.draw(canvas)
+		drawHeader()
 		if self.size == 0:
 			wait()
 			headerText.undraw()
@@ -138,7 +148,7 @@ class Queue:
 	def popFront(self):
 		#pop the element at the front of the queue, if queue is empty, then raise an error:
 		headerText.setText("Pop the element at the front of the queue " + self.name)
-		headerText.draw(canvas)
+		drawHeader()
 		if self.size == 0:
 			wait()
 			headerText.undraw()
@@ -165,7 +175,7 @@ class Queue:
 	def popBack(self):
 		#pop the element at the back of the queue, if the queue is empty, then raise an error:
 		headerText.setText("Pop the element at the back of the queue " + self.name)
-		headerText.draw(canvas)
+		drawHeader()
 		if self.size == 0:
 			wait()
 			headerText.undraw()
