@@ -16,7 +16,8 @@ parser = ParserGenerator(
     'LESS','GREATER','EQUAL','ISEQUAL','NOTEQUAL','OPEN_PARENS','CLOSE_PARENS','OPEN_BRACES','CLOSE_BRACES',
     'OPEN_SQUARE','CLOSE_SQUARE','keyINT','keyINT','keyINT','keyINT','keyINT','keyINT','keyFLOAT','keyFLOAT',
     'keySTRING','keyBOOL','FLOAT','INT','STRING','CHAR','BOOL','VARIABLE', 'keyIF', 'keyFOR', 'keyWHILE',
-    'keyELSE', 'keyELIF', 'keyCIN', 'keyCOUT', 'CINOPER', 'COUTOPER', 'ENDL','LINKEDLIST', 'DOT','STACK','QUEUE','BST'
+    'keyELSE', 'keyELIF', 'keyCIN', 'keyCOUT', 'CINOPER', 'COUTOPER', 'ENDL','LINKEDLIST', 'DOT','STACK','QUEUE',
+    'BST', 'MAIN'
     ],
     # A list of precedence rules with ascending precedence, to
     # disambiguate ambiguous production rules.
@@ -60,9 +61,9 @@ def second(p):
  												#START POINT OF PARSER
 
 # all parser rules for main
-@parser.production('main : block') #block for now... will change it as we proceed
+@parser.production('main : MAIN block') #block for now... will change it as we proceed
 def main_p(argList):
-	return argList[0]
+	return argList[1]
 
 #########################################################################################################################
 
