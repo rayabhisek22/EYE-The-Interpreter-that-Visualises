@@ -34,6 +34,11 @@ class Node:
 			self.data[element] = graphics.Text(graphics.Point(self.x + nodeWidth/2, self.y + textHeight/2 + \
 				len(self.data)*textHeight), str(element) + " = " + str(dictionary[element]))
 
+	def addGlobal(self):
+		self.data["global"] = graphics.Text(graphics.Point(self.x + nodeWidth/2, self.y + textHeight/2 + \
+				len(self.data)*textHeight), str("GLOBAL VARIABLES"))
+		self.data["global"].draw(canvas)
+
 	def showDictionary(self):
 		for element in self.data:
 			self.data[element].draw(canvas)
@@ -65,6 +70,7 @@ class Node:
 class ExecutionStack:
 	def __init__(self):
 		self.head = Node(bottomx, bottomy, None)
+		self.head.addGlobal()
 		self.size = 1
 
 	def push(self, dictionary):

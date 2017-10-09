@@ -19,4 +19,3 @@ main_program {
 	li.erase(li.top());
     }
 }
-

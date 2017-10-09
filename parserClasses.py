@@ -8,6 +8,22 @@ exec_stack =ExecutionStack()
 list_variable_dict = []
 mainIndex = -1
 
+#Looks for the variable in dictionary
+
+stacky=650
+stackx=1210
+numberofstacks=0
+queuex=1150
+queuey=300
+numberofqueues=0
+stackwidth=70
+queueheight=40
+linkedlistheight=40
+linkedlistx=1150
+linkedlisty=150
+numberoflinkedlist=0
+
+
 def variableLookup(name, index):
 	while index >= 0:
 		if name in list_variable_dict[index]:
@@ -15,6 +31,7 @@ def variableLookup(name, index):
 		index = index - 1
 	raise Exception("Variable " + name + " not in scope")
 
+# Creates classes for basic data types which can be evaluated and updated(mainly for arrays)
 class Number():
 	def __init__(self, value):
 		self.value = value
@@ -56,6 +73,8 @@ class Variable():
 		list_variable_dict[i][self.name].update(y)
 		exec_stack.modifyData(self.name,y,len(list_variable_dict)-i-1)
 #################################################################
+
+#the executable class for assignment which contains the variable and the expression
 class Assignment():
 	def __init__(self,left,right):
 		self.left=left
@@ -64,6 +83,7 @@ class Assignment():
 	def exec(self):
 		self.left.update(self.right)
 
+#the  executable declaration for basic variables 
 class PrimitiveDeclaration():
 	def __init__(self, varName, varType, varValue):
 		self.varType=varType
@@ -77,6 +97,7 @@ class PrimitiveDeclaration():
 		list_variable_dict[mainIndex][self.varName] = self.varType(x)
 		exec_stack.addData(self.varName,x)
 
+#the executable array declarartion containing parameters like length and name
 class ArrayDeclaration():
 	def __init__(self, varName, varType, length, varValue):
 		self.varType = varType
@@ -89,10 +110,13 @@ class ArrayDeclaration():
 			raise Exception("Variable "+self.varName + " already declared")
 		x=self.length.eval()
 		array_dict[self.varName]=VisualArray(x,self.varName)
+		exec_stack.addData(self.varName,"Array")
 		list_variable_dict[mainIndex][self.varName] = Array(self.varType(self.varValue.eval()), x,self.varName)
 
 modelTypeDict = {'int':10, 'float':0.2, 'string':"as", 'bool':True}
 
+
+#initialization for our data structures
 class DataStructureDeclaration():
 	def __init__(self,className,name,vartype):
 		self.name=name
@@ -100,12 +124,31 @@ class DataStructureDeclaration():
 		self.theClass=className
 
 	def exec(self):
+		global numberoflinkedlist
+		global numberofstacks
+		global numberofqueues
 		if self.name in list_variable_dict[mainIndex]:
 			raise Exception("varialble" +self.name + "already declared")
 		else:
-			list_variable_dict[mainIndex][self.name]=self.theClass(1000, 100, modelTypeDict[self.vartype], self.name)
+			if self.theClass==Stack:
+				list_variable_dict[mainIndex][self.name]=self.theClass(stackx-numberofstacks*stackwidth,\
+				 stacky, modelTypeDict[self.vartype], self.name)
+				exec_stack.addData(self.name,"Stack")
+				numberofstacks=numberofstacks+1
+			elif self.theClass==Queue:
+				list_variable_dict[mainIndex][self.name]=self.theClass(queuex,\
+				 queuey+numberofqueues*queueheight, modelTypeDict[self.vartype], self.name)
+				exec_stack.addData(self.name,"Queue")
+				numberofqueues=numberofqueues+1
+			elif self.theClass==SinglyLinkedList:
+				list_variable_dict[mainIndex][self.name]=self.theClass(linkedlistx,\
+				 linkedlisty+numberoflinkedlist*linkedlistheight, modelTypeDict[self.vartype], self.name)
+				exec_stack.addData(self.name,"LinkedList")
+				numberoflinkedlist=numberoflinkedlist+1
 
-class Array(): #variable class of array
+
+
+class Array(): #variable class of array which can be probed and updated
 	def __init__(self, initClass, length,name):
 		self.name=name
 		self.array = []
@@ -124,6 +167,7 @@ class Array(): #variable class of array
 		array_dict[self.name].update(i,value)
 		self.array[i].update(value)
 
+#the basic 
 class Block():
 	def __init__(self, listExecutables):
 		self.listExecutables = listExecutables

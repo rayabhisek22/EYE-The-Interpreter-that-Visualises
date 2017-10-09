@@ -23,7 +23,7 @@ headerText = graphics.Text(headerPoint, "")#header text
 def wait():
 	#define how to wait...sleep or mouse click or something else
 	#canvas.getMouse()
-	time.sleep(0.2)
+	time.sleep(1)
 
 class rightArrow:
 	def __init__(self, x, y):

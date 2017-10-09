@@ -35,6 +35,8 @@ class StackNode:
 class Stack:
 	def __init__(self, x, y, modelType, name): # modelType is an object of the type that is to be stored in the 
 	#stack...to check and raise errors at appropriate times
+		self.nameText = graphics.Text(graphics.Point(x + 3*boxLength/2, y + boxLength), name)
+		self.nameText.draw(canvas)
 		self.name = name
 		self.type = type(modelType)
 		self.head = None

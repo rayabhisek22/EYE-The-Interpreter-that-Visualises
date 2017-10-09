@@ -48,13 +48,16 @@ class QueueNode:
 class Queue:
 	def __init__(self, x, y, modelType, name): # modelType is an object of the type that is to be stored in the 
 	#stack...to check and raise errors at appropriate times
+		self.startingPoint = graphics.Point(x, y)
+		self.nameText = graphics.Text(graphics.Point(self.startingPoint.x + 65, self.startingPoint.y\
+			), name)
+		self.nameText.draw(canvas)
 		self.name = name
 		self.type = type(modelType)
 		self.head = None
 		self.tail = None
 		self.size = 0
-		self.startingPoint = graphics.Point(x, y)
-		self.text = graphics.Text(graphics.Point(self.startingPoint.x + 25, self.startingPoint.y), "FRONT")
+		self.text = graphics.Text(graphics.Point(self.startingPoint.x + 25, self.startingPoint.y), "QUEUE")
 		self.text.setSize(10)
 		self.text.draw(canvas)
 
