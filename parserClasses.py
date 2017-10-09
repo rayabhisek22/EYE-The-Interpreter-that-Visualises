@@ -370,8 +370,11 @@ class Member_function():
 		self.name = reqData[0]
 		self.functname = reqData[1]
 
+	def eval(self):
+		return getattr(list_variable_dict[variableLookup(self.name,mainIndex)][self.name], self.functname)()
+
 	def exec(self):
-		getattr(list_variable_dict[variableLookup(self.name,mainIndex)][self.name], self.functname)()
+		self.eval()
 
 class Multiple_member_function():
 	def __init__(self,reqData):

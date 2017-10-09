@@ -1,23 +1,22 @@
 main_program {
-int n=5;
-stack<string> s;
-	int a[n];
-	for (int i = 0 ; i < n ; i = i +1)
-	{
-		a[i] = (8*(i+1))%17;
-	}
-	for(int i=0;i<n;i=i+1)
-	{
-		for(int j=0;j<2*n-i-1;j=j+1)
-		{
-		cout<<j<<" "<<n-i-1<<endl;
-			if(a[j]>a[j+1])
-			{
-
-				int temp=a[j+1];
-				a[j+1]=a[j];
-				a[j]=temp;
-			}
-		}
-	}
+    int length = 5;
+    stack<int> st, st1;
+    queue<int> qu,qu1;
+    linkedList<int> li, li1;
+    for (int i = 0; i < length; i = i + 1)
+    {
+	st.push(i);
+	qu.pushFront(i);
+	li.push(i);
+    }
+    for (int i = 0; i < length; i = i + 1)
+    {
+	st1.push(st.top());
+	st.pop();
+	qu1.push(qu.front());
+	qu.popFront();
+	li1.push(li.top());
+	li.erase(li.top());
+    }
 }
+

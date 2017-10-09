@@ -132,12 +132,9 @@ def if_only(argList):
 @parser.production('statement : output-stream SEMICOLON')
 def output_stream(argList):
 	return [CoutStatement(argList[0])]
-@parser.production('statement : class-functions SEMICOLON')
+@parser.production('statement : class-functions-object SEMICOLON')
 def make_exec(argList):
-	if len(argList[0])==2:
-		return [Member_function(argList[0])]
-	else:
-		return [Multiple_member_function(argList[0])]
+	return [argList[0]]
 
 
 #########################################################################################################################
@@ -145,6 +142,12 @@ def make_exec(argList):
  												#BLOCKS AND STATEMENTS ENDS
 
 #########################################################################################################################
+@parser.production('class-functions-object : class-functions')
+def class_function_to_object(argList):
+	if len(argList[0])==2:
+		return Member_function(argList[0])
+	else:
+		return Multiple_member_function(argList[0])
 
 @parser.production('class-functions : VARIABLE DOT VARIABLE OPEN_PARENS CLOSE_PARENS')
 def function_call(argList):
@@ -373,7 +376,6 @@ def default_assign_without_value(argList):
 #########################################################################################################################
 #########################################################################################################################
 # all parser rules for assignment
-
 @parser.production('assignment : variable EQUAL expression')
 def assign_variable(argList):
 	#if argList[0]
@@ -398,7 +400,9 @@ def assign_variable(argList):
 
 #########################################################################################################################
 # all parser rules for Expression
-
+@parser.production('expression : class-functions-object')
+def classFuncobject_to_expression(argList):
+	return argList[0]
 @parser.production('expression : simplex ISEQUAL simplex')
 @parser.production('expression : simplex LESS simplex')
 @parser.production('expression : simplex LESSEQUAL simplex')
