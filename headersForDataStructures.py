@@ -19,6 +19,7 @@ circleRadius = 15
 arrowLength = 10
 headerPoint = graphics.Point(650, 20)#point where current action will be displayed
 headerText = graphics.Text(headerPoint, "")#header text
+headerText.setSize(15)
 
 def wait():
 	#define how to wait...sleep or mouse click or something else

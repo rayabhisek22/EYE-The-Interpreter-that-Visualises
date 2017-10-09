@@ -142,6 +142,7 @@ class BinarySearchTree:
 				else:
 					node.right = BinaryTreeNode(None, None, val, node.location.x + displacementAtLevel(self.height,\
 						level), node.location.y + verticalGap)
+					self.redraw()
 			elif node.data < val and node.right != None:
 				self.searchAdd(node.right, val, level + 1)
 			elif node.data > val and node.left == None:
@@ -331,3 +332,11 @@ class BinarySearchTree:
 				self.searchDelete(self.root, val)
 				headerText.undraw()
 				return
+
+
+# bst =BinarySearchTree(500, 100, 10, "asa")
+# bst.insert(0)
+# bst.insert(3)
+# bst.insert(1)
+# bst.insert(4)
+# bst.insert(2)
