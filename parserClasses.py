@@ -22,6 +22,8 @@ linkedlistheight=40
 linkedlistx=1150
 linkedlisty=150
 numberoflinkedlist=0
+treex=1100
+treey=80
 
 
 def variableLookup(name, index):
@@ -145,7 +147,10 @@ class DataStructureDeclaration():
 				 linkedlisty+numberoflinkedlist*linkedlistheight, modelTypeDict[self.vartype], self.name)
 				exec_stack.addData(self.name,"LinkedList")
 				numberoflinkedlist=numberoflinkedlist+1
-
+			elif self.theClass==BinarySearchTree:
+				list_variable_dict[mainIndex][self.name]=self.theClass(treex,\
+				 treey, modelTypeDict[self.vartype], self.name)
+				exec_stack.addData(self.name,"BST")
 
 
 class Array(): #variable class of array which can be probed and updated
