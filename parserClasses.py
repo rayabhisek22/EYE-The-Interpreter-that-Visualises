@@ -7,6 +7,18 @@ array_dict={}
 exec_stack =ExecutionStack()
 list_variable_dict = []
 mainIndex = -1
+stacky=650
+stackx=1210
+numberofstacks=0
+queuex=1150
+queuey=300
+numberofqueues=0
+stackwidth=70
+queueheight=40
+linkedlistheight=40
+linkedlistx=1150
+linkedlisty=150
+numberoflinkedlist=0
 
 def variableLookup(name, index):
 	while index >= 0:
@@ -89,6 +101,7 @@ class ArrayDeclaration():
 			raise Exception("Variable "+self.varName + " already declared")
 		x=self.length.eval()
 		array_dict[self.varName]=VisualArray(x,self.varName)
+		exec_stack.addData(self.varName,"Array")
 		list_variable_dict[mainIndex][self.varName] = Array(self.varType(self.varValue.eval()), x,self.varName)
 
 modelTypeDict = {'int':10, 'float':0.2, 'string':"as", 'bool':True}
@@ -100,10 +113,29 @@ class DataStructureDeclaration():
 		self.theClass=className
 
 	def exec(self):
+		global numberoflinkedlist
+		global numberofstacks
+		global numberofqueues
 		if self.name in list_variable_dict[mainIndex]:
 			raise Exception("varialble" +self.name + "already declared")
 		else:
-			list_variable_dict[mainIndex][self.name]=self.theClass(1000, 100, modelTypeDict[self.vartype], self.name)
+			if self.theClass==Stack:
+				list_variable_dict[mainIndex][self.name]=self.theClass(stackx-numberofstacks*stackwidth,\
+				 stacky, modelTypeDict[self.vartype], self.name)
+				exec_stack.addData(self.name,"Stack")
+				numberofstacks=numberofstacks+1
+			elif self.theClass==Queue:
+				list_variable_dict[mainIndex][self.name]=self.theClass(queuex,\
+				 queuey+numberofqueues*queueheight, modelTypeDict[self.vartype], self.name)
+				exec_stack.addData(self.name,"Queue")
+				numberofqueues=numberofqueues+1
+			elif self.theClass==SinglyLinkedList:
+				list_variable_dict[mainIndex][self.name]=self.theClass(linkedlistx,\
+				 linkedlisty+numberoflinkedlist*linkedlistheight, modelTypeDict[self.vartype], self.name)
+				exec_stack.addData(self.name,"LinkedList")
+				numberoflinkedlist=numberoflinkedlist+1
+
+
 
 class Array(): #variable class of array
 	def __init__(self, initClass, length,name):

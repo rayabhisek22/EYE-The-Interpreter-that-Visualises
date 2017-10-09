@@ -86,11 +86,13 @@ class SinglyLinkedList:
 		self.startingPoint = graphics.Point(x, y)
 		self.baseRectangle = graphics.Rectangle(graphics.Point(x,y), graphics.Point(x + 2*boxLength,\
 		 y + boxLength))
-		self.baseText = graphics.Text(graphics.Point(x + boxLength, y + boxLength/2), "NULL")
+		self.baseText = graphics.Text(graphics.Point(x + boxLength, y + boxLength/2), "HEAD")
 		self.baseText.setSize(11)
 		self.baseRectangle.setFill("green")
 		self.baseRectangle.draw(canvas)
 		self.baseText.draw(canvas)
+		self.nameText = graphics.Text(graphics.Point(x + 70, y + boxLength/2), "List " + self.name)
+		self.nameText.draw(canvas)
 		wait()
 
 	def size(self):

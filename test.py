@@ -1,22 +1,22 @@
 main_program {
-int n=5;
-	int a[n];
-	for (int i = 0 ; i < n ; i = i +1)
-	{
-		a[i] = (8*(i+1))%17;
-	}
-	for(int i=0;i<n;i=i+1)
-	{
-		for(int j=0;j<n-i-1;j=j+1)
-		{
-		cout<<j<<" "<<n-i-1<<endl;
-			if(a[j]>a[j+1])
-			{
+linkedList<int> x;
+linkedList<int> y;
+x.push(12);
+x.push(23);
+x.push(13);
+y.push(12);
 
-				int temp=a[j+1];
-				a[j+1]=a[j];
-				a[j]=temp;
-			}
-		}
-	}
+stack<int> a;
+stack<int>b;
+a.push(12);
+a.push(20);
+a.pop();
+b.push(30);
+
+queue<int> st;
+queue<int> st2;
+st.pushFront(12);
+st.pushFront(20);
+st.popBack();
+st2.pushFront(30);
 }
