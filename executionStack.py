@@ -13,6 +13,13 @@ arrayBegx=20
 numberOfArrays=0
 arrayOffset = 50
 
+def drawHeader():
+	try:
+		headerText.draw(canvas)
+	except:
+		headerText.undraw()
+		headerText.draw(canvas)
+
 class Node:
 	def __init__(self, x, y, nxt):
 		self.x = x
@@ -61,6 +68,8 @@ class ExecutionStack:
 		self.size = 1
 
 	def push(self, dictionary):
+		headerText.setText("Creating a new activation frame")
+		drawHeader()
 		temp = self.head
 		self.head = Node(bottomx, bottomy - self.size*nodeHeight, temp)
 		self.size += 1
@@ -68,9 +77,13 @@ class ExecutionStack:
 		self.head.showDictionary()
 
 	def addData(self, key, val):
+		headerText.setText("Creating variable " + str(key) + " with initial value " + str(val))
+		drawHeader()
 		self.head.addData(key, val)
 
 	def modifyData(self, key, val, index):
+		headerText.setText("Assigning value " + str(val) + " to variable " + str(key))
+		drawHeader()
 		temp = self.head
 		while (index > 0):
 			temp = temp.next
@@ -86,6 +99,8 @@ class ExecutionStack:
 
 
 	def pop(self):
+		headerText.setText("Deleting the activation frame at the top of the stack")
+		drawHeader()
 		temp = self.head
 		self.size -= 1
 		self.head = self.head.next
@@ -144,11 +159,14 @@ class VisualArray:
 		numberOfArrays += 1
 
 	def update(self, index, val):
+		headerText.setText("Updating the value of " + self.name + "["  + str(index) + "]")
+		drawHeader()
 		self.array[index].update(val)
 		self.probe(index)
 
 	def probe(self, index):
-		#print(index)
+		headerText.setText("Accessing the value of " + self.name + "["  + str(index) + "]")
+		drawHeader()
 		self.array[index].changeColor("lightblue")
 		wait()
 		self.array[index].changeColor("gray")
