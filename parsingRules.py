@@ -15,8 +15,8 @@ parser = ParserGenerator(
     'COMMA','SEMICOLON','PLUS','MINUS','MUL','DIV','OR','AND','MOD','NOT','LESSEQUAL','GREATEREQUAL',
     'LESS','GREATER','EQUAL','ISEQUAL','NOTEQUAL','OPEN_PARENS','CLOSE_PARENS','OPEN_BRACES','CLOSE_BRACES',
     'OPEN_SQUARE','CLOSE_SQUARE','keyINT','keyINT','keyINT','keyINT','keyINT','keyINT','keyFLOAT','keyFLOAT',
-    'keySTRING','keyBOOL','FLOAT','INT','STRING','CHAR','BOOL','VARIABLE', 'keyIF', 'keyFOR', 'keyWHILE',
-    'keyELSE', 'keyELIF', 'keyCIN', 'keyCOUT', 'CINOPER', 'COUTOPER', 'ENDL','LINKEDLIST', 'DOT','STACK','QUEUE',
+    'keySTRING','keyBOOL','FLOAT','INT','STRING','BOOL','VARIABLE', 'keyIF', 'keyFOR', 'keyWHILE',
+    'keyELSE', 'keyELIF', 'keyCOUT', 'COUTOPER', 'ENDL','LINKEDLIST', 'DOT','STACK','QUEUE',
     'BST', 'MAIN'
     ],
     # A list of precedence rules with ascending precedence, to
