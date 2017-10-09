@@ -1,8 +1,6 @@
 escaped characters in strings
 
-Erros in eval functions
-
-precedence order is not added for now
+Erros in eval functions (mostly solved)
 
 multi dimensional array are not included for now
 
@@ -12,7 +10,7 @@ error messages in general (array indice out of range)
 
 for loop with assignments in place of declaration and missing statements
 
-___Extras__
+__Extras__
 ++ and -- operators
 
 array initializations
