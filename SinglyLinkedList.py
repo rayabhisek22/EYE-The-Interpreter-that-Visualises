@@ -86,7 +86,7 @@ class SinglyLinkedList:
 		self.startingPoint = graphics.Point(x, y)
 		self.baseRectangle = graphics.Rectangle(graphics.Point(x,y), graphics.Point(x + 2*boxLength,\
 		 y + boxLength))
-		self.baseText = graphics.Text(graphics.Point(x + boxLength, y + boxLength/2), "HEAD")
+		self.baseText = graphics.Text(graphics.Point(x + boxLength, y + boxLength/2), "TAIl")
 		self.baseText.setSize(11)
 		self.baseRectangle.setFill("green")
 		self.baseRectangle.draw(canvas)
@@ -195,7 +195,7 @@ class SinglyLinkedList:
 
 	def erase(self, val):
 		headerText.setText("erase(" + str(val) + ") in a singly linked list " + self.name)
-		time.sleep(1)
+		wait()
 		drawHeader()
 		target = self.find(val)
 		if target == None:
@@ -215,7 +215,24 @@ class SinglyLinkedList:
 			temp.delete()
 			headerText.undraw()
 			self.size -= 1
+			if target == self.head:
+				self.head = self.head.next
 			return 
+
+	def pop(self):
+		if self.size == 0:
+			raise Exception("You are trying to pop from the empty list: " + self.name)
+		else:
+			headerText.setText("Popping the first element of the list: " + self.name)
+			wait()
+			drawHeader()
+			self.head.changeColor("red")
+			wait()
+			temp = self.head.next
+			temp = self.head
+			self.head = temp.next
+			self.size -= 1
+			temp.delete()		
 
 	def insert(self, index, val):
 		if (index > self.size):
@@ -244,3 +261,5 @@ class SinglyLinkedList:
 		wait()
 		headerText.undraw()
 		return
+
+		
