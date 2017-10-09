@@ -167,7 +167,7 @@ class Array(): #variable class of array which can be probed and updated
 		array_dict[self.name].update(i,value)
 		self.array[i].update(value)
 
-#the basic 
+#the basic block containing list of executable statements that can be run
 class Block():
 	def __init__(self, listExecutables):
 		self.listExecutables = listExecutables
@@ -190,6 +190,7 @@ class Block():
 		list_variable_dict.pop()
 		exec_stack.pop()
 
+#the class for for-loop containing declaration,conditions,block and updation
 class ForLoop():
 	def __init__(self, declare, express, assign, statementList):
 		self.declare = declare
@@ -207,6 +208,7 @@ class ForLoop():
 			exec_stack.deleteData(declareStatement.varName,len(list_variable_dict)-variableLookup(declareStatement.varName,mainIndex)-1)
 			del list_variable_dict[mainIndex][declareStatement.varName]
 
+#similar to for-loop having required arguements
 class WhileLoop():
 	def __init__(self, express, statementList):
 		self.express = express
@@ -216,6 +218,7 @@ class WhileLoop():
 		while self.express.eval():
 			self.statementList.exec()
 
+#class representing control flow which executes first statement whose condition is found true
 class IfStatement():
 	def __init__(self, listofConditionals):
 		self.listofConditionals = listofConditionals
@@ -226,6 +229,7 @@ class IfStatement():
 				pair[1].exec()
 				break
 
+#class for cout statement
 class CoutStatement():
 	def __init__(self, listOfExpress):
 		self.listOfExpress = listOfExpress
@@ -234,6 +238,7 @@ class CoutStatement():
 		for expresses in self.listOfExpress:
 			print(expresses.eval(), end='')
 #########################################################
+#class for basic datatypes
 class Int(PrimitiveDT):
 	def __init__(self, value=0):
 		self.value = value
@@ -258,6 +263,7 @@ class Bool(PrimitiveDT):
 	def giveType():
 		return bool
 ######################################################
+#class for binary operator containg operands and the relevant function
 class BinaryOp():
 	def __init__(self, operator, left, right):
 		self.operator = operator
@@ -269,7 +275,7 @@ class BinaryOp():
 
 	def getOperator(self):
 		return self.operator
-
+#functions for binary-ops
 def myAdd(x, y):
 	return x + y
 
@@ -310,7 +316,7 @@ def myIsNotEqual(x, y):
 	return x != y
 
 ###############################################################
-
+#class for unary op with function and operand
 class UnaryOp():
 	def __init__(self, operator, operand):
 		self.operator = operator
