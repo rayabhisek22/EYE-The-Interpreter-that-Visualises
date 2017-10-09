@@ -2,6 +2,13 @@ from headersForDataStructures import *##########################################
 
 #                                    STACKS
 
+def drawHeader():
+	try:
+		headerText.draw(canvas)
+	except:
+		headerText.undraw()
+		headerText.draw(canvas)
+
 class StackNode:
 	def __init__(self, x, y, val, nxt):
 		self.data = val
@@ -49,7 +56,7 @@ class Stack:
 			raise Exception("The new value: " + str(val) + " - " + str(type(val)) + " and type of values stored in \
 				the stack " + self.name + ": "+ str(self.type) + " are not of the same type")
 		headerText.setText("Pushing value " + str(val) + " into the stack " + self.name)
-		headerText.draw(canvas)
+		drawHeader()
 		wait()
 		temp = StackNode(self.startingPoint.x, self.startingPoint.y - self.size*boxLength - 3*boxLength/2, val, self.head)
 		self.head = temp
@@ -62,7 +69,7 @@ class Stack:
 		if self.size == 0:
 			raise Exception("Stack " + self.name + " is empty and you are trying to access its top element")
 		headerText.setText("Find the value at the top of the stack " + self.name)
-		headerText.draw(canvas)
+		drawHeader()
 		self.head.changeColor("blue")
 		wait()
 		self.head.changeColor("light green")
@@ -73,7 +80,7 @@ class Stack:
 		if self.size == 0:
 			raise Exception("Stack " + self.name + " is empty and you are trying to access its top element")
 		headerText.setText("Pop the element at the top of the stack " + self.name)
-		headerText.draw(canvas)
+		drawHeader()
 		self.head.changeColor("red")
 		wait()
 		temp = self.head

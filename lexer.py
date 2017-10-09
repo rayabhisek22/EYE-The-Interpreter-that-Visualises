@@ -2,6 +2,7 @@ from rply import LexerGenerator
 lg = LexerGenerator()
 lg.ignore(r'\s+')
 lg.ignore(r'\n+')
+lg.add('MAIN', r"main_program")
 lg.add('CINOPER', r">>")
 lg.add('COUTOPER', r"<<")
 lg.add('ENDL', r'endl')
