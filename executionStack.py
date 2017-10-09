@@ -4,7 +4,7 @@ from headersForDataStructures import canvas, wait, headerText
 bottomx = 20
 bottomy = 600
 nodeWidth = 600
-nodeHeight = 100
+nodeHeight = 115
 textHeight = 14
 
 arrayElementWidth = arrayElementHeight = 20
