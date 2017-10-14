@@ -3,9 +3,11 @@ from rply.token import *
 from dataStructures import *
 from executionStack import ExecutionStack, VisualArray
 
+funcDict = {}
 array_dict={}
-exec_stack =ExecutionStack()
-list_variable_dict = []
+exec_stack = ExecutionStack()
+list_variable_dict = [[{}]]
+funcIndex = 0
 mainIndex = -1
 
 #Looks for the variable in dictionary
@@ -26,13 +28,14 @@ treex=1100
 treey=80
 
 
-def variableLookup(name, index):
-	while index >= 0:
-		if name in list_variable_dict[index]:
-			return index
-		index = index - 1
-	raise Exception("Variable " + name + " not in scope")
-
+def variableLookup(name):
+	#high possiblity of a bug roaming around here
+	for i in range(len(list_variable_dict[funcIndex]) - 1, -1 , -1):
+		if name in list_variable_dict[funcIndex][i]:
+			return list_variable_dict[funcIndex][i][name]
+	if name in list_variable_dict[0][0]:
+		return list_variable_dict[0][0][name]
+	raise Exception("variable "+ name + " not found")
 # Creates classes for basic data types which can be evaluated and updated(mainly for arrays)
 class Number():
 	def __init__(self, value):
@@ -57,23 +60,22 @@ class ArrayVariable():
 		self.index = index
 
 	def eval(self):
-		return list_variable_dict[variableLookup(self.name, mainIndex)][self.name].get(self.index.eval()).eval()
+		return variableLookup(self.name).get(self.index.eval()).eval()
 
 	def update(self, value):
-		list_variable_dict[variableLookup(self.name, mainIndex)][self.name].update(self.index.eval(), value.eval())
+		variableLookup(self.name).update(self.index.eval(), value.eval())
 
 class Variable():
 	def __init__(self,name):
 		self.name=name
 
 	def eval(self):
-		return list_variable_dict[variableLookup(self.name, mainIndex)][self.name].eval()
+		return variableLookup(self.name).eval()
 
 	def update(self,obj2):
-		i=variableLookup(self.name, mainIndex)
 		y = obj2.eval()
-		list_variable_dict[i][self.name].update(y)
-		exec_stack.modifyData(self.name,y,len(list_variable_dict)-i-1)
+		variableLookup(self.name).update(y)
+		#exec_stack.modifyData(self.name,y,len(list_variable_dict[funcIndex])-i-1)
 #################################################################
 
 #the executable class for assignment which contains the variable and the expression
@@ -84,7 +86,7 @@ class Assignment():
 
 	def exec(self):
 		self.left.update(self.right)
-
+		return None
 #the  executable declaration for basic variables 
 class PrimitiveDeclaration():
 	def __init__(self, varName, varType, varValue):
@@ -93,11 +95,13 @@ class PrimitiveDeclaration():
 		self.varName = varName
 
 	def exec(self):
-		if self.varName in list_variable_dict[mainIndex]:
+		if self.varName in list_variable_dict[funcIndex][-1]:
 			raise Exception("Variable "+self.varName + " already declared")
 		x=self.varValue.eval()
-		list_variable_dict[mainIndex][self.varName] = self.varType(x)
+		currFunc = list_variable_dict[funcIndex]
+		currFunc[-1][self.varName] = self.varType(x)
 		exec_stack.addData(self.varName,x)
+		return None
 
 #the executable array declarartion containing parameters like length and name
 class ArrayDeclaration():
@@ -108,15 +112,68 @@ class ArrayDeclaration():
 		self.varName = varName
 
 	def exec(self):
-		if self.varName in list_variable_dict[mainIndex]:
+		if self.varName in list_variable_dict[funcIndex][-1]:
 			raise Exception("Variable "+self.varName + " already declared")
 		x=self.length.eval()
 		array_dict[self.varName]=VisualArray(x,self.varName)
 		exec_stack.addData(self.varName,"Array")
-		list_variable_dict[mainIndex][self.varName] = Array(self.varType(self.varValue.eval()), x,self.varName)
+		list_variable_dict[funcIndex][-1][self.varName] = Array(self.varType(self.varValue.eval()), x,self.varName)
+		return None
 
 modelTypeDict = {'int':10, 'float':0.2, 'string':"as", 'bool':True}
 
+#function declarations class
+class FuncDeclaration():
+	def __init__(self, funcName, funcParameters, executableBlock):
+		#funcName : name of function
+		#funcParameters : list of tuples containing name followed by type(class) ex. [('count', Int())]
+		#executableBlock : the block of the function
+		self.name = funcName
+		self.parameters = funcParameters
+		self.executable = executableBlock
+
+	def exec(self):
+		if self.name in funcDict:
+			raise Exception("Function " + self.name + " already declared")
+		funcDict[self.name] = FunctionClass(self.parameters, self.executable)
+		return None
+
+class FunctionClass():
+	def __init__ (self, parameters,executable):
+		self.parameters = parameters
+		self.executable = executable
+
+	def exec(self,arguements):
+		global funcIndex
+		val = []
+		for i in range(len(self.parameters)):
+			val.append(arguements[i].eval())
+		funcIndex = funcIndex + 1
+		list_variable_dict.append([{}])
+		for i in range(len(self.parameters)):  #high probability of presence of a bug here.....
+			PrimitiveDeclaration(self.parameters[i][0], self.parameters[i][1], Unknown_type(val[i])).exec()
+
+		l=len(arguements)
+		if l!=len(self.parameters):
+			raise Exception("wrong number of parameters given to the function: expected " + str(l) + " given "+ str(len(self.parameters)))
+		"""for i in range(l):
+			if arguements[i].__name__ != self.parameters.__name__:
+				raise Exception("expected " + self.parameters.__name__ + "object, given " + arguements[i].__name__)"""
+		temp = self.executable.exec()
+		funcIndex = funcIndex - 1
+		list_variable_dict.pop()
+		return temp
+		
+class FunctionCall():
+	def __init__(self,name,values):
+		self.name=name
+		self.value=values
+
+	def exec(self):
+		return funcDict[self.name].exec(self.value)
+
+	def eval(self):
+		return self.exec()
 
 #initialization for our data structures
 class DataStructureDeclaration():
@@ -129,28 +186,29 @@ class DataStructureDeclaration():
 		global numberoflinkedlist
 		global numberofstacks
 		global numberofqueues
-		if self.name in list_variable_dict[mainIndex]:
+		if self.name in list_variable_dict[funcIndex][-1]:
 			raise Exception("varialble" +self.name + "already declared")
 		else:
 			if self.theClass==Stack:
-				list_variable_dict[mainIndex][self.name]=self.theClass(stackx-numberofstacks*stackwidth,\
+				list_variable_dict[funcIndex][-1][self.name]=self.theClass(stackx-numberofstacks*stackwidth,\
 				 stacky, modelTypeDict[self.vartype], self.name)
 				exec_stack.addData(self.name,"Stack")
 				numberofstacks=numberofstacks+1
 			elif self.theClass==Queue:
-				list_variable_dict[mainIndex][self.name]=self.theClass(queuex,\
+				list_variable_dict[funcIndex][-1][self.name]=self.theClass(queuex,\
 				 queuey+numberofqueues*queueheight, modelTypeDict[self.vartype], self.name)
 				exec_stack.addData(self.name,"Queue")
 				numberofqueues=numberofqueues+1
 			elif self.theClass==SinglyLinkedList:
-				list_variable_dict[mainIndex][self.name]=self.theClass(linkedlistx,\
+				list_variable_dict[funcIndex][-1][self.name]=self.theClass(linkedlistx,\
 				 linkedlisty+numberoflinkedlist*linkedlistheight, modelTypeDict[self.vartype], self.name)
 				exec_stack.addData(self.name,"LinkedList")
 				numberoflinkedlist=numberoflinkedlist+1
 			elif self.theClass==BinarySearchTree:
-				list_variable_dict[mainIndex][self.name]=self.theClass(treex,\
+				list_variable_dict[funcIndex][-1][self.name]=self.theClass(treex,\
 				 treey, modelTypeDict[self.vartype], self.name)
 				exec_stack.addData(self.name,"BST")
+		return None
 
 
 class Array(): #variable class of array which can be probed and updated
@@ -180,8 +238,9 @@ class Block():
 	def exec(self):
 		global mainIndex, list_variable_dict
 		mainIndex = mainIndex + 1
-		list_variable_dict.append({})
+		list_variable_dict[funcIndex].append({})
 		exec_stack.push({})
+		returnType = None
 		for executable in self.listExecutables:
 			# if type(executable) is list:
 			#     if executable[0] == 'FOR':
@@ -190,9 +249,14 @@ class Block():
 			#             for item in executable[2]:
 			#                 item.exec()
 			#             executable[3].eval()
-			executable.exec()
+			temp = executable.exec()
+			if (temp != None):
+				mainIndex = mainIndex - 1
+				list_variable_dict[funcIndex].pop()
+				exec_stack.pop()
+				return temp
 		mainIndex = mainIndex - 1
-		list_variable_dict.pop()
+		list_variable_dict[funcIndex].pop()
 		exec_stack.pop()
 
 #the class for for-loop containing declaration,conditions,block and updation
@@ -207,11 +271,19 @@ class ForLoop():
 		for declareStatement in self.declare:
 			declareStatement.exec()
 		while self.express.eval():
-			self.statementList.exec()
+			temp = self.statementList.exec()
+			if (temp != None):
+				for declareStatement in self.declare:
+					#variable lookup doesn't returns index anymore
+					#exec_stack.deleteData(declareStatement.varName,len(list_variable_dict[funcIndex])-variableLookup(declareStatement.varName,mainIndex)-1)
+					del list_variable_dict[funcIndex][-1][declareStatement.varName]
+				return temp
 			self.assign.exec()
 		for declareStatement in self.declare:
-			exec_stack.deleteData(declareStatement.varName,len(list_variable_dict)-variableLookup(declareStatement.varName,mainIndex)-1)
-			del list_variable_dict[mainIndex][declareStatement.varName]
+			#variable lookup doesn't returns index anymore
+			#exec_stack.deleteData(declareStatement.varName,len(list_variable_dict[funcIndex])-variableLookup(declareStatement.varName,mainIndex)-1)
+			del list_variable_dict[funcIndex][-1][declareStatement.varName]
+		return None
 
 #similar to for-loop having required arguements
 class WhileLoop():
@@ -221,7 +293,10 @@ class WhileLoop():
 
 	def exec(self):
 		while self.express.eval():
-			self.statementList.exec()
+			temp = self.statementList.exec()
+			if (temp != None):
+				return temp
+		return None
 
 #class representing control flow which executes first statement whose condition is found true
 class IfStatement():
@@ -231,8 +306,8 @@ class IfStatement():
 	def exec(self):
 		for pair in self.listofConditionals:
 			if pair[0].eval():
-				pair[1].exec()
-				break
+				return pair[1].exec()
+		return None
 
 #class for cout statement
 class CoutStatement():
@@ -420,13 +495,21 @@ class Factor():
 		else:
 			print("error")
 
+class Return():
+	def __init__(self,exp=String()):
+		self.exp =exp
+
+	def exec(self):
+		return self.exp.eval()
+
+
 class Member_function():
 	def __init__(self,reqData):
 		self.name = reqData[0]
 		self.functname = reqData[1]
 
 	def eval(self):
-		return getattr(list_variable_dict[variableLookup(self.name,mainIndex)][self.name], self.functname)()
+		return getattr(variableLookup(self.name), self.functname)()
 
 	def exec(self):
 		self.eval()
@@ -437,6 +520,15 @@ class Multiple_member_function():
 		self.functname=reqData[1]
 		self.arguements=reqData[2]
 
-	def exec(self):
-		getattr(list_variable_dict[variableLookup(self.name,mainIndex)][self.name], self.functname)(*map(lambda x: x.eval(),self.arguements))
+	def eval(self):
+		return getattr(variableLookup(self.name), self.functname)(*map(lambda x: x.eval(),self.arguements))
 
+	def exec(self):
+		self.eval()
+
+class Unknown_type():
+	def __init__(self,value):
+		self.value=value
+
+	def eval(self):
+		return self.value

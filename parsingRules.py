@@ -17,50 +17,46 @@ parser = ParserGenerator(
     'OPEN_SQUARE','CLOSE_SQUARE','keyINT','keyINT','keyINT','keyINT','keyINT','keyINT','keyFLOAT','keyFLOAT',
     'keySTRING','keyBOOL','FLOAT','INT','STRING','BOOL','VARIABLE', 'keyIF', 'keyFOR', 'keyWHILE',
     'keyELSE', 'keyELIF', 'keyCOUT', 'COUTOPER', 'ENDL','LINKEDLIST', 'DOT','STACK','QUEUE',
-    'BST', 'MAIN'
-    ],
-    # A list of precedence rules with ascending precedence, to
-    # disambiguate ambiguous production rules.
-    #still don't know how it works
-    precedence=[
-        ('left', ['PLUS', 'MINUS']),
-        ('left', ['MUL', 'DIV'])
+    'BST', 'MAIN', 'RETURN', 'VOID'
     ]
 )
 oper_to_funcname_dict = {'==': myIsEqual, '!=' : myIsNotEqual, '>=': myGreaterThanEqualTo, '<':myLessThan, '>':myGreaterThan, '<=': myLessThanEqualTo}
 keyword_dictionary = {'int' : Int, 'bool' : Bool, 'float' : Float, 'string' : String } 
 data_struct_dictionary={'linkedList':SinglyLinkedList, 'queue':Queue, 'stack':Stack, 'binarySearchTree':BinarySearchTree}
 keyword_default_value_dict = {'int' : 0, 'bool' : False, 'float' : 0.0, 'string' : "" } 
-"""
-@parser.production('expression : simplex ISEQUAL simplex')
-@parser.production('expression : simplex NOTEQUAL simplex')
-@parser.production('expression : simplex GREATER simplex')
-@parser.production('expression : simplex GREATEREQUAL simplex')
-@parser.production('expression : simplex LESS simplex')
-@parser.production('expression : simplex LESSEQUAL simplex')
-
-def expression_symb_expression(p):
-	#p is the list of all tokens matched
-	#to handle the case of expression followed by an expression
-	BinOp = BinaryOp(oper_to_funcname_dict[p[1].getstr()])
-	print(p[0])
-	print(p[2])
-
-@parser.production('expression : simplex PLUS simplex')
-def function(p):
-	print(type(p[0]), type(p[1]), type(p[2]))
-	return
-@parser.production('simplex : INT PLUS INT')
-def second(p):
-	return int(p[2].getstr()) + int(p[0].getstr())
-
-
-"""
-#########################################################################################################################
 
  												#START POINT OF PARSER
 
 # all parser rules for main
+
+@parser.production('givenprogram : givencode')
+def code_to_program(argList):
+	return argList[0]
+
+@parser.production('givencode : globals main')
+def code_of_main(argList):
+	return argList[0] + [argList[1]]
+
+@parser.production('givencode : main')
+def code_of_main(argList):
+	return argList[0]
+
+@parser.production('globals : func-declaration globals')
+def func_declare_in_globals(argList):
+	return [argList[0]] + argList[1]
+
+@parser.production('globals : declaration SEMICOLON globals')
+def declare_in_globals(argList):
+	return argList[0] + argList[2]
+
+
+@parser.production('globals : func-declaration')
+def func_declare(argList):
+	return [argList[0]]
+@parser.production('globals : declaration SEMICOLON')
+def declare_global(argList):
+	return argList[0]
+
 @parser.production('main : MAIN block') #block for now... will change it as we proceed
 def main_p(argList):
 	return argList[1]
@@ -136,12 +132,68 @@ def output_stream(argList):
 def make_exec(argList):
 	return [argList[0]]
 
+@parser.production('statement : RETURN SEMICOLON')
+def void_return(argList):
+	return [Return()]
 
+@parser.production('statement : RETURN expression SEMICOLON')
+def nonvoid_return(argList):
+	return [Return(argList[1])]
+
+@parser.production('statement : function-call SEMICOLON')
+def function_call(argList):
+	return [argList[0]]
 #########################################################################################################################
 
  												#BLOCKS AND STATEMENTS ENDS
 
 #########################################################################################################################
+
+#########################################################################################################################
+
+ 												#FUNCTIONS START
+
+#########################################################################################################################
+#declarations
+@parser.production('func-declaration : keyword VARIABLE OPEN_PARENS CLOSE_PARENS block')
+def func_declaration_to_class (argList):
+	return FuncDeclaration(argList[1].getstr(), [], argList[4])
+
+@parser.production('func-declaration : keyword VARIABLE OPEN_PARENS vars CLOSE_PARENS block')
+def func_declaration_to_class (argList):
+	return FuncDeclaration(argList[1].getstr(), argList[3], argList[5])
+
+
+
+@parser.production('vars : var COMMA vars')
+def multiple_ar(argList):
+	return [argList[0]] + argList[2]
+
+@parser.production('vars : var')
+def single_var(argList):
+	return [argList[0]]
+
+@parser.production('var : keyword VARIABLE')
+def argument_variable(argList):
+	return (argList[1].getstr(), keyword_dictionary[argList[0]])
+
+
+#calls
+@parser.production('function-call : VARIABLE OPEN_PARENS CLOSE_PARENS')
+def nonparameter_func_call(argList):
+	return FunctionCall(argList[0].getstr(), [])
+
+@parser.production('function-call : VARIABLE OPEN_PARENS expressions CLOSE_PARENS')
+def parameter_func_call(argList):
+	return FunctionCall(argList[0].getstr(), argList[2])
+#########################################################################################################################
+
+ 												#FUNCTIONS ENDS
+
+#########################################################################################################################
+
+
+
 @parser.production('class-functions-object : class-functions')
 def class_function_to_object(argList):
 	if len(argList[0])==2:
@@ -400,9 +452,7 @@ def assign_variable(argList):
 
 #########################################################################################################################
 # all parser rules for Expression
-@parser.production('expression : class-functions-object')
-def classFuncobject_to_expression(argList):
-	return argList[0]
+
 @parser.production('expression : simplex ISEQUAL simplex')
 @parser.production('expression : simplex LESS simplex')
 @parser.production('expression : simplex LESSEQUAL simplex')
@@ -492,6 +542,11 @@ def factor_to_term(argList):
 def variable_to_factor(argList):
 	return argList[0]
 
+@parser.production('factor : class-functions-object')
+@parser.production('factor : function-call')
+def classFuncobject_to_expression(argList):
+	return argList[0]
+
 @parser.production('factor : INT')
 def int_to_factor(argList):
 	return Int(int(argList[0].getstr()))
@@ -578,7 +633,8 @@ def error_handler(token):
 
 
 mainparser = parser.build()
-mainparser.parse(lexer.lex(initial)).exec()
+for item in mainparser.parse(lexer.lex(initial)):
+	item.exec()
 # for item in list_variable_dict[mainIndex]:
 # 	if type(list_variable_dict[mainIndex][item]).__name__ == 'Array':
 # 		for i in range(list_variable_dict[mainIndex][item].length):

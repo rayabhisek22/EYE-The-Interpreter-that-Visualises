@@ -12,6 +12,12 @@ error messages in general (array indice out of range)
 
 for loop with assignments in place of declaration and missing statements
 
+commenting
+
++= and -=
+
+array not passable as argument to functions
+
 __Extras__
 ++ and -- operators
 
