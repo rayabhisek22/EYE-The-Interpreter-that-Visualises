@@ -102,7 +102,7 @@ class PrimitiveDeclaration():
 		x=self.varValue.eval()
 		currFunc = list_variable_dict[funcIndex]
 		currFunc[-1][self.varName] = self.varType(x)
-		exec_stack.addData(self.varName,x)
+		exec_stack.addData(self.varName,x,funcIndex)
 		return None
 
 #the executable array declarartion containing parameters like length and name
@@ -172,6 +172,7 @@ class FunctionCall():
 		self.value=values
 
 	def exec(self):
+		makeFunctionFrame()
 		return funcDict[self.name].exec(self.value)
 
 	def eval(self):

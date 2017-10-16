@@ -36,7 +36,7 @@ def code_to_program(argList):
 
 @parser.production('givencode : globals main')
 def code_of_main(argList):
-	return argList[0] + [argList[1]]	
+	return argList[0] + [argList[1]]
 
 @parser.production('givencode : main')
 def code_of_main(argList):
