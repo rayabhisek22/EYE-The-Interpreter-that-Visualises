@@ -56,9 +56,10 @@ class PrimitiveDT():
 		self.value = val
 
 class ArrayVariable():
-	def __init__(self, name, index):
+	def __init__(self, name, index, snippet):
 		self.name = name
 		self.index = index
+		self.snippet = snippet
 
 	def eval(self):
 		return variableLookup(self.name).get(self.index.eval()).eval()
@@ -82,19 +83,21 @@ class Variable():
 
 #the executable class for assignment which contains the variable and the expression
 class Assignment():
-	def __init__(self,left,right):
+	def __init__(self,left,right, snippet):
 		self.left=left
 		self.right=right
+		self.snippet = snippet
 
 	def exec(self):
 		self.left.update(self.right)
 		return None
 #the  executable declaration for basic variables 
 class PrimitiveDeclaration():
-	def __init__(self, varName, varType, varValue):
+	def __init__(self, varName, varType, varValue, snippet):
 		self.varType=varType
 		self.varValue=varValue
 		self.varName = varName
+		self.snippet = snippet
 
 	def exec(self):
 		if self.varName in list_variable_dict[funcIndex][-1]:
@@ -107,11 +110,12 @@ class PrimitiveDeclaration():
 
 #the executable array declarartion containing parameters like length and name
 class ArrayDeclaration():
-	def __init__(self, varName, varType, length, varValue):
+	def __init__(self, varName, varType, length, varValue, snippet):
 		self.varType = varType
 		self.length = length
 		self.varValue = varValue
 		self.varName = varName
+		self.snippet = snippet
 
 	def exec(self):
 		if self.varName in list_variable_dict[funcIndex][-1]:
@@ -126,13 +130,14 @@ modelTypeDict = {'int':10, 'float':0.2, 'string':"as", 'bool':True}
 
 #function declarations class
 class FuncDeclaration():
-	def __init__(self, funcName, funcParameters, executableBlock):
+	def __init__(self, funcName, funcParameters, executableBlock,snippet):
 		#funcName : name of function
 		#funcParameters : list of tuples containing name followed by type(class) ex. [('count', Int())]
 		#executableBlock : the block of the function
 		self.name = funcName
 		self.parameters = funcParameters
 		self.executable = executableBlock
+		self.snippet = snippet
 
 	def exec(self):
 		if self.name in funcDict:
@@ -153,7 +158,7 @@ class FunctionClass():
 		funcIndex = funcIndex + 1
 		list_variable_dict.append([{}])
 		for i in range(len(self.parameters)):  #high probability of presence of a bug here.....
-			PrimitiveDeclaration(self.parameters[i][0], self.parameters[i][1], Unknown_type(val[i])).exec()
+			PrimitiveDeclaration(self.parameters[i][0], self.parameters[i][1], Unknown_type(val[i]), "	").exec()
 
 		l=len(arguements)
 		if l!=len(self.parameters):
@@ -167,9 +172,10 @@ class FunctionClass():
 		return temp
 		
 class FunctionCall():
-	def __init__(self,name,values):
+	def __init__(self,name,values, snippet):
 		self.name=name
 		self.value=values
+		self.snippet = snippet
 
 	def exec(self):
 		return funcDict[self.name].exec(self.value)
@@ -179,10 +185,11 @@ class FunctionCall():
 
 #initialization for our data structures
 class DataStructureDeclaration():
-	def __init__(self,className,name,vartype):
+	def __init__(self,className,name,vartype, snippet):
 		self.name=name
 		self.vartype=vartype
 		self.theClass=className
+		self.snippet = snippet
 
 	def exec(self):
 		global numberoflinkedlist
@@ -263,11 +270,12 @@ class Block():
 
 #the class for for-loop containing declaration,conditions,block and updation
 class ForLoop():
-	def __init__(self, declare, express, assign, statementList):
+	def __init__(self, declare, express, assign, statementList, snippet):
 		self.declare = declare
 		self.express = express
 		self.assign = assign
 		self.statementList = statementList
+		self.snippet = snippet
 
 	def exec(self):
 		for declareStatement in self.declare:
@@ -289,9 +297,10 @@ class ForLoop():
 
 #similar to for-loop having required arguements
 class WhileLoop():
-	def __init__(self, express, statementList):
+	def __init__(self, express, statementList, snippet):
 		self.express = express
 		self.statementList = statementList
+		self.snippet = snippet
 
 	def exec(self):
 		while self.express.eval():
@@ -313,8 +322,9 @@ class IfStatement():
 
 #class for cout statement
 class CoutStatement():
-	def __init__(self, listOfExpress):
+	def __init__(self, listOfExpress, snippet):
 		self.listOfExpress = listOfExpress
+		self.snippet = snippet
 
 	def exec(self):
 		for expresses in self.listOfExpress:
@@ -322,8 +332,9 @@ class CoutStatement():
 
 #class for cout statement
 class CinStatement():
-	def __init__(self, listOfVars):
+	def __init__(self, listOfVars, snippet):
 		self.listOfVars = listOfVars
+		self.snippet = snippet
 
 	def exec(self):
 		global input_list
@@ -373,10 +384,11 @@ class Bool(PrimitiveDT):
 ######################################################
 #class for binary operator containg operands and the relevant function
 class BinaryOp():
-	def __init__(self, operator, left, right):
+	def __init__(self, operator, left, right, snippet):
 		self.operator = operator
 		self.left = left
 		self.right = right
+		self.snippet = snippet
 
 	def eval(self):
 		return self.operator(self.left.eval(), self.right.eval())
@@ -429,9 +441,10 @@ def myIsNotEqual(x, y):
 ###############################################################
 #class for unary op with function and operand
 class UnaryOp():
-	def __init__(self, operator, operand):
+	def __init__(self, operator, operand, snippet):
 		self.operator = operator
 		self.operand = operand
+		self.snippet = snippet
 
 	def eval(self):
 		return self.operator(self.operand.eval())
@@ -527,17 +540,19 @@ class Factor():
 			print("error")
 
 class Return():
-	def __init__(self,exp=String()):
+	def __init__(self,exp, snippet):
 		self.exp =exp
+		self.snippet = snippet
 
 	def exec(self):
 		return self.exp.eval()
 
 
 class Member_function():
-	def __init__(self,reqData):
+	def __init__(self,reqData, snippet):
 		self.name = reqData[0]
 		self.functname = reqData[1]
+		self.snippet = snippet
 
 	def eval(self):
 		return getattr(variableLookup(self.name), self.functname)()
@@ -546,10 +561,11 @@ class Member_function():
 		self.eval()
 
 class Multiple_member_function():
-	def __init__(self,reqData):
+	def __init__(self,reqData, snippet):
 		self.name=reqData[0]
 		self.functname=reqData[1]
 		self.arguements=reqData[2]
+		self.snippet = snippet
 
 	def eval(self):
 		return getattr(variableLookup(self.name), self.functname)(*map(lambda x: x.eval(),self.arguements))
