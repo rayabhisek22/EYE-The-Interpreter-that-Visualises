@@ -3,11 +3,12 @@ main_program {
     stack<int> st, st1;
     queue<int> qu,qu1;
     linkedList<int> li, li1;
+    int a[5];
     for (int i = 0; i < length; i = i + 1)
     {
         st.push(i);
         qu.pushBack(i);
-	li.push(i);
+	   li.push(i);
     }
     for (int i = 0; i < length; i = i + 1)
     {

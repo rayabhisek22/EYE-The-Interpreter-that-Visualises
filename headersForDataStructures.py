@@ -5,8 +5,10 @@
 #Add names of the data structures underneath them
 #Add delete function to all classes
 # in the binary tree, when node is dark blue, line comes on top
-# can try to make delet in the bst more efficient, it calculates height everytime yu delete anything
-# header text
+
+#makeFunctionFrame()	
+#exec_stacl->addData(varname, x, funcIndex)
+#exec_stack->modifyData(varname, value, funcIndex, index (lowest is 0 and upper is length of stack))
 
 import graphics
 import time
@@ -24,7 +26,7 @@ headerText.setSize(15)
 def wait():
 	#define how to wait...sleep or mouse click or something else
 	#canvas.getMouse()
-	time.sleep(1)
+	time.sleep(0.7)
 
 class rightArrow:
 	def __init__(self, x, y):

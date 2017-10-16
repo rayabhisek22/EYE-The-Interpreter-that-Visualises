@@ -35,11 +35,11 @@ def code_to_program(argList):
 
 @parser.production('givencode : globals main')
 def code_of_main(argList):
-	return argList[0] + [argList[1]]
+	return argList[0] + argList[1]
 
 @parser.production('givencode : main')
 def code_of_main(argList):
-	return argList[0]
+	return [argList[0]]
 
 @parser.production('globals : func-declaration globals')
 def func_declare_in_globals(argList):
