@@ -277,21 +277,21 @@ class ExecutionStack:
 
 
 
-f = Graphics()
-f.makeFunctionFrame()
-f.addData("qwerty", 100, 0)
-f.addData("dfb ddcc", 1200, 1)
-f.makeFunctionFrame()
-f.makeFunctionFrame()
-f.makeFunctionFrame()
-f.makeFunctionFrame()
-f.makeFunctionFrame()
-f.makeFunctionFrame()
-f.makeFunctionFrame()
-wait()
-f.deleteFunctionFrame()
-wait()
-wait()
+# f = Graphics()
+# f.makeFunctionFrame()
+# f.addData("qwerty", 100, 0)
+# f.addData("dfb ddcc", 1200, 1)
+# f.makeFunctionFrame()
+# f.makeFunctionFrame()
+# f.makeFunctionFrame()
+# f.makeFunctionFrame()
+# f.makeFunctionFrame()
+# f.makeFunctionFrame()
+# f.makeFunctionFrame()
+# wait()
+# f.deleteFunctionFrame()
+# wait()
+# wait()
 
 
 
