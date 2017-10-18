@@ -1,14 +1,18 @@
 multi dimensional array are not included for now
 
-binary search tree (0,3,1,4,2)
-
 error messages in general (array indice out of range)
+
+call functions for graphics of functions
+
+call function for deletion of data structures when they go out of scope
 
 for loop with assignments in place of declaration and missing statements
 
 show snippet of code while evaluating
 
 array not passable as argument to functions
+
+Test a lot of code!!!!!!!
 
 __Extras__
 ++ and -- operators

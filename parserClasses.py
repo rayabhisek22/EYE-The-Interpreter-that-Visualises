@@ -2,11 +2,11 @@ from rply.token import *
 import sys
 #from headersForDataStructures import SinglyLinkedList, Queue, Stack, BinarySearchTree
 from dataStructures import *
-from executionStack import ExecutionStack, VisualArray
+from executionStack import Graphics, VisualArray
 
 funcDict = {}
 array_dict={}
-exec_stack = ExecutionStack()
+exec_stack = Graphics()
 list_variable_dict = [[{}]]
 funcIndex = 0
 mainIndex = -1
@@ -118,7 +118,7 @@ class ArrayDeclaration():
 			raise Exception("Variable "+self.varName + " already declared")
 		x=self.length.eval()
 		array_dict[self.varName]=VisualArray(x,self.varName)
-		exec_stack.addData(self.varName,"Array")
+		exec_stack.addData(self.varName,"Array", funcIndex)
 		list_variable_dict[funcIndex][-1][self.varName] = Array(self.varType(self.varValue.eval()), x,self.varName)
 		return None
 
@@ -195,22 +195,22 @@ class DataStructureDeclaration():
 			if self.theClass==Stack:
 				list_variable_dict[funcIndex][-1][self.name]=self.theClass(stackx-numberofstacks*stackwidth,\
 				 stacky, modelTypeDict[self.vartype], self.name)
-				exec_stack.addData(self.name,"Stack")
+				exec_stack.addData(self.name,"Stack", funcIndex)
 				numberofstacks=numberofstacks+1
 			elif self.theClass==Queue:
 				list_variable_dict[funcIndex][-1][self.name]=self.theClass(queuex,\
 				 queuey+numberofqueues*queueheight, modelTypeDict[self.vartype], self.name)
-				exec_stack.addData(self.name,"Queue")
+				exec_stack.addData(self.name,"Queue", funcIndex)
 				numberofqueues=numberofqueues+1
 			elif self.theClass==SinglyLinkedList:
 				list_variable_dict[funcIndex][-1][self.name]=self.theClass(linkedlistx,\
 				 linkedlisty+numberoflinkedlist*linkedlistheight, modelTypeDict[self.vartype], self.name)
-				exec_stack.addData(self.name,"LinkedList")
+				exec_stack.addData(self.name,"LinkedList", funcIndex)
 				numberoflinkedlist=numberoflinkedlist+1
 			elif self.theClass==BinarySearchTree:
 				list_variable_dict[funcIndex][-1][self.name]=self.theClass(treex,\
 				 treey, modelTypeDict[self.vartype], self.name)
-				exec_stack.addData(self.name,"BST")
+				exec_stack.addData(self.name,"BST", funcIndex)
 		return None
 
 
