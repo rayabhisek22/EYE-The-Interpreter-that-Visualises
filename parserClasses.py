@@ -2,11 +2,11 @@ from rply.token import *
 import sys
 #from headersForDataStructures import SinglyLinkedList, Queue, Stack, BinarySearchTree
 from dataStructures import *
-from executionStack import ExecutionStack, VisualArray
+from executionStack import Graphics, VisualArray
 
 funcDict = {}
 array_dict={}
-exec_stack = ExecutionStack()
+exec_stack = Graphics()
 list_variable_dict = [[{}]]
 funcIndex = 0
 mainIndex = -1

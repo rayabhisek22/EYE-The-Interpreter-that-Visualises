@@ -2,10 +2,17 @@ import graphics
 from headersForDataStructures import canvas, wait, headerText
 
 bottomx = 20
-bottomy = 600
+bottomy = 650
 nodeWidth = 400	
-nodeHeight = 115
-textHeight = 14
+nodeHeight = 10
+textHeight = 15
+
+functionsx = 440
+functionsy = 660
+funcnodeWidth = 80
+funcnodeHeight = nodeHeight
+deafaultFunctionHeight = 175
+gap = 10
 
 arrayElementWidth = arrayElementHeight = 20
 arrayBegy=60
@@ -13,12 +20,146 @@ arrayBegx=20
 numberOfArrays=0
 arrayOffset = 50
 
+
+
 def drawHeader():
 	try:
 		headerText.draw(canvas)
 	except:
 		headerText.undraw()
 		headerText.draw(canvas)
+
+class Graphics:
+	def __init__(self):
+		self.estack = ExecutionStack()
+		self.functions = []
+
+	def makeFunctionFrame(self):
+		number = len(self.functions)
+		self.functions.append(FunctionStack(functionsx + (number%3)*(gap+funcnodeWidth), functionsy - (number//3)*deafaultFunctionHeight))
+		self.functions[number].push({})
+
+	def deleteFunctionFrame(self):
+		self.functions[-1].delete()
+		self.functions.pop()
+
+	def push(self, dictionary):
+		self.estack.push(dictionary)
+
+	def modifyData(self, key, val, index, funcIndex):
+		if funcIndex==0:
+			self.estack.modifyData(key, val, index)
+		else:
+			self.functions[funcIndex - 1].modifyData(key, val, index)
+
+	def addData(self, key, val, funcIndex):
+		if funcIndex == 0:
+			self.estack.addData(key, val)
+		else:
+			self.functions[funcIndex - 1].addData(key, val)
+
+
+class FuncNode:
+	def __init__(self, x, y, nxt):
+		self.x = x
+		self.y = y
+		self.rectangle = graphics.Rectangle(graphics.Point(x, y), graphics.Point(x + funcnodeWidth, y + funcnodeHeight))
+		self.next = nxt
+		self.rectangle.draw(canvas)
+		self.data = {} #key->variable name, value->Text object
+
+	def modifyDictionary(self, dictionary):
+		for element in dictionary:
+			self.data[element] = graphics.Text(graphics.Point(self.x + funcnodeWidth/2, self.y + textHeight/2 + \
+				len(self.data)*textHeight), str(element) + " = " + str(dictionary[element]))
+
+	def showDictionary(self):
+		for element in self.data:
+			self.data[element].draw(canvas)
+		wait()
+
+	def addData(self, key, val):
+		size = len(self.data)
+		self.data[key] = graphics.Text(graphics.Point(self.x + funcnodeWidth/2, self.y + textHeight/2 + \
+			size*textHeight), str(key) + " = " + str(val))
+		self.data[key].draw(canvas)
+		self.rectangle.p1.y-=textHeight
+		self.rectangle.undraw()
+		self.rectangle.draw(canvas)
+		self.y-=textHeight
+		for element in self.data:
+			self.data[element].move(0, -textHeight)
+		wait()
+
+	def modifyData(self, key, newVal):
+		self.data[key].undraw()
+		self.data[key].setText(str(key) + " = " + str(newVal))
+		self.data[key].draw(canvas)
+		wait()
+
+	def delt(self,key):
+		self.data[key].undraw()
+		del self.data[key]
+
+	def delete(self):
+		for element in self.data:
+			self.data[element].undraw()
+		self.rectangle.undraw()
+		del self
+
+
+class FunctionStack:
+	def __init__(self, x, y):
+		self.head = None
+		self.x = x
+		self.y = y
+		self.size = 0
+
+	def push(self, dictionary):
+		headerText.setText("Creating a new activation frame")
+		drawHeader()
+		temp = self.head
+		if self.size!= 0:
+			self.head = FuncNode(self.x, temp.y-nodeHeight, temp)
+		else:
+			self.head = FuncNode(self.x, self.y - nodeHeight, temp)
+		self.size += 1
+		self.head.modifyDictionary(dictionary)
+		self.head.showDictionary()
+
+	def addData(self, key, val):
+		headerText.setText("Creating variable " + str(key) + " with initial value " + str(val))
+		drawHeader()
+		self.head.addData(key, val)
+
+	def modifyData(self, key, val, index):
+		headerText.setText("Assigning value " + str(val) + " to variable " + str(key))
+		drawHeader()
+		temp = self.head
+		while (index > 0):
+			temp = temp.next
+			index -=1
+		temp.modifyData(key, val)
+
+	def deleteData(self,key,index):
+		temp = self.head
+		while (index > 0):
+			temp = temp.next
+			index -=1
+		temp.delt(key)
+
+	def delete(self):
+		while self.size > 0:
+			self.pop()
+
+	def pop(self):
+		headerText.setText("Deleting the activation frame at the top of the stack")
+		drawHeader()
+		temp = self.head
+		self.size -= 1
+		self.head = self.head.next
+		temp.delete()
+		wait()
 
 class Node:
 	def __init__(self, x, y, nxt):
@@ -35,9 +176,14 @@ class Node:
 				len(self.data)*textHeight), str(element) + " = " + str(dictionary[element]))
 
 	def addGlobal(self):
+		self.y-=textHeight/2
+		self.rectangle.p1.y-=textHeight/2
+		self.rectangle.undraw()
+		self.rectangle.draw(canvas)
 		self.data["global"] = graphics.Text(graphics.Point(self.x + nodeWidth/2, self.y + textHeight/2 + \
 				len(self.data)*textHeight), str("GLOBAL VARIABLES"))
 		self.data["global"].draw(canvas)
+		self.data["1filler"] = graphics.Text(graphics.Point(-100, -100), "")
 
 	def showDictionary(self):
 		for element in self.data:
@@ -45,9 +191,17 @@ class Node:
 		wait()
 
 	def addData(self, key, val):
-		self.data[key] = graphics.Text(graphics.Point(self.x + nodeWidth/2, self.y + textHeight/2 + \
-			len(self.data)*textHeight), str(key) + " = " + str(val))
+		size = len(self.data)
+		self.data[key] = graphics.Text(graphics.Point(self.x + ((size%2)*(nodeWidth)/2)+(nodeWidth)/4, self.y + textHeight/2 + \
+			(size//2)*textHeight), str(key) + " = " + str(val))
 		self.data[key].draw(canvas)
+		if (size%2 == 0):
+			self.rectangle.p1.y-=textHeight
+			self.rectangle.undraw()
+			self.rectangle.draw(canvas)
+			self.y-=textHeight
+			for element in self.data:
+				self.data[element].move(0, -textHeight)
 		wait()
 
 	def modifyData(self, key, newVal):
@@ -77,17 +231,17 @@ class ExecutionStack:
 		headerText.setText("Creating a new activation frame")
 		drawHeader()
 		temp = self.head
-		self.head = Node(bottomx, bottomy - self.size*nodeHeight, temp)
+		self.head = Node(bottomx, temp.y-nodeHeight, temp)
 		self.size += 1
 		self.head.modifyDictionary(dictionary)
 		self.head.showDictionary()
 
-	def addData(self, key, val, funcIndex):
+	def addData(self, key, val):
 		headerText.setText("Creating variable " + str(key) + " with initial value " + str(val))
 		drawHeader()
 		self.head.addData(key, val)
 
-	def modifyData(self, key, val, index, funcIndex):
+	def modifyData(self, key, val, index):
 		headerText.setText("Assigning value " + str(val) + " to variable " + str(key))
 		drawHeader()
 		temp = self.head
@@ -112,6 +266,38 @@ class ExecutionStack:
 		self.head = self.head.next
 		temp.delete()
 		wait()
+
+
+
+
+
+
+
+
+
+
+
+f = Graphics()
+f.makeFunctionFrame()
+f.addData("qwerty", 100, 0)
+f.addData("dfb ddcc", 1200, 1)
+f.makeFunctionFrame()
+f.makeFunctionFrame()
+f.makeFunctionFrame()
+f.makeFunctionFrame()
+f.makeFunctionFrame()
+f.makeFunctionFrame()
+f.makeFunctionFrame()
+wait()
+f.deleteFunctionFrame()
+wait()
+wait()
+
+
+
+
+
+
 
 
 ######################################################################################################################
