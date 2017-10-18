@@ -1,5 +1,5 @@
 from lexer import lexer
-from untitled1 import *
+from ParsingClassesActual import *
 from rply import ParserGenerator
 
 import sys
@@ -141,12 +141,12 @@ def make_exec(argList):
 
 @parser.production('statement : RETURN SEMICOLON')
 def void_return(argList):
-	snippet = argList[0].getstr() + argList[1].getstr()
+	snippet = argList[0].getstr()+" " + argList[1].getstr()
 	return [[Return(String(),snippet)], snippet]
 
 @parser.production('statement : RETURN expression SEMICOLON')
 def nonvoid_return(argList):
-	snippet = argList[0].getstr() + argList[1][1]  + argList[2].getstr()
+	snippet = argList[0].getstr() +" "+ argList[1][1]  + argList[2].getstr()
 	return [[Return(argList[1][0], snippet)], snippet]
 
 @parser.production('statement : function-call SEMICOLON')
@@ -376,7 +376,7 @@ def declare_variables(argList):
 		each tuple is a 2 element tuple which
 		contains a string of name and value"""
 	executionList = []
-	snippet = argList[0] + argList[1][1]
+	snippet = argList[0]+" " + argList[1][1]
 	for eachVar in argList[1][0]:
 		if len(eachVar) == 3:
 			executionList.append(ArrayDeclaration(eachVar[0], keyword_dictionary[argList[0]], eachVar[1], keyword_dictionary[argList[0]](keyword_default_value_dict[argList[0]]), snippet)) #list_variable_dict[mainIndex][eachVar[0]] = Array(keyword_dictionary[argList[0]](), eachVar[1])
@@ -392,7 +392,7 @@ def declare_variables(argList):
 @parser.production('declaration : BST LESS keyword GREATER new_variables')
 def data_structure_init(argList):
 	executionList=[]
-	snippet = argList[0].getstr() + argList[1].getstr() + argList[2] + argList[3].getstr() + argList[4][1]
+	snippet = argList[0].getstr() + argList[1].getstr() + argList[2] + argList[3].getstr()+" " + argList[4][1]
 	for eachVar in argList[4][0]:
 		executionList.append(DataStructureDeclaration(data_struct_dictionary[argList[0].getstr()], eachVar,argList[2], snippet))
 	return [executionList, snippet]
