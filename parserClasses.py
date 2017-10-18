@@ -118,7 +118,7 @@ class ArrayDeclaration():
 			raise Exception("Variable "+self.varName + " already declared")
 		x=self.length.eval()
 		array_dict[self.varName]=VisualArray(x,self.varName)
-		exec_stack.addData(self.varName,"Array")
+		exec_stack.addData(self.varName,"Array", funcIndex)
 		list_variable_dict[funcIndex][-1][self.varName] = Array(self.varType(self.varValue.eval()), x,self.varName)
 		return None
 
