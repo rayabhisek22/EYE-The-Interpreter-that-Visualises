@@ -3,7 +3,7 @@ from headersForDataStructures import canvas, wait, headerText
 
 bottomx = 20
 bottomy = 600
-nodeWidth = 600
+nodeWidth = 400	
 nodeHeight = 115
 textHeight = 14
 
@@ -82,12 +82,12 @@ class ExecutionStack:
 		self.head.modifyDictionary(dictionary)
 		self.head.showDictionary()
 
-	def addData(self, key, val):
+	def addData(self, key, val, funcIndex):
 		headerText.setText("Creating variable " + str(key) + " with initial value " + str(val))
 		drawHeader()
 		self.head.addData(key, val)
 
-	def modifyData(self, key, val, index):
+	def modifyData(self, key, val, index, funcIndex):
 		headerText.setText("Assigning value " + str(val) + " to variable " + str(key))
 		drawHeader()
 		temp = self.head

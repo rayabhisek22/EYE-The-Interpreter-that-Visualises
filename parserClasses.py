@@ -193,22 +193,22 @@ class DataStructureDeclaration():
 			if self.theClass==Stack:
 				list_variable_dict[funcIndex][-1][self.name]=self.theClass(stackx-numberofstacks*stackwidth,\
 				 stacky, modelTypeDict[self.vartype], self.name)
-				exec_stack.addData(self.name,"Stack")
+				exec_stack.addData(self.name,"Stack", funcIndex)
 				numberofstacks=numberofstacks+1
 			elif self.theClass==Queue:
 				list_variable_dict[funcIndex][-1][self.name]=self.theClass(queuex,\
 				 queuey+numberofqueues*queueheight, modelTypeDict[self.vartype], self.name)
-				exec_stack.addData(self.name,"Queue")
+				exec_stack.addData(self.name,"Queue", funcIndex)
 				numberofqueues=numberofqueues+1
 			elif self.theClass==SinglyLinkedList:
 				list_variable_dict[funcIndex][-1][self.name]=self.theClass(linkedlistx,\
 				 linkedlisty+numberoflinkedlist*linkedlistheight, modelTypeDict[self.vartype], self.name)
-				exec_stack.addData(self.name,"LinkedList")
+				exec_stack.addData(self.name,"LinkedList", funcIndex)
 				numberoflinkedlist=numberoflinkedlist+1
 			elif self.theClass==BinarySearchTree:
 				list_variable_dict[funcIndex][-1][self.name]=self.theClass(treex,\
 				 treey, modelTypeDict[self.vartype], self.name)
-				exec_stack.addData(self.name,"BST")
+				exec_stack.addData(self.name,"BST", funcIndex)
 		return None
 
 
