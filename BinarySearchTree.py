@@ -333,6 +333,17 @@ class BinarySearchTree:
 				headerText.undraw()
 				return
 
+	def deleteHelper(self, node):
+		if node!=None:
+			self.deleteHelper(node.left)
+			self.deleteHelper(node.right)
+			node.delete()
+
+	def delete(self):
+		self.rootText.undraw()
+		self.deleteHelper(self.root)
+		del self
+
 
 # bst =BinarySearchTree(500, 100, 10, "asa")
 # bst.insert(0)

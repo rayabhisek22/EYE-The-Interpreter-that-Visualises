@@ -2,8 +2,6 @@
 # and when yu delete call the delete function explicitly.
 
 #####    					TODO:
-#Add names of the data structures underneath them
-#Add delete function to all classes
 # in the binary tree, when node is dark blue, line comes on top
 
 #makeFunctionFrame()	

@@ -262,4 +262,15 @@ class SinglyLinkedList:
 		headerText.undraw()
 		return
 
+	def delete(self):
+		temp = self.head
+		while temp :
+			self.head = temp.next
+			temp.delete()
+			temp = self.head
+		self.nameText.undraw()
+		self.baseRectangle.undraw()
+		self.baseText.undraw()
+		del self
+
 		

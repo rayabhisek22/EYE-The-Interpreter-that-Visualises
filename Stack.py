@@ -92,3 +92,13 @@ class Stack:
 		wait()
 		headerText.undraw()
 		return 
+
+	def delete(self):
+		temp = self.head
+		while temp:
+			self.head = temp.next
+			temp.delete()
+			temp = self.head
+		self.nameText.undraw()
+		self.baseRectangle.undraw()
+		del self

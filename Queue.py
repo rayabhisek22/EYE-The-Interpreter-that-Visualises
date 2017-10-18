@@ -193,3 +193,14 @@ class Queue:
 			wait()
 			headerText.undraw()
 			return ans
+
+	def delete(self):
+		temp = self.head
+		while temp:
+			self.head = temp.next
+			temp.delete()
+			temp = self.head
+		self.text.undraw()
+		self.nameText.undraw()
+		del self
+		
