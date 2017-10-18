@@ -7,10 +7,12 @@ var searchData=
   ['setoutline',['setOutline',['../classgraphics_1_1_graphics_object.html#a0acf1399e539cc273170096552a04139',1,'graphics::GraphicsObject']]],
   ['setpixel',['setPixel',['../classgraphics_1_1_image.html#a73fb3ce4de03fe9f57c076d739712378',1,'graphics::Image']]],
   ['setwidth',['setWidth',['../classgraphics_1_1_graphics_object.html#a63006871dd6242bfc7aabe9ddcbb1263',1,'graphics::GraphicsObject']]],
-  ['simplex',['Simplex',['../class_parsing_classes_actual_1_1_simplex.html',1,'ParsingClassesActual.Simplex'],['../classparser_classes_1_1_simplex.html',1,'parserClasses.Simplex']]],
+  ['simplex',['Simplex',['../classparser_classes_1_1_simplex.html',1,'parserClasses']]],
+  ['simplex',['Simplex',['../class_parsing_classes_actual_1_1_simplex.html',1,'ParsingClassesActual']]],
   ['singlylinkedlist',['SinglyLinkedList',['../class_singly_linked_list_1_1_singly_linked_list.html',1,'SinglyLinkedList']]],
   ['singlylinkedlistnode',['SinglyLinkedListNode',['../class_singly_linked_list_1_1_singly_linked_list_node.html',1,'SinglyLinkedList']]],
   ['stack',['Stack',['../class_stack_1_1_stack.html',1,'Stack']]],
   ['stacknode',['StackNode',['../class_stack_1_1_stack_node.html',1,'Stack']]],
-  ['string',['String',['../classparser_classes_1_1_string.html',1,'parserClasses.String'],['../class_parsing_classes_actual_1_1_string.html',1,'ParsingClassesActual.String']]]
+  ['string',['String',['../class_parsing_classes_actual_1_1_string.html',1,'ParsingClassesActual']]],
+  ['string',['String',['../classparser_classes_1_1_string.html',1,'parserClasses']]]
 ];
