@@ -1,13 +1,5 @@
 from headersForDataStructures import *
 
-def drawHeader():
-	try:
-		headerText.draw(canvas)
-	except:
-		headerText.undraw()
-		headerText.draw(canvas)
-	
-
 nodeSpace = 3*circleRadius
 verticalGap = 3*circleRadius
 
@@ -114,8 +106,20 @@ class BinaryTreeNode:
 		del self
 
 
-
+##@brief Pre-defined data structure to represent a Binary Search Tree
+#
+#Contians all the data members and member functions to represent a standard singly linked list Abstract Data Type
+#In addition to this, it contains all the needed data members and functions to represent the data structure on the canvas.
+#Usual functions have been modified to allow for the required changes to the graph as well.
 class BinarySearchTree:
+
+	##Constructor for the class
+	#
+	#@param x - the x coordinate of the root of the tree.
+	#@param y - the y coordinate of the root of the tree.
+	#@param modelType - An object of the type to be stored in the tree, to ensure that all elements in the list are of the same type
+	#as in C++
+	#@param name - The name given by the user to an instance of this class.
 	def __init__(self, x, y, modelType, name):
 		self.rootLocation = graphics.Point(x, y)
 		self.type = type(modelType)

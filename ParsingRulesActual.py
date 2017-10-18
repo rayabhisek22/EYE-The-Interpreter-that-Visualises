@@ -1,3 +1,26 @@
+##@mainpage Eye, The Interpreter that Visualises
+#
+#\section Intro_sec Introduction
+#
+#This is the course project for the team 3 Idiots for CS 251-Software Systems Lab
+#<br>
+#In this project, we have built an interpeter for a rule-based programming language of our own that is syntactically similar to C++.
+#However, this is not just run-of-the-mill interpreter-it has the added feauture of actually allowing you to visualise what is going on
+#behind the scenes as your code is being run.
+#
+#\section running How to run your code?
+#
+#<running instructions, Bansal ?>
+#
+#\section tp <add more stuff>
+#
+#Anyone with any ideas add stuff to this page...the code for this page is at the top of ParsingRulesActual.py
+#
+
+
+
+
+
 from lexer import lexer
 from parsingclassesactual import *
 from rply import parsergenerator

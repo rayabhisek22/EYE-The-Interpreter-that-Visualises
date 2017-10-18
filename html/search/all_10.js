@@ -7,12 +7,16 @@ var searchData=
   ['setoutline',['setOutline',['../classgraphics_1_1_graphics_object.html#a0acf1399e539cc273170096552a04139',1,'graphics::GraphicsObject']]],
   ['setpixel',['setPixel',['../classgraphics_1_1_image.html#a73fb3ce4de03fe9f57c076d739712378',1,'graphics::Image']]],
   ['setwidth',['setWidth',['../classgraphics_1_1_graphics_object.html#a63006871dd6242bfc7aabe9ddcbb1263',1,'graphics::GraphicsObject']]],
-  ['simplex',['Simplex',['../classparser_classes_1_1_simplex.html',1,'parserClasses']]],
-  ['simplex',['Simplex',['../class_parsing_classes_actual_1_1_simplex.html',1,'ParsingClassesActual']]],
+  ['shiftahead',['shiftAhead',['../classheaders_for_data_structures_1_1right_arrow.html#a3a9f5debd35ed66cc2b3a7c64397d530',1,'headersForDataStructures.rightArrow.shiftAhead()'],['../class_singly_linked_list_1_1_singly_linked_list_node.html#aabccf02e114b5abb5fd40a7cc7ab240b',1,'SinglyLinkedList.SinglyLinkedListNode.shiftAhead()']]],
+  ['shiftbehind',['shiftBehind',['../classheaders_for_data_structures_1_1right_arrow.html#a3e9d01ac5c06f2c21facde8562303d8f',1,'headersForDataStructures.rightArrow.shiftBehind()'],['../class_singly_linked_list_1_1_singly_linked_list_node.html#ab7d981efc16e32b20f6653aa579f3f3b',1,'SinglyLinkedList.SinglyLinkedListNode.shiftBehind()']]],
+  ['shiftbehindinqueue',['shiftBehindInQueue',['../classheaders_for_data_structures_1_1right_arrow.html#a89971076429e090ee142a0ac82dd51ce',1,'headersForDataStructures::rightArrow']]],
+  ['shiftinqueue',['shiftInQueue',['../classheaders_for_data_structures_1_1right_arrow.html#a70f3a761d27bd00ff60b71bd4457752d',1,'headersForDataStructures::rightArrow']]],
+  ['simplex',['Simplex',['../class_parsing_classes_actual_1_1_simplex.html',1,'ParsingClassesActual.Simplex'],['../classparser_classes_1_1_simplex.html',1,'parserClasses.Simplex']]],
   ['singlylinkedlist',['SinglyLinkedList',['../class_singly_linked_list_1_1_singly_linked_list.html',1,'SinglyLinkedList']]],
   ['singlylinkedlistnode',['SinglyLinkedListNode',['../class_singly_linked_list_1_1_singly_linked_list_node.html',1,'SinglyLinkedList']]],
+  ['size',['size',['../class_singly_linked_list_1_1_singly_linked_list.html#a96f6f50cf9bed918fe1f5248c1649f0c',1,'SinglyLinkedList::SinglyLinkedList']]],
   ['stack',['Stack',['../class_stack_1_1_stack.html',1,'Stack']]],
   ['stacknode',['StackNode',['../class_stack_1_1_stack_node.html',1,'Stack']]],
-  ['string',['String',['../class_parsing_classes_actual_1_1_string.html',1,'ParsingClassesActual']]],
-  ['string',['String',['../classparser_classes_1_1_string.html',1,'parserClasses']]]
+  ['string',['String',['../classparser_classes_1_1_string.html',1,'parserClasses.String'],['../class_parsing_classes_actual_1_1_string.html',1,'ParsingClassesActual.String']]],
+  ['success',['success',['../class_singly_linked_list_1_1_singly_linked_list_node.html#a93b77e8258a5fc14305a11ba27eab8f3',1,'SinglyLinkedList::SinglyLinkedListNode']]]
 ];

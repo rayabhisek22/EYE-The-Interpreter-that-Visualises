@@ -2,13 +2,6 @@ from headersForDataStructures import *
 #######################################################################################################################
 # 															QUEUE
 
-def drawHeader():
-	try:
-		headerText.draw(canvas)
-	except:
-		headerText.undraw()
-		headerText.draw(canvas)
-
 class QueueNode:
 	def __init__(self, x, y, val, nxt):
 		self.data = val
@@ -45,9 +38,22 @@ class QueueNode:
 		self.arrow.undraw()
 		del self
 
+##@brief Pre-defined data structure to represent a Double sided queue
+#
+#Contians all the data members and member functions to represent a standard singly linked list Abstract Data Type
+#In addition to this, it contains all the needed data members and functions to represent the data structure on the canvas.
+#Usual functions have been modified to allow for the required changes to the graph as well.
 class Queue:
 	def __init__(self, x, y, modelType, name): # modelType is an object of the type that is to be stored in the 
 	#stack...to check and raise errors at appropriate times
+
+	##Constructor for the class
+	#
+	#@param x - the x coordinate of the rightmost corner of the queue.
+	#@param y - the y coordinate of the rightmost corner of the queue.
+	#@param modelType - An object of the type to be stored in the queue, to ensure that all elements in the list are of the same type
+	#as in C++
+	#@param name - The name given by the user to an instance of this class.
 		self.startingPoint = graphics.Point(x, y)
 		self.nameText = graphics.Text(graphics.Point(self.startingPoint.x + 65, self.startingPoint.y\
 			), name)
