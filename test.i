@@ -1,17 +1,21 @@
-int x = 100;
-
-int pow(int a, int b){
-	int res = 1;
-	for(int i = 0; i < b; i = i + 1){
-		res = res * a;
+int gcd(int a,int b)
+{
+	if(a%b==0)
+	{
+		return b;
 	}
-	return res;
-}
-
-int animesh(int a, int b){
-	return pow(a, b);
+	else
+	{
+		return gcd(b,a%b);
+	}
 }
 
 main_program{
-	cout << animesh(2, 3);
+	int n=5;
+	int a[n];
+	for(int i=0;i<n;i=i+1)
+	{
+		a[i]=2*i;
+	}
+	cout<<gcd(a[1],a[3])<<endl;
 }

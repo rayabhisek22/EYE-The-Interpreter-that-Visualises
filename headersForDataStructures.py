@@ -26,7 +26,7 @@ headerText.setSize(15)
 def wait():
 	#define how to wait...sleep or mouse click or something else
 	#canvas.getMouse()
-	time.sleep(0.7)
+	time.sleep(0)
 
 class rightArrow:
 	def __init__(self, x, y):

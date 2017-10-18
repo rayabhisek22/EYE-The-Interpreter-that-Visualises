@@ -1,10 +1,4 @@
-escaped characters in strings
-
-Erros in eval functions (mostly solved)
-
 multi dimensional array are not included for now
-
-cin statement
 
 binary search tree (0,3,1,4,2)
 
@@ -12,9 +6,7 @@ error messages in general (array indice out of range)
 
 for loop with assignments in place of declaration and missing statements
 
-commenting
-
-+= and -=
+show snippet of code while evaluating
 
 array not passable as argument to functions
 
@@ -25,4 +17,4 @@ array initializations
 
 loops and if statements without brackes for one statement
 
-show snippet of code while evaluating
+escaped characters in strings
