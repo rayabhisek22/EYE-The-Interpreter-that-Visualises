@@ -116,7 +116,7 @@ class SinglyLinkedList:
 		self.startingPoint = graphics.Point(x, y)
 		self.baseRectangle = graphics.Rectangle(graphics.Point(x,y), graphics.Point(x + 2*boxLength,\
 		 y + boxLength))
-		self.baseText = graphics.Text(graphics.Point(x + boxLength, y + boxLength/2), "TAIl")
+		self.baseText = graphics.Text(graphics.Point(x + boxLength, y + boxLength/2), "TAIL")
 		self.baseText.setSize(11)
 		self.baseRectangle.setFill("green")
 		self.baseRectangle.draw(canvas)
@@ -260,14 +260,18 @@ class SinglyLinkedList:
 			target.changeColor("red")
 			wait()
 			temp = self.head
+			temp2 = None
 			while temp != target:
 				temp.shiftAhead()
+				temp2 = temp
 				temp = temp.next
-			temp.delete()
+			if temp2:
+				temp2.next = target.next
 			headerText.undraw()
 			self.size -= 1
 			if target == self.head:
 				self.head = self.head.next
+			temp.delete()
 			return 
 
 	##Removes the front element of the list and raises an error if you try to pop from an empty list.
@@ -280,7 +284,6 @@ class SinglyLinkedList:
 			drawHeader()
 			self.head.changeColor("red")
 			wait()
-			temp = self.head.next
 			temp = self.head
 			self.head = temp.next
 			self.size -= 1

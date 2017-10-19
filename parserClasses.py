@@ -260,7 +260,7 @@ class Block():
 				return temp
 		mainIndex = mainIndex - 1
 		list_variable_dict[funcIndex].pop()
-		exec_stack.pop()
+		exec_stack.pop(funcIndex)
 
 #the class for for-loop containing declaration,conditions,block and updation
 class ForLoop():

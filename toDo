@@ -1,3 +1,15 @@
+BUGS:
+
+In testFinal2.i, i = 0 comes twice.
+
+One line is commented in parserClasses...that has to be fixed to give the index in the functionframe in which the variable resides...
+index is counted from above...topmost is 0...
+
+
+
+
+===========================================================================================================================
+
 multi dimensional array are not included for now
 
 error messages in general (array indice out of range)

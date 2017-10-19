@@ -52,6 +52,12 @@ class Graphics:
 		else:
 			self.functions[funcIndex - 1].modifyData(key, val, index)
 
+	def pop(self, funcIndex):
+		if funcIndex == 0:
+			self.estack.pop()
+		else:
+			self.functions[funcIndex - 1].pop()
+
 	def addData(self, key, val, funcIndex):
 		if funcIndex == 0:
 			self.estack.addData(key, val)
