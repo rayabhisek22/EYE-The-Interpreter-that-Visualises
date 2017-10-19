@@ -1,17 +1,19 @@
 \hypertarget{class_stack_1_1_stack_node}{}\section{Stack.\+Stack\+Node Class Reference}
 \label{class_stack_1_1_stack_node}\index{Stack.\+Stack\+Node@{Stack.\+Stack\+Node}}
+
+
+Class to represent a node in a stack both graphically and as an Abstract Data Type element.  
+
+
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{class_stack_1_1_stack_node_a1f7436ddc8e865ddf238656418285920}\label{class_stack_1_1_stack_node_a1f7436ddc8e865ddf238656418285920}} 
-def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, x, y, val, nxt)
-\item 
-\mbox{\Hypertarget{class_stack_1_1_stack_node_a01afb84c8c935287114b2d9bdf1d2491}\label{class_stack_1_1_stack_node_a01afb84c8c935287114b2d9bdf1d2491}} 
-def {\bfseries change\+Color} (self, color)
-\item 
-\mbox{\Hypertarget{class_stack_1_1_stack_node_a96f87a002abf757eb12e5496f4c20eb4}\label{class_stack_1_1_stack_node_a96f87a002abf757eb12e5496f4c20eb4}} 
-def {\bfseries delete} (self)
-\end{DoxyCompactItemize}
+def \hyperlink{class_stack_1_1_stack_node_a1f7436ddc8e865ddf238656418285920}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self, x, y, val, nxt)
+\begin{DoxyCompactList}\small\item\em Constructor for the node. \end{DoxyCompactList}\item 
+def \hyperlink{class_stack_1_1_stack_node_a01afb84c8c935287114b2d9bdf1d2491}{change\+Color} (self, color)
+\begin{DoxyCompactList}\small\item\em Change the color of the node. \end{DoxyCompactList}\item 
+def \hyperlink{class_stack_1_1_stack_node_a96f87a002abf757eb12e5496f4c20eb4}{delete} (self)
+\begin{DoxyCompactList}\small\item\em Delete the node after undrawing all the graphical components from the canvas. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -27,6 +29,63 @@ def {\bfseries delete} (self)
 \mbox{\Hypertarget{class_stack_1_1_stack_node_a29a49b0b74829df99922b1e5a364557a}\label{class_stack_1_1_stack_node_a29a49b0b74829df99922b1e5a364557a}} 
 {\bfseries text}
 \end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class to represent a node in a stack both graphically and as an Abstract Data Type element. 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_stack_1_1_stack_node_a1f7436ddc8e865ddf238656418285920}\label{class_stack_1_1_stack_node_a1f7436ddc8e865ddf238656418285920}} 
+\index{Stack\+::\+Stack\+Node@{Stack\+::\+Stack\+Node}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!Stack\+::\+Stack\+Node@{Stack\+::\+Stack\+Node}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+init\+\_\+\+\_\+()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def Stack.\+Stack\+Node.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{x,  }\item[{}]{y,  }\item[{}]{val,  }\item[{}]{nxt }\end{DoxyParamCaption})}
+
+
+
+Constructor for the node. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & -\/ the x coordinate of the bottom left corner of the node on the canvas. \\
+\hline
+{\em y} & -\/ the y coordinate of the bottom left corner of the node on the canvas. \\
+\hline
+{\em val} & -\/ the value to be stored in the node \\
+\hline
+{\em nxt} & -\/ the node that comes after the current one in the stack \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_stack_1_1_stack_node_a01afb84c8c935287114b2d9bdf1d2491}\label{class_stack_1_1_stack_node_a01afb84c8c935287114b2d9bdf1d2491}} 
+\index{Stack\+::\+Stack\+Node@{Stack\+::\+Stack\+Node}!change\+Color@{change\+Color}}
+\index{change\+Color@{change\+Color}!Stack\+::\+Stack\+Node@{Stack\+::\+Stack\+Node}}
+\subsubsection{\texorpdfstring{change\+Color()}{changeColor()}}
+{\footnotesize\ttfamily def Stack.\+Stack\+Node.\+change\+Color (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{color }\end{DoxyParamCaption})}
+
+
+
+Change the color of the node. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em color} & -\/ the color to which the node has to be changed. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_stack_1_1_stack_node_a96f87a002abf757eb12e5496f4c20eb4}\label{class_stack_1_1_stack_node_a96f87a002abf757eb12e5496f4c20eb4}} 
+\index{Stack\+::\+Stack\+Node@{Stack\+::\+Stack\+Node}!delete@{delete}}
+\index{delete@{delete}!Stack\+::\+Stack\+Node@{Stack\+::\+Stack\+Node}}
+\subsubsection{\texorpdfstring{delete()}{delete()}}
+{\footnotesize\ttfamily def Stack.\+Stack\+Node.\+delete (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Delete the node after undrawing all the graphical components from the canvas. 
+
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}

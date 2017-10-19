@@ -2,7 +2,14 @@ from headersForDataStructures import *
 #######################################################################################################################
 # 															QUEUE
 
+##Class which contains all the graphics and data needed by a node in the queue
 class QueueNode:
+	##Constructor for the class
+	#
+	#@param x - the x coordinate of the bottom left corner of the node
+	#@param y - the y coordinate of the bottom left corner of the node
+	#@param val - the value to be stored in the node
+	#@param nxt - the node that comes after this in the queue
 	def __init__(self, x, y, val, nxt):
 		self.data = val
 		self.next = nxt
@@ -15,6 +22,9 @@ class QueueNode:
 		self.text.draw(canvas)
 		self.arrow.draw()
 
+	##Function to change the background color of the node
+	#
+	#@param color - the color to which the node has to be changed
 	def changeColor(self, color):
 		self.circle.undraw()
 		self.circle.setFill(color)
@@ -22,16 +32,19 @@ class QueueNode:
 		self.circle.draw(canvas)
 		self.text.draw(canvas)
 
+	##Function to shift the node ahead in the queue
 	def shiftAhead(self):
 		self.circle.move(arrowLength + 2*circleRadius, 0)
 		self.text.move(arrowLength + 2*circleRadius, 0)
 		self.arrow.shiftInQueue()
 
+	##Function to shift the node behind in the queue
 	def shiftBehind(self):
 		self.circle.move(-(arrowLength + 2*circleRadius), 0)
 		self.text.move(-(arrowLength + 2*circleRadius), 0)
 		self.arrow.shiftBehindInQueue()
 
+	##Function to undraw the node and then delete its contents
 	def delete(self):
 		self.circle.undraw()
 		self.text.undraw()
@@ -44,7 +57,6 @@ class QueueNode:
 #In addition to this, it contains all the needed data members and functions to represent the data structure on the canvas.
 #Usual functions have been modified to allow for the required changes to the graph as well.
 class Queue:
-	def __init__(self, x, y, modelType, name): # modelType is an object of the type that is to be stored in the 
 	#stack...to check and raise errors at appropriate times
 
 	##Constructor for the class
@@ -54,6 +66,7 @@ class Queue:
 	#@param modelType - An object of the type to be stored in the queue, to ensure that all elements in the list are of the same type
 	#as in C++
 	#@param name - The name given by the user to an instance of this class.
+	def __init__(self, x, y, modelType, name): # modelType is an object of the type that is to be stored in the 
 		self.startingPoint = graphics.Point(x, y)
 		self.nameText = graphics.Text(graphics.Point(self.startingPoint.x + 65, self.startingPoint.y\
 			), name)
@@ -67,12 +80,17 @@ class Queue:
 		self.text.setSize(10)
 		self.text.draw(canvas)
 
+	##Function which returns true if the queue is empty and false otherwise
 	def empty(self):
 		return self.size == 0
 
+	##Function which returns the size of the queue
 	def size(self):
 		return self.size
 
+	##Function which pushes a new node to the end of the queue
+	#
+	#@param val - the value to be stored in the node that is to be pushed.
 	def pushBack(self, val):
 		#push to the end of the queue
 		headerText.setText("Pushing " + str(val) + " to the back of the queue " + self.name)
@@ -93,6 +111,9 @@ class Queue:
 			raise Exception("The new value: " + str(val) + " - " + str(type(val)) + " and the type of values stored in \
 				the queue " + self.name + " : " + str(self.type) + " are not the same")
 
+	##Function to push a node to the front of the queue
+	#
+	#@param val - the value to be stored in the node that is to be pushed.
 	def pushFront(self, val):
 		#push to the front of the queue
 		headerText.setText("Pushing " + str(val) + " to the front of the queue " + self.name)
@@ -121,6 +142,7 @@ class Queue:
 			raise Exception("The new value: " + str(val) + " - " + str(type(val)) + " and the type of values stored in \
 				the queue " + self.name + " : " + str(self.type) + " are not the same")
 
+	##Function to return the element that is at the front of the queue. It raises an error if the queue is empty.
 	def front(self):
 		#return the element at the front of the queue, if queue is empty then raise an error
 		headerText.setText("Access the element at the beginning of the queue " + self.name)
@@ -136,6 +158,7 @@ class Queue:
 			headerText.undraw()
 			return self.tail.data
 
+	##Function to return the element at the back of the queue. It raises an error if the queue is empty.
 	def back(self):
 		#return the element at the end of the queue, if queue is empty then raise an error
 		headerText.setText("Access the element at the end of the queue " + self.name)
@@ -151,6 +174,7 @@ class Queue:
 			headerText.undraw()
 			return self.head.data
 
+	##Function to pop the element at the front of the queue. If queue is empty, then raise an error:
 	def popFront(self):
 		#pop the element at the front of the queue, if queue is empty, then raise an error:
 		headerText.setText("Pop the element at the front of the queue " + self.name)
@@ -178,6 +202,7 @@ class Queue:
 				self.tail = prev
 			return ans
 
+	##Function to pop the element at the back of the queue. If the queue is empty, then raise an error:
 	def popBack(self):
 		#pop the element at the back of the queue, if the queue is empty, then raise an error:
 		headerText.setText("Pop the element at the back of the queue " + self.name)
@@ -200,6 +225,7 @@ class Queue:
 			headerText.undraw()
 			return ans
 
+	##Function to undraw all the graphics related to the queue and then delete all the data members.
 	def delete(self):
 		temp = self.head
 		while temp:
