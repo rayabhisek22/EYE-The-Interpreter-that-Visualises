@@ -33,9 +33,9 @@ headerText.setSize(15)
 def wait():
 	#define how to wait...sleep or mouse click or something else
 	#canvas.getMouse()
-	time.sleep(1)
+	time.sleep(0.4)
 
-##@bried Class contaning arrows to make a pointer between objects on the canvas
+##@brief Class contaning arrows to make a pointer between objects on the canvas
 class rightArrow:
 	##The constructor, with the coordinates of where to make the arrow
 	def __init__(self, x, y):
