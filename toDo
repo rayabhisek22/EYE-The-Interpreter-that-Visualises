@@ -10,6 +10,8 @@ index is counted from above...topmost is 0...
 
 ===========================================================================================================================
 
+Include doubly linked list and hash tables in the lexer and parser
+
 multi dimensional array are not included for now
 
 error messages in general (array indice out of range)

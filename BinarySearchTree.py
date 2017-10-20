@@ -3,10 +3,22 @@ from headersForDataStructures import *
 nodeSpace = 3*circleRadius
 verticalGap = 3*circleRadius
 
+##Function to calculate how far a node at a given level in a tree of a given height should be displaced from the centre
+#
+#@param height - height of the tree in consideration
+#@param level - level at which we are insering the node in the tree
 def displacementAtLevel(height, level):
 	return (2**(height - level - 2))*3*circleRadius
 
+##Class which stores all the graphical information and data related to a node in a binary tree
 class BinaryTreeNode:
+	##Constructor for the class
+	#
+	#@param lchild - the left child of the node in the tree
+	#@param rchild - the right child of the node in the tree
+	#@param val - the value to be stored in the node
+	#@param x - the x coordinate of the centre of the node
+	#@param y - the y coordinate of the centre of the node
 	def __init__(self, lchild, rchild, val, x, y):
 		self.left = lchild
 		self.right = rchild
@@ -28,6 +40,10 @@ class BinaryTreeNode:
 		self.circle.draw(canvas)
 		self.text.draw(canvas)
 
+	##Function to relocate the node to another point on the canvas
+	#
+	#@param x - the new x coordinate
+	#@param y - the new y coordinate
 	def relocate(self, x, y):
 		dx = x - self.location.x
 		dy = y - self.location.y
@@ -40,6 +56,9 @@ class BinaryTreeNode:
 		if self.rightLine:
 			self.rightLine.undraw()
 
+	##Function to change the color of the node
+	#
+	#@color - the new color to be set as the background of the node
 	def changeColor(self, color):
 		self.circle.undraw()
 		self.text.undraw()
@@ -47,6 +66,7 @@ class BinaryTreeNode:
 		self.circle.draw(canvas)
 		self.text.draw(canvas)
 
+	##Function to undraw the node and delete its contents
 	def delete(self):
 		if (self.leftLine):
 			self.leftLine.undraw()
@@ -55,6 +75,9 @@ class BinaryTreeNode:
 		self.circle.undraw()
 		self.text.undraw()
 
+	##Function to change the left child of the node along with all required graphical changes
+	#
+	#@param lchild - the new left child of the node
 	def changeLeft(self, lchild):
 		self.left = lchild
 		if self.leftLine == None:
@@ -69,6 +92,9 @@ class BinaryTreeNode:
 			self.leftLine.p2 = self.left.location
 			self.leftLine.draw()
 
+	##Function to change the right child of the node along with all required graphical changes
+	#
+	#@param rchild - the new right child of the node
 	def changeRight(self, rchild):
 		self.right = rchild
 		if self.right == None:
@@ -83,17 +109,20 @@ class BinaryTreeNode:
 			self.rightLine.p2 = self.right.location
 			self.rightLine.draw()
 
+	##Function to change the color of a node to show that it is being probed
 	def probe(self):
 		self.changeColor("light blue")
 		wait()
 		self.changeColor("light green")
 
+	##Function to redraw the node
 	def redraw(self):
 		self.circle.undraw()
 		self.circle.draw(canvas)
 		self.text.undraw()
 		self.text.draw(canvas)
 
+	##Function to change the color of the node and then delete it
 	def delete(self):
 		self.changeColor("red")
 		wait()
@@ -130,6 +159,11 @@ class BinarySearchTree:
 		self.rootText.setSize(10)
 		self.rootText.draw(canvas)
 
+	##Recursive Function to search for a given value in the node and then add it if it is not present
+	#
+	#@param node - the node considered in this recursive call
+	#@param val - the value which we want to search and add if not found
+	#@param level - the level at which we have reached currently.
 	def searchAdd(self, node, val, level):
 		if node.data == val:
 			node.probe()
@@ -167,18 +201,25 @@ class BinarySearchTree:
 			wait()
 			node.changeColor("light green")
 
+	##Function to redraw the entire binary tree once the coordinates of every node have been updated
 	def redraw(self):
 		if self.height != 0:
 			self.relocate(self.root, self.rootLocation.x, self.rootLocation.y, 1)
 			self.makeLines(self.root)
 			self.overDraw(self.root)
 
+	##Recursive function to overdraw a given node and then call the same function on both the childred
+	#
+	#@param node - The node which is currently to be redrawn
 	def overDraw(self, node):
 		if node:
 			node.redraw()
 			self.overDraw(node.left)
 			self.overDraw(node.right)
 
+	##Recursive function to draw all the lines linking a given node with both its children after checking that they exist
+	#
+	#@node - the node that we are currently considering
 	def makeLines(self, node):
 		if node:
 			if node.left:
@@ -190,6 +231,8 @@ class BinarySearchTree:
 				node.rightLine.draw(canvas)
 				self.makeLines(node.right)
 
+	##relocates the node to the new x value and adjusts the children accordingly. deletes all lines which will be
+	#made by makeLines()
 	def relocate(self, node, x, y, level):
 		#relocates the node to the new x value and adjusts the children accordingly. deletes all lines which will be
 		#made by makeLines()
@@ -198,6 +241,9 @@ class BinarySearchTree:
 			self.relocate(node.left, x - displacementAtLevel(self.height, level), y + verticalGap, level + 1)
 			self.relocate(node.right, x + displacementAtLevel(self.height, level), y + verticalGap, level + 1)
 
+	##Function to insert a new value into the binary tree, after checking whether the value is apt to add
+	#
+	#@param val - the new value that is to be added to the binary search tree
 	def insert(self, val):
 		if type(val) != self.type:
 			raise Exception("The type of the values stored in the binary Tree " + self.name + " : " + str(self.type) + \
@@ -217,6 +263,10 @@ class BinarySearchTree:
 				headerText.undraw()
 				return
 
+	##Recurisve helper function to find a given value in the binary search tree
+	#
+	#@param node - the node at which the search has currently reached
+	#@param val - the value that we are searching for
 	def searchHelper(self, node, val):
 		if node == None:
 			headerText.undraw()
@@ -234,12 +284,18 @@ class BinarySearchTree:
 			elif node.data < val:
 				return self.searchHelper(node.right, val)
 
+	##Recursive function to find the height of the tree, used to draw the tree correctly
+	#
+	#@param node - the node that we are currenty considering
 	def findHeight(self, node):
 		if node == None:
 			return 0
 		else:
 			return 1 + max(self.findHeight(node.left), self.findHeight(node.right))
 
+	##Function to search for a given value in the binary search tree
+	#
+	#@param val - the value for which the search is being carried out
 	def search(self, val):
 		if type(val) != self.type:
 			raise Exception("The type of value you are searching for: " + str(type(val)) + " and the type of values\
@@ -254,6 +310,10 @@ class BinarySearchTree:
 			else:
 				return self.searchHelper(self.root, val)
 
+	##Recursive helper function to find a value and delete it from the tree if it is found
+	#
+	#@param - the node that is currently being considered
+	#@param val - the value which is being searched for and is to be deleted
 	def searchDelete(self, node, val):
 		if node == None:
 			return
@@ -297,12 +357,19 @@ class BinarySearchTree:
 			else:
 				self.searchDelete(node.right, val)
 
+	##Function to find the leftmost child of a given node. A helper function for deletion
+	#
+	#@param node - the node whose leftmost child is to be found
 	def findLeftmost(self, node):
 		if node.left == None:
 			return node
 		else:
 			return self.findLeftmost(node.left)
 
+	##Function to erase a value from the binary tree. It raises an error if the type of the value does not match the type of values being 
+	#stored in the tree. It does nothing if the value is not found in the tree
+	#
+	#@param val - the value being searched for that is to be deleted
 	def erase(self, val):
 		if type(val) != self.type:
 			raise Exception("The type of value you are trying to delete: " + str(type(val)) + " and the type of values\
@@ -337,21 +404,18 @@ class BinarySearchTree:
 				headerText.undraw()
 				return
 
+	##A recursive helper function to delete the entire tree. It first deletes the children and then undraws the current node
+	#
+	#@param node - the current node to be delted
 	def deleteHelper(self, node):
 		if node!=None:
 			self.deleteHelper(node.left)
 			self.deleteHelper(node.right)
 			node.delete()
 
+	##Function to delete the entire tree, by first undrawing it and then deleting all the data.
 	def delete(self):
 		self.rootText.undraw()
 		self.deleteHelper(self.root)
 		del self
 
-
-# bst =BinarySearchTree(500, 100, 10, "asa")
-# bst.insert(0)
-# bst.insert(3)
-# bst.insert(1)
-# bst.insert(4)
-# bst.insert(2)
