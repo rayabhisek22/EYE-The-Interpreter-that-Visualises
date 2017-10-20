@@ -79,6 +79,15 @@ class rightArrow:
 		self.arrowhead2.p2.x -= (boxLength + arrowLength)
 		self.draw()
 
+	##Function to shift the whole arrow on the canvas by dx along the x axis and dy along the y axis
+	#
+	#@param dx - the amount by which the arrow is to shifted along the x axis
+	#@param dy - the amount by which the arrow is to shifted along the y axis
+	def shift(self, dx, dy):
+		self.line.move(dx, dy)
+		self.arrowhead1.move(dx, dy)
+		self.arrowhead2.move(dx, dy)
+
 	##Function to move the arrow when the queue is updated
 	def shiftInQueue(self):
 		self.line.move((2*circleRadius + arrowLength),0)
