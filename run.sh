@@ -1,2 +1,3 @@
 #!/bin/bash
-python3 -W ignore parsingRules.py < $1
+python3 -W ignore ParsingRulesActual.py $1
+
