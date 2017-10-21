@@ -44,7 +44,7 @@ parser = ParserGenerator(
     'OPEN_SQUARE','CLOSE_SQUARE','keyINT','keyINT','keyINT','keyINT','keyINT','keyINT','keyFLOAT','keyFLOAT',
     'keySTRING','keyBOOL','FLOAT','INT','STRING','BOOL','VARIABLE', 'keyIF', 'keyFOR', 'keyWHILE',
     'keyELSE', 'keyELIF', 'keyCOUT', 'COUTOPER', 'keyCIN', 'CINOPER', 'ENDL','LINKEDLIST', 'DOT','STACK','QUEUE',
-    'BST', 'MAIN', 'RETURN', 'VOID', 'PLUSEQUAL', 'MINUSEQUAL', 'MULTEQUAL', 'DIVEQUAL', 'MODEQUAL', 'COMSTART', 'COMEND'
+    'BST', 'MAIN', 'RETURN', 'VOID', 'PLUSEQUAL', 'MINUSEQUAL', 'MULTEQUAL', 'DIVEQUAL', 'MODEQUAL'
     ]
 )
 
@@ -306,6 +306,16 @@ def list_of_expression(argList):
 
 #########################################################################################################################
 # all parser rules for a if block which can either be a single statement or a block
+@parser.production('assignments : assignment COMMA assignments')
+##@return the list of assignments in the first black of for loop
+def multiple_assign(argList):
+    return [[argList[0][0]] + argList[2][0], argList[0][1] + argList[1].getstr() + argList[2][1]]
+
+@parser.production('assignments : assignment')
+##@returns the list of a single assignment
+def single_assign(argList):
+    return [[argList[0][0]], argList[0][1]]
+@parser.production('for-block : keyFOR OPEN_PARENS assignments SEMICOLON expression SEMICOLON assignment CLOSE_PARENS block')
 @parser.production('for-block : keyFOR OPEN_PARENS declaration SEMICOLON expression SEMICOLON assignment CLOSE_PARENS block')
 ##@return for-block object containing declaration, assignment and condition 
 def block_of_for(argList):
