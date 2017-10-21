@@ -315,15 +315,75 @@ def multiple_assign(argList):
 ##@returns the list of a single assignment
 def single_assign(argList):
     return [[argList[0][0]], argList[0][1]]
+
+
 @parser.production('for-block : keyFOR OPEN_PARENS assignments SEMICOLON expression SEMICOLON assignment CLOSE_PARENS block')
 @parser.production('for-block : keyFOR OPEN_PARENS declaration SEMICOLON expression SEMICOLON assignment CLOSE_PARENS block')
-##@return for-block object containing declaration, assignment and condition 
+##@return for-block object containing declaration(may be assignment), assignment and condition 
 def block_of_for(argList):
 	snippet = argList[0].getstr() + argList[1].getstr()\
 	+ argList[2][1] +  argList[3].getstr() + argList[4][1] + argList[5].getstr() + argList[6][1] + argList[7].getstr()\
 	+ argList[8][1]
 	return [ForLoop(argList[2][0], argList[4][0], argList[6][0], argList[8][0], snippet), snippet]
 
+@parser.production('for-block : keyFOR OPEN_PARENS SEMICOLON expression SEMICOLON assignment CLOSE_PARENS block')
+##@return for-block object containing only assignment and condition 
+def block_of_for(argList):
+	snippet = argList[0].getstr() + argList[1].getstr()\
+	+ argList[2].getstr() + argList[3][1] + argList[4].getstr() + argList[5][1] + argList[6].getstr()\
+	+ argList[7][1]
+	return [ForLoop([], argList[3][0], argList[5][0], argList[7][0], snippet), snippet]
+
+@parser.production('for-block : keyFOR OPEN_PARENS assignments SEMICOLON SEMICOLON assignment CLOSE_PARENS block')
+@parser.production('for-block : keyFOR OPEN_PARENS declaration SEMICOLON SEMICOLON assignment CLOSE_PARENS block')
+##@return for-block object containing declaration(may be assignment), assignment and condition 
+def block_of_for(argList):
+	snippet = argList[0].getstr() + argList[1].getstr()\
+	+ argList[2][1] +  argList[3].getstr() + argList[4].getstr() + argList[5][1] + argList[6].getstr()\
+	+ argList[7][1]
+	return [ForLoop(argList[2][0], dummyForLoop(), argList[5][0], argList[6][0], snippet), snippet]
+
+@parser.production('for-block : keyFOR OPEN_PARENS assignments SEMICOLON expression SEMICOLON CLOSE_PARENS block')
+@parser.production('for-block : keyFOR OPEN_PARENS declaration SEMICOLON expression SEMICOLON CLOSE_PARENS block')
+##@return for-block object containing declaration(may be assignment), assignment and condition 
+def block_of_for(argList):
+	snippet = argList[0].getstr() + argList[1].getstr()\
+	+ argList[2][1] +  argList[3].getstr() + argList[4][1] + argList[5].getstr() + argList[6].getstr()\
+	+ argList[7][1]
+	return [ForLoop(argList[2][0], argList[4][0], dummyForLoop(), argList[7][0], snippet), snippet]
+
+@parser.production('for-block : keyFOR OPEN_PARENS assignments SEMICOLON SEMICOLON CLOSE_PARENS block')
+@parser.production('for-block : keyFOR OPEN_PARENS declaration SEMICOLON SEMICOLON CLOSE_PARENS block')
+##@return for-block object containing declaration(may be assignment), assignment and condition 
+def block_of_for(argList):
+	snippet = argList[0].getstr() + argList[1].getstr()\
+	+ argList[2][1] +  argList[3].getstr() + argList[4].getstr()  + argList[5].getstr()\
+	+ argList[6][1]
+	return [ForLoop(argList[2][0], dummyForLoop(), dummyForLoop(), argList[6][0], snippet), snippet]
+
+@parser.production('for-block : keyFOR OPEN_PARENS SEMICOLON SEMICOLON assignment CLOSE_PARENS block')
+##@return for-block object containing only assignment and condition 
+def block_of_for(argList):
+	snippet = argList[0].getstr() + argList[1].getstr()\
+	+ argList[2].getstr() + argList[3].getstr() + argList[4][1] + argList[5].getstr()\
+	+ argList[6][1]
+	return [ForLoop([], dummyForLoop(), argList[4][0], argList[6][0], snippet), snippet]
+
+@parser.production('for-block : keyFOR OPEN_PARENS SEMICOLON expression SEMICOLON CLOSE_PARENS block')
+##@return for-block object containing only assignment and condition 
+def block_of_for(argList):
+	snippet = argList[0].getstr() + argList[1].getstr()\
+	+ argList[2].getstr() + argList[3][1] + argList[4].getstr() + argList[5].getstr()\
+	+ argList[6][1]
+	return [ForLoop([], argList[3][0], dummyForLoop(), argList[6][0], snippet), snippet]
+
+@parser.production('for-block : keyFOR OPEN_PARENS SEMICOLON SEMICOLON CLOSE_PARENS block')
+##@return for-block object containing only assignment and condition 
+def block_of_for(argList):
+	snippet = argList[0].getstr() + argList[1].getstr()\
+	+ argList[2].getstr() + argList[3].getstr() + argList[4].getstr()\
+	+ argList[5][1]
+	return [ForLoop([], dummyForLoop(), dummyForLoop(), argList[5][0], snippet), snippet]
 #########################################################################################################################
 
  												#FOR-BLOCK ENDS

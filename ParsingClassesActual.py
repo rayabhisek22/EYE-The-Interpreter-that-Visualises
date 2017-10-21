@@ -755,3 +755,11 @@ class Unknown_type():
 
 	def eval(self):
 		return self.value
+
+class dummyForLoop:
+	def __init__(self):
+		pass
+	def eval(self):
+		return True
+	def exec(self):
+		pass
