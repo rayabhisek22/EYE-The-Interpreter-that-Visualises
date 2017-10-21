@@ -388,13 +388,19 @@ class ForLoop():
 				for declareStatement in self.declare:
 					#variable lookup doesn't returns index anymore
 					#exec_stack.deleteData(declareStatement.varName,len(list_variable_dict[funcIndex])-variableLookup(declareStatement.varName,mainIndex)-1)
-					del list_variable_dict[funcIndex][-1][declareStatement.varName]
+					try:
+						del list_variable_dict[funcIndex][-1][declareStatement.varName]
+					except:
+						pass
 				return temp
 			self.assign.exec()
 		for declareStatement in self.declare:
 			#variable lookup doesn't returns index anymore
 			#exec_stack.deleteData(declareStatement.varName,len(list_variable_dict[funcIndex])-variableLookup(declareStatement.varName,mainIndex)-1)
-			del list_variable_dict[funcIndex][-1][declareStatement.varName]
+			try:
+				del list_variable_dict[funcIndex][-1][declareStatement.varName]
+			except:
+				pass
 		return None
 
 ##similar to for-loop having required arguements

@@ -22,8 +22,8 @@
 
 
 from lexer import lexer
-from parsingclassesactual import *
-from rply import parsergenerator
+from ParsingClassesActual import *
+from rply import ParserGenerator
 
 import sys
 # lines = []
@@ -36,29 +36,29 @@ import sys
 #every parser rules if matched, calls the written just after the rule
 #the function has to take a single argument which is the list of all matched patterns
 #also the function return a list of two elements, one of which is the main return format and other one the corresponding code snippet
-parser = parsergenerator(
+parser = ParserGenerator(
     # a list of all token names, accepted by the parser.
     [
-    'comma','semicolon','plus','minus','mul','div','or','and','mod','not','lessequal','greaterequal',
-    'less','greater','equal','isequal','notequal','open_parens','close_parens','open_braces','close_braces',
-    'open_square','close_square','keyint','keyint','keyint','keyint','keyint','keyint','keyfloat','keyfloat',
-    'keystring','keybool','float','int','string','bool','variable', 'keyif', 'keyfor', 'keywhile',
-    'keyelse', 'keyelif', 'keycout', 'coutoper', 'keycin', 'cinoper', 'endl','linkedlist', 'dot','stack','queue',
-    'bst', 'main', 'return', 'void', 'plusequal', 'minusequal', 'multequal', 'divequal', 'modequal', 'comstart', 'comend'
+    'COMMA','SEMICOLON','PLUS','MINUS','MUL','DIV','OR','AND','MOD','NOT','LESSEQUAL','GREATEREQUAL',
+    'LESS','GREATER','EQUAL','ISEQUAL','NOTEQUAL','OPEN_PARENS','CLOSE_PARENS','OPEN_BRACES','CLOSE_BRACES',
+    'OPEN_SQUARE','CLOSE_SQUARE','keyINT','keyINT','keyINT','keyINT','keyINT','keyINT','keyFLOAT','keyFLOAT',
+    'keySTRING','keyBOOL','FLOAT','INT','STRING','BOOL','VARIABLE', 'keyIF', 'keyFOR', 'keyWHILE',
+    'keyELSE', 'keyELIF', 'keyCOUT', 'COUTOPER', 'keyCIN', 'CINOPER', 'ENDL','LINKEDLIST', 'DOT','STACK','QUEUE',
+    'BST', 'MAIN', 'RETURN', 'VOID', 'PLUSEQUAL', 'MINUSEQUAL', 'MULTEQUAL', 'DIVEQUAL', 'MODEQUAL', 'COMSTART', 'COMEND'
     ]
 )
 
 ##@var oper_to_funcname_dict dictionary to given the class corresponding to the operator
-oper_to_funcname_dict = {'==': myisequal, '!=' : myisnotequal, '>=': mygreaterthanequalto, '<':mylessthan, '>':mygreaterthan,
- '<=': mylessthanequalto}
+oper_to_funcname_dict = {'==': myIsEqual, '!=' : myIsNotEqual, '>=': myGreaterThanEqualTo, '<':myLessThan, '>':myGreaterThan,
+ '<=': myLessThanEqualTo}
 
 ##@var keyword_dictionary dictionary to given the class corresponding to the data type
-keyword_dictionary = {'int' : int, 'bool' : bool, 'float' : float, 'string' : string } 
+keyword_dictionary = {'int' : Int, 'bool' : Bool, 'float' : Float, 'string' : String } 
 
 ##@var data_struct_dictionary dictionary to give the class corresponding to the data structure
-data_struct_dictionary={'linkedlist':singlylinkedlist, 'queue':queue, 'stack':stack, 'binarysearchtree':binarysearchtree}
+data_struct_dictionary={'linkedlist':SinglyLinkedList, 'queue':Queue, 'stack':Stack, 'binarysearchtree':BinarySearchTree}
 ##@var keyword_default_value_dict gives the default values of every data type
-keyword_default_value_dict = {'int' : 0, 'bool' : false, 'float' : 0.0, 'string' : "" } 
+keyword_default_value_dict = {'int' : 0, 'bool' : False, 'float' : 0.0, 'string' : "" } 
 
  												#start point of parser
 
@@ -87,7 +87,7 @@ def code_of_main(arglist):
 def func_declare_in_globals(arglist):
 	return [[arglist[0][0]] + arglist[1][0], arglist[0][1] + arglist[1][1]]
 
-@parser.production('globals : declaration semicolon globals')
+@parser.production('globals : declaration SEMICOLON globals')
 ##@return the global variable declaration
 def declare_in_globals(arglist):
 	return [arglist[0][0] + arglist[2][0], arglist[0][1] + arglist[1].getstr() + arglist[2][1]]
@@ -96,7 +96,7 @@ def declare_in_globals(arglist):
 ##@return function declaration code
 def func_declare(arglist):
 	return [[arglist[0][0]], arglist[0][1]]
-@parser.production('globals : declaration semicolon')
+@parser.production('globals : declaration SEMICOLON')
 ##@return the global declaration
 def declare_global(argList):
 	return [argList[0][0], argList[0][1] + argList[1].getstr()]
@@ -170,13 +170,14 @@ def if_else(argList):
 def if_only(argList):
 	return [[IfStatement(argList[0][0])], argList[0][1]]
 
+@parser.production('statement : output-stream SEMICOLON')
 ##@return list of cout objects  
 def output_stream(argList):
 	snippet =  argList[0][1] + argList[1].getstr()
 	return [[CoutStatement(argList[0][0], snippet)],snippet]
 @parser.production('statement : input-stream SEMICOLON')
 ##@return list of input objects 
-def output_stream(argList):
+def input_stream(argList):
 	snippet =  argList[0][1] + argList[1].getstr()
 	return [[CinStatement(argList[0][0], snippet)],snippet]
 @parser.production('statement : class-functions-object SEMICOLON')
