@@ -10,15 +10,14 @@
 #
 #\section running How to run your code?
 #
-#<running instructions, Bansal ?>
 #First of all you need to have following softwares and libraires installed in you mahcine. If not already installed, the instructions of installing are given along with the name:
 #
 #	1. python3	:	sudo apt-get install python3.6
 #	2. rply		:	sudo pip3 install rply
 #
 #After installing is completed, you can write your code in a text file (preferred extension is .i).
-#After saving the file (say with a  name filename.t), run the following command:
-#			./run.sh filename.i
+#After saving the file (say with a  name filename.i), run the following command:
+#<br><br> <b><center>./run.sh filename.i</center></b><br><br>
 # That's all you need to do
 #\section tp <add more stuff>
 #

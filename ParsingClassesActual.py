@@ -755,11 +755,15 @@ class Unknown_type():
 
 	def eval(self):
 		return self.value
-
-class dummyForLoop:
+##class for making dummy statements in the for loop
+class dummyStatements:
+## @constructor nothing useful
 	def __init__(self):
 		pass
+## @return True always indicating the case of absence of condition in for loop
 	def eval(self):
 		return True
+## @return nothing... just passes
 	def exec(self):
 		pass
+##/endcond
