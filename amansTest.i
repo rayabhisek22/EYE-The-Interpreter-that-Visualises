@@ -1,7 +1,7 @@
 stack<int> s1;
 stack<int> s2;
 
-int refill()
+void refill()
 {
     while(!s1.empty())
     {

@@ -237,6 +237,20 @@ def func_declaration_to_class (argList):
 	return [FuncDeclaration(argList[1].getstr(), argList[3][0], argList[5][0], snippet),snippet]
 
 
+#declarations
+@parser.production('func-declaration : VOID VARIABLE OPEN_PARENS CLOSE_PARENS block')
+##@return functionDeclaration object of function with no parameters 
+def func_declaration_to_class (argList):
+	snippet = argList[0].getstr() + argList[1].getstr() + argList[2].getstr()\
+	+ argList[3].getstr() + argList[4][1]
+	return [FuncDeclaration(argList[1].getstr(), [], argList[4][0], snippet), snippet]
+
+@parser.production('func-declaration : VOID VARIABLE OPEN_PARENS vars CLOSE_PARENS block')
+##@return functinonDeclaration object of function with parameters 
+def func_declaration_to_class (argList):
+	snippet =  argList[0].getstr() + argList[1].getstr()\
+	 + argList[2].getstr() + argList[3][1] + argList[4].getstr() + argList[5][1]
+	return [FuncDeclaration(argList[1].getstr(), argList[3][0], argList[5][0], snippet),snippet]
 
 @parser.production('vars : var COMMA vars')
 ##@return list of arguments to a function in function declaration 
