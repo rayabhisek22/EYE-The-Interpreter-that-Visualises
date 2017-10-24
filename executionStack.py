@@ -1,5 +1,5 @@
 import graphics
-from headersForDataStructures import canvas, wait, headerText, codeText, drawCodeText
+from headersForDataStructures import canvas, wait, headerText, codeText, drawCodeText, drawHeader as drawHeaderText
 
 bottomx = 20
 bottomy = 650
@@ -200,10 +200,11 @@ class FunctionStack:
 		wait()
 
 class Node:
-	def __init__(self, x, y, nxt):
+	def __init__(self, x, y, nxt, color):
 		self.x = x
 		self.y = y
 		self.rectangle = graphics.Rectangle(graphics.Point(x, y), graphics.Point(x + nodeWidth, y + nodeHeight))
+		self.rectangle.setFill(color)
 		self.next = nxt
 		self.rectangle.draw(canvas)
 		self.data = {} #key->variable name, value->Text object
@@ -261,7 +262,8 @@ class Node:
 
 class ExecutionStack:
 	def __init__(self):
-		self.head = Node(bottomx, bottomy, None)
+		self.color = colorList[0]
+		self.head = Node(bottomx, bottomy, None, self.color)
 		self.head.addGlobal()
 		self.size = 1
 
@@ -269,7 +271,7 @@ class ExecutionStack:
 		headerText.setText("Creating a new activation frame")
 		drawHeader()
 		temp = self.head
-		self.head = Node(bottomx, temp.y-nodeHeight, temp)
+		self.head = Node(bottomx, temp.y-nodeHeight, temp, self.color)
 		self.size += 1
 		self.head.modifyDictionary(dictionary)
 		self.head.showDictionary()
