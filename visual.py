@@ -8,7 +8,7 @@ def main():
 		#r.setFill("Red")
 		r[0].setFill("Red")
 		r[1].setFill("Blue")
-		r[2].setFill("Green")
+		r[2].setFill("#ffffff")
 		for i in range(len(r)):
 			r[i].draw(win)
 
