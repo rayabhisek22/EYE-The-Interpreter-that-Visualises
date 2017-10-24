@@ -194,12 +194,13 @@ modelTypeDict = {'int':10, 'float':0.2, 'string':"as", 'bool':True}
 
 ##function declarations class which pushes an executable function class to the dictionary
 class FuncDeclaration():
-	def __init__(self, funcName, funcParameters, executableBlock,snippet):
+	def __init__(self, funcType, funcName, funcParameters, executableBlock,snippet):
 		##the constructor
 		#@paramfuncName : name of function
 		#@paramfuncParameters : list of tuples containing name followed by type(class) ex. [('count', Int())]
 		#@paramexecutableBlock : the block of the function
 		#@param snippet The relevant code snippet
+		self.funcType = funcType
 		self.name = funcName
 		self.parameters = funcParameters
 		self.executable = executableBlock
@@ -209,7 +210,7 @@ class FuncDeclaration():
 	def exec(self):
 		if self.name in funcDict:
 			raise Exception("Function " + self.name + " already declared")
-		funcDict[self.name] = FunctionClass(self.parameters, self.executable)
+		funcDict[self.name] = FunctionClass(self.funcType, self.parameters, self.executable)
 		return None
 
 ##The class which when given the arguments calls the functions
@@ -217,7 +218,8 @@ class FunctionClass():
 	##the constructor
 	#@param parameters A list of tuples containg the parameter name and type
 	#@param excutable The body of the function which can be executed 
-	def __init__ (self, parameters,executable):
+	def __init__ (self, funcType, parameters,executable):
+		self.funcType = funcType
 		self.parameters = parameters
 		self.executable = executable
 
@@ -246,6 +248,23 @@ class FunctionClass():
 		exec_stack.deleteFunctionFrame()
 		funcIndex = funcIndex - 1
 		list_variable_dict.pop()
+		if self.funcType == "void":
+			if temp != None:
+				raise Exception("non-void value returned in a void function")
+		elif self.funcType == "int":
+			if type(temp) != 'int':
+				raise Exception("non integer value returned in a int function")
+
+		elif self.funcType == "bool":
+			if type(temp) != 'bool':
+				raise Exception("non integer value returned in a int function")
+		elif self.funcType == "string":
+			if type(temp) != 'str':
+				raise Exception("non integer value returned in a int function")
+
+		elif self.funcType == "float":
+			if type(temp) != 'float':
+				raise Exception("non integer value returned in a int function")
 		return temp
 
 ##The class which actually calls the function		
