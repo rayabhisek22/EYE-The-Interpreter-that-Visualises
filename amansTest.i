@@ -8,7 +8,7 @@ void refill()
         s2.push(s1.top());
         s1.pop();
     }
-    return 0;
+    return;
 }
 
 main_program{
