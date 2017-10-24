@@ -7,7 +7,9 @@ int gcd(int a)
 
 int main()
 {
-	int i=1;
-	i++=2;
-	cout<<i;
+	int n;
+	cin>>n;
+	while()
+	{
+		cout<<n<<endl;
 }
