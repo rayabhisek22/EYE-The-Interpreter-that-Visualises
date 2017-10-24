@@ -2,7 +2,7 @@ from headersForDataStructures import *
 
 textHeight = 20
 textWidth = 20
-boxWidth = 15
+boxWidth = 25
 boxHeight = 15
 
 ##Class which stored all data related to one node in one list of the hash table including the value to be stored, the node that comes next
@@ -22,6 +22,7 @@ class Node:
 			self.rectangle.setFill("lightgreen")
 			self.text = graphics.Text(graphics.Point(x + arrowLength + boxWidth/2, y), str(val))
 			self.data = val
+			self.text.setSize(10)
 		else:
 			self.rectangle = graphics.Rectangle(graphics.Point(x + arrowLength, y - boxHeight/2), graphics.Point\
 				(x + arrowLength + 2*boxWidth, y + boxHeight/2))
@@ -257,9 +258,9 @@ class HashTable:
 			key = val % self.divisor
 			self.components[key].highlight()
 			if self.components[key].list.find(val):
-				return False
-			else:
 				return True
+			else:
+				return False
 			headerText.undraw()
 
 	##Function to erase a given value from the hash table. Does nothing if the value is not found
