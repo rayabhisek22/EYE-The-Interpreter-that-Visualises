@@ -25,7 +25,8 @@
 #
 
 
-
+##@file
+#This file contains the rules used to parse the user's code
 
 
 from lexer import lexer
