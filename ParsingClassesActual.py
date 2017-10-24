@@ -256,18 +256,19 @@ class FunctionClass():
 			if temp != None:
 				raise Exception("non-void value returned in a void function")
 		elif self.funcType == "int":
-			if type(temp) != 'int':
+			if type(temp) != 'int' and  not isinstance(temp, int) :
+				print(type(temp))
 				raise Exception("non integer value returned in a int function")
 
 		elif self.funcType == "bool":
-			if type(temp) != 'bool':
+			if type(temp) != 'bool' and  not isinstance(temp, bool):
 				raise Exception("non integer value returned in a int function")
 		elif self.funcType == "string":
-			if type(temp) != 'str':
+			if type(temp) != 'str' and  not isinstance(temp, str):
 				raise Exception("non integer value returned in a int function")
 
 		elif self.funcType == "float":
-			if type(temp) != 'float':
+			if type(temp) != 'float' and  not isinstance(temp, float):
 				raise Exception("non integer value returned in a int function")
 		return temp
 

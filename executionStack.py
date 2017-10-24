@@ -20,7 +20,7 @@ arrayBegx=20
 numberOfArrays=0
 arrayOffset = 50
 
-colorList = ["lightgreen"]*30
+colorList = ["#a2ffa0"]*1 + ["#ff943d"]*3 + ["#faff00"]*3 +   ["#10c9e5"]*3 + ["#f693ff"]*29
 
 def drawHeader():
 	try:
