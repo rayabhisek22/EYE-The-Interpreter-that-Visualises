@@ -20,7 +20,7 @@ arrayBegx=20
 numberOfArrays=0
 arrayOffset = 50
 
-
+colorList = ["lightgreen"]*30
 
 def drawHeader():
 	try:
@@ -36,7 +36,8 @@ class Graphics:
 
 	def makeFunctionFrame(self, name):
 		number = len(self.functions)
-		self.functions.append(FunctionStack(functionsx + (number%3)*(gap+funcnodeWidth), functionsy - (number//3)*deafaultFunctionHeight))
+		self.functions.append(FunctionStack(functionsx + (number%3)*(gap+funcnodeWidth), functionsy - \
+			(number//3)*deafaultFunctionHeight, colorList[number + 1]))
 		self.functions[number].push({})
 		self.functions[number].displayName(name)
 
@@ -69,19 +70,21 @@ class Graphics:
 		else:
 			self.functions[funcIndex - 1].addData(key, val)
 
-	def deleteData(self, key, val, index, funcIndex):
+	def deleteData(self, key, index, funcIndex):
 		if funcIndex == 0:
 			estack.deleteData(key, index)
 		else:
-			self.functions[funcIndex - 1].deleteData(key, val, index)
+			self.functions[funcIndex - 1].deleteData(key, index)
 
 
 class FuncNode:
-	def __init__(self, x, y, nxt):
+	def __init__(self, x, y, nxt, color):
 		self.x = x
 		self.y = y
+		self.color = color
 		self.rectangle = graphics.Rectangle(graphics.Point(x, y), graphics.Point(x + funcnodeWidth, y + funcnodeHeight))
 		self.next = nxt
+		self.rectangle.setFill(self.color)
 		self.rectangle.draw(canvas)
 		self.data = {} #key->variable name, value->Text object
 
@@ -114,7 +117,7 @@ class FuncNode:
 		self.data[key].draw(canvas)
 		wait()
 
-	def deleteData(self, key, val):
+	def deleteData(self, key):
 		self.data[key].undraw()
 		del self.data[key]
 
@@ -130,11 +133,12 @@ class FuncNode:
 
 
 class FunctionStack:
-	def __init__(self, x, y):
+	def __init__(self, x, y, color):
 		self.head = None
 		self.x = x
 		self.y = y
 		self.size = 0
+		self.color = color
 
 	def displayName(self, name):
 		self.nameText = graphics.Text(graphics.Point(self.x + funcnodeWidth/2, self.y + 15), name)
@@ -145,9 +149,9 @@ class FunctionStack:
 		drawHeader()
 		temp = self.head
 		if self.size!= 0:
-			self.head = FuncNode(self.x, temp.y-nodeHeight, temp)
+			self.head = FuncNode(self.x, temp.y-nodeHeight, temp, self.color)
 		else:
-			self.head = FuncNode(self.x, self.y - nodeHeight, temp)
+			self.head = FuncNode(self.x, self.y - nodeHeight, temp, self.color)
 		self.size += 1
 		self.head.modifyDictionary(dictionary)
 		self.head.showDictionary()
@@ -166,7 +170,7 @@ class FunctionStack:
 			index -=1
 		temp.modifyData(key, val)
 
-	def deleteData(self, key, val, index):
+	def deleteData(self, key,index):
 		temp = self.head
 		while (index > 0):
 			temp = temp.next
