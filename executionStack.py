@@ -230,7 +230,7 @@ class Node:
 
 	def addData(self, key, val):
 		size = len(self.data)
-		print((size/2)*textHeight, -self.rectangle.p1.y + self.rectangle.p2.y)
+		#print((size/2)*textHeight, -self.rectangle.p1.y + self.rectangle.p2.y)
 		self.data[key] = graphics.Text(graphics.Point(self.x + ((size%2)*(nodeWidth)/2)+(nodeWidth)/4, self.y + textHeight/2 + \
 			(size//2)*textHeight), str(key) + " = " + str(val))
 		self.data[key].draw(canvas)
