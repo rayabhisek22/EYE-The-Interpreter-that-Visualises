@@ -766,6 +766,7 @@ class Member_function():
 		self.snippet = snippet
 
 	def eval(self):
+		changetext(self.snippet)
 		return getattr(variableLookup(self.name)[0], self.functname)()
 
 	def exec(self):
@@ -779,6 +780,7 @@ class Multiple_member_function():
 		self.snippet = snippet
 
 	def eval(self):
+		changetext(self.snippet)
 		return getattr(variableLookup(self.name)[0], self.functname)(*map(lambda x: x.eval(),self.arguements))
 
 	def exec(self):
