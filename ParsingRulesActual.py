@@ -17,7 +17,7 @@
 #
 #After installing is completed, you can write your code in a text file (preferred extension is .i).
 #After saving the file (say with a  name filename.i), run the following command:
-#<br><br> <b><center>./run.sh filename.i</center></b><br><br>
+#<br> <b><center>./run.sh filename.i</center></b>
 # That's all you need to do
 #\section tp <add more stuff>
 #

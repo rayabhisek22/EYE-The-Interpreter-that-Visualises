@@ -69,6 +69,12 @@ class Graphics:
 		else:
 			self.functions[funcIndex - 1].addData(key, val)
 
+	def deleteData(self, key, val, index, funcIndex):
+		if funcIndex == 0:
+			estack.deleteData(key, index)
+		else:
+			self.functions[funcIndex - 1].deleteData(key, val, index)
+
 
 class FuncNode:
 	def __init__(self, x, y, nxt):
@@ -107,6 +113,10 @@ class FuncNode:
 		self.data[key].setText(str(key) + " = " + str(newVal))
 		self.data[key].draw(canvas)
 		wait()
+
+	def deleteData(self, key, val):
+		self.data[key].undraw()
+		del self.data[key]
 
 	def delt(self,key):
 		self.data[key].undraw()
@@ -155,6 +165,13 @@ class FunctionStack:
 			temp = temp.next
 			index -=1
 		temp.modifyData(key, val)
+
+	def deleteData(self, key, val, index):
+		temp = self.head
+		while (index > 0):
+			temp = temp.next
+			index -= 1
+		temp.delteData(key, val)
 
 	def deleteData(self,key,index):
 		temp = self.head
