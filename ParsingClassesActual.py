@@ -160,6 +160,7 @@ class PrimitiveDeclaration():
 		x=self.varValue.eval()
 		currFunc = list_variable_dict[funcIndex]
 		currFunc[-1][self.varName] = self.varType(x)
+		changetext(self.snippet)
 		exec_stack.addData(self.varName,x,funcIndex)
 		return None
 
@@ -184,6 +185,7 @@ class ArrayDeclaration():
 			raise Exception("Variable "+self.varName + " already declared")
 		x=self.length.eval()
 		array_dict[self.varName]=VisualArray(x,self.varName)
+		changetext(self.snippet)
 		exec_stack.addData(self.varName,"Array",funcIndex)
 		list_variable_dict[funcIndex][-1][self.varName] = Array(self.varType(self.varValue.eval()), x,self.varName)
 		return None
@@ -263,6 +265,7 @@ class FunctionCall():
 
 	##The function which actually calls the functionClass with list of values
 	def eval(self):
+		changetext("Calling the function"+self.name)
 		return funcDict[self.name].exec(self.value,self.name)
 
 ##initialization for our data structures
@@ -286,6 +289,7 @@ class DataStructureDeclaration():
 		if self.name in list_variable_dict[funcIndex][-1]:
 			raise Exception("varialble" +self.name + "already declared")
 		else:
+			changetext(self.snippet)
 			if self.theClass==Stack:
 				list_variable_dict[funcIndex][-1][self.name]=self.theClass(stackx-numberofstacks*stackwidth,\
 				 stacky, modelTypeDict[self.vartype], self.name)
@@ -316,6 +320,7 @@ class HashDeclaration():
 		self.snippet=snippet
 
 	def exec(self):
+		changetext(self.snippet)
 		list_variable_dict[funcIndex][-1][self.name]=self.theClass(self.exp.eval(),hashx,\
 		 hashy, modelTypeDict[self.vartype], self.name)
 		exec_stack.addData(self.name,"HashTable",funcIndex)
@@ -402,6 +407,7 @@ class ForLoop():
 
 	##The executable which implements the ForLoop in correct order
 	def exec(self):
+		changetext("Starting a for loop")
 		for declareStatement in self.declare:
 			declareStatement.exec()
 		while self.express.eval():
@@ -439,6 +445,7 @@ class WhileLoop():
 
 	##the ecutable implementing While-loop
 	def exec(self):
+		changetext("Starting a while loop")
 		while self.express.eval():
 			temp = self.statementList.exec()
 			if (temp != None):
@@ -455,6 +462,7 @@ class IfStatement():
 	##The executable which runs until it finds the first true condtion, following which that block is executed
 	def exec(self):
 		snipp="If statement being executed"
+		changetext(snipp)
 		for pair in self.listofConditionals:
 			if pair[0].eval():
 				return pair[1].exec()
@@ -471,6 +479,8 @@ class CoutStatement():
 
 	##The executable which prints the evaluated expressions
 	def exec(self):
+		changetext("cout statement being executed")
+		changetext(self.snippet)
 		for expresses in self.listOfExpress:
 			print(expresses.eval(), end='')
 
@@ -486,6 +496,8 @@ class CinStatement():
 	##the executable that takes the input
 	def exec(self):
 		global input_list
+		changetext("cin statement being executed")
+		changetext(self.snippet)
 		for var in self.listOfVars:
 			if input_list:
 				var.update(PrimitiveDT(input_list[0]))
