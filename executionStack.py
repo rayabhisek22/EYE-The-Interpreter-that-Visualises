@@ -72,7 +72,7 @@ class Graphics:
 
 	def deleteData(self, key, index, funcIndex):
 		if funcIndex == 0:
-			estack.deleteData(key, index)
+			self.estack.deleteData(key, index)
 		else:
 			self.functions[funcIndex - 1].deleteData(key, index)
 
