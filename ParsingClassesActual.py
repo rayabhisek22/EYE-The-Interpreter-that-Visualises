@@ -7,6 +7,10 @@ from executionStack import VisualArray, Graphics, canvas, codeText, drawCodeText
 def changetext(s):
 	codeText.setText(s)
 	drawCodeText()
+
+def changeheader(s):
+	headerText.setText(s)
+	drawHeaderText()
 funcDict = {}
 array_dict={}
 exec_stack = Graphics()
@@ -265,7 +269,7 @@ class FunctionCall():
 
 	##The function which actually calls the functionClass with list of values
 	def eval(self):
-		changetext("Calling the function"+self.name)
+		changeheader("Calling the function "+self.name)
 		return funcDict[self.name].exec(self.value,self.name)
 
 ##initialization for our data structures
@@ -407,7 +411,7 @@ class ForLoop():
 
 	##The executable which implements the ForLoop in correct order
 	def exec(self):
-		changetext("Starting a for loop")
+		changeheader("Starting a for loop")
 		for declareStatement in self.declare:
 			declareStatement.exec()
 		while self.express.eval():
@@ -446,7 +450,7 @@ class WhileLoop():
 
 	##the ecutable implementing While-loop
 	def exec(self):
-		changetext("Starting a while loop")
+		changeheader("Starting a while loop")
 		while self.express.eval():
 			temp = self.statementList.exec()
 			if (temp != None):
@@ -463,7 +467,7 @@ class IfStatement():
 	##The executable which runs until it finds the first true condtion, following which that block is executed
 	def exec(self):
 		snipp="If statement being executed"
-		changetext(snipp)
+		changeheader(snipp)
 		for pair in self.listofConditionals:
 			if pair[0].eval():
 				return pair[1].exec()
@@ -480,7 +484,7 @@ class CoutStatement():
 
 	##The executable which prints the evaluated expressions
 	def exec(self):
-		changetext("cout statement being executed")
+		changeheader("cout statement being executed")
 		changetext(self.snippet)
 		for expresses in self.listOfExpress:
 			print(expresses.eval(), end='')
@@ -497,7 +501,7 @@ class CinStatement():
 	##the executable that takes the input
 	def exec(self):
 		global input_list
-		changetext("cin statement being executed")
+		changeheader("cin statement being executed")
 		changetext(self.snippet)
 		for var in self.listOfVars:
 			if input_list:
@@ -766,6 +770,7 @@ class Member_function():
 		self.snippet = snippet
 
 	def eval(self):
+		changeheader("Data member function being run")
 		changetext(self.snippet)
 		return getattr(variableLookup(self.name)[0], self.functname)()
 
@@ -780,6 +785,7 @@ class Multiple_member_function():
 		self.snippet = snippet
 
 	def eval(self):
+		changeheader("Data member function being run")
 		changetext(self.snippet)
 		return getattr(variableLookup(self.name)[0], self.functname)(*map(lambda x: x.eval(),self.arguements))
 
