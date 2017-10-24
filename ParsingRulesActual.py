@@ -10,7 +10,7 @@
 #
 #\section running How to run your code?
 #
-#First of all you need to have following softwares and libraires installed in you mahcine. If not already installed, the instructions of installing are given along with the name:
+#First of all you need to have following softwares and libraires installed in you machine. In case they are not already installed, the instructions of installing are given below along with the name:
 #
 #	1. python3	:	sudo apt-get install python3.6
 #	2. rply		:	sudo pip3 install rply
@@ -19,11 +19,6 @@
 #After saving the file (say with a  name filename.i), run the following command:
 #<br> <b><center>./run.sh filename.i</center></b>
 # That's all you need to do
-#\section tp <add more stuff>
-#
-#Anyone with any ideas add stuff to this page...the code for this page is at the top of ParsingRulesActual.py
-#
-
 
 ##@file
 #This file contains the rules used to parse the user's code

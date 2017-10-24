@@ -257,7 +257,6 @@ class FunctionClass():
 				raise Exception("non-void value returned in a void function")
 		elif self.funcType == "int":
 			if type(temp) != 'int' and  not isinstance(temp, int) :
-				print(type(temp))
 				raise Exception("non integer value returned in a int function")
 
 		elif self.funcType == "bool":
