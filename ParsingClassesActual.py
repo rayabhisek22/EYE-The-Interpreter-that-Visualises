@@ -2,11 +2,14 @@ from rply.token import *
 import sys
 #from headersForDataStructures import SinglyLinkedList, Queue, Stack, BinarySearchTree
 from dataStructures import *
-from executionStack import ExecutionStack, VisualArray
+from executionStack import VisualArray, Graphics, canvas, codeText, drawCodeText
 
+def changetext(s):
+	codeText.setText(s)
+	drawCodeText()
 funcDict = {}
 array_dict={}
-exec_stack = ExecutionStack()
+exec_stack = Graphics()
 list_variable_dict = [[{}]]
 funcIndex = 0
 mainIndex = -1
@@ -27,6 +30,8 @@ linkedlisty=150
 numberoflinkedlist=0
 treex=1100
 treey=80
+hashx=750
+hashy=80
 
 ##@brief Looks up for a variable name in the variable dictionary
 #
@@ -38,9 +43,9 @@ def variableLookup(name):
 	#high possiblity of a bug roaming around here
 	for i in range(len(list_variable_dict[funcIndex]) - 1, -1 , -1):
 		if name in list_variable_dict[funcIndex][i]:
-			return list_variable_dict[funcIndex][i][name]
+			return [list_variable_dict[funcIndex][i][name],[funcIndex,i]]
 	if name in list_variable_dict[0][0]:
-		return list_variable_dict[0][0][name]
+		return [list_variable_dict[0][0][name],[0,0]]
 	raise Exception("variable "+ name + " not found")
 # Creates classes for basic data types which can be evaluated and updated(mainly for arrays)
 
@@ -91,12 +96,12 @@ class ArrayVariable():
 
 	##The function which gives the value at that index
 	def eval(self):
-		return variableLookup(self.name).get(self.index.eval()).eval()
+		return variableLookup(self.name)[0].get(self.index.eval()).eval()
 
 	##the function which updates the value at the stored index
 	#@param value The value(class that can be evaluated) to which the upation occurs
 	def update(self, value):
-		variableLookup(self.name).update(self.index.eval(), value.eval())
+		variableLookup(self.name)[0].update(self.index.eval(), value.eval())
 
 
 ##The class which stores a variable as a class,with relevant functions like eval and update
@@ -108,15 +113,15 @@ class Variable():
 
 	##The value of the the variable is given after looking up the dictionary
 	def eval(self):
-		return variableLookup(self.name).eval()
+		return variableLookup(self.name)[0].eval()
 
 	##It updates the value of the variable
 	#@param obj2 The value(a class to be evaluated) to which the updation has to occur
 	def update(self,obj2):
 		y = obj2.eval()
 		var = variableLookup(self.name)
-		var.update(y)
-		#exec_stack.modifyData(self.name,y,len(list_variable_dict[funcIndex])-i-1)
+		var[0].update(y)
+		exec_stack.modifyData(self.name,y,len(list_variable_dict[funcIndex])-var[1][1]-1,var[1][0])
 #################################################################
 
 ##the executable class for assignment which contains the variable and the expression
@@ -132,6 +137,7 @@ class Assignment():
 
 	##The function which actually carries out the updation
 	def exec(self):
+		changetext(self.snippet)
 		self.left.update(self.right)
 		return None
 ##the  executable declaration for basic variables 
@@ -154,7 +160,7 @@ class PrimitiveDeclaration():
 		x=self.varValue.eval()
 		currFunc = list_variable_dict[funcIndex]
 		currFunc[-1][self.varName] = self.varType(x)
-		exec_stack.addData(self.varName,x)
+		exec_stack.addData(self.varName,x,funcIndex)
 		return None
 
 ##the executable array declarartion
@@ -178,7 +184,7 @@ class ArrayDeclaration():
 			raise Exception("Variable "+self.varName + " already declared")
 		x=self.length.eval()
 		array_dict[self.varName]=VisualArray(x,self.varName)
-		exec_stack.addData(self.varName,"Array")
+		exec_stack.addData(self.varName,"Array",funcIndex)
 		list_variable_dict[funcIndex][-1][self.varName] = Array(self.varType(self.varValue.eval()), x,self.varName)
 		return None
 
@@ -217,12 +223,13 @@ class FunctionClass():
 	##The executable which on getting the list of arguments initializes the parametrs to respective values and then
 	#executes the body, and returns some value on encountering return
 	#@param arguemnets The list of arguments
-	def exec(self,arguements):
+	def exec(self,arguements,name):
 		global funcIndex
 		val = []
 		for i in range(len(self.parameters)):
 			val.append(arguements[i].eval())
 		funcIndex = funcIndex + 1
+		exec_stack.makeFunctionFrame(name)
 		list_variable_dict.append([{}])
 		for i in range(len(self.parameters)):  #high probability of presence of a bug here.....
 			PrimitiveDeclaration(self.parameters[i][0], self.parameters[i][1], Unknown_type(val[i]), "	").exec()
@@ -234,6 +241,7 @@ class FunctionClass():
 			if arguements[i].__name__ != self.parameters.__name__:
 				raise Exception("expected " + self.parameters.__name__ + "object, given " + arguements[i].__name__)"""
 		temp = self.executable.exec()
+		exec_stack.deleteFunctionFrame()
 		funcIndex = funcIndex - 1
 		list_variable_dict.pop()
 		return temp
@@ -255,7 +263,7 @@ class FunctionCall():
 
 	##The function which actually calls the functionClass with list of values
 	def eval(self):
-		return funcDict[self.name].exec(self.value)
+		return funcDict[self.name].exec(self.value,self.name)
 
 ##initialization for our data structures
 class DataStructureDeclaration():
@@ -281,23 +289,37 @@ class DataStructureDeclaration():
 			if self.theClass==Stack:
 				list_variable_dict[funcIndex][-1][self.name]=self.theClass(stackx-numberofstacks*stackwidth,\
 				 stacky, modelTypeDict[self.vartype], self.name)
-				exec_stack.addData(self.name,"Stack")
+				exec_stack.addData(self.name,"Stack",funcIndex)
 				numberofstacks=numberofstacks+1
 			elif self.theClass==Queue:
 				list_variable_dict[funcIndex][-1][self.name]=self.theClass(queuex,\
 				 queuey+numberofqueues*queueheight, modelTypeDict[self.vartype], self.name)
-				exec_stack.addData(self.name,"Queue")
+				exec_stack.addData(self.name,"Queue",funcIndex)
 				numberofqueues=numberofqueues+1
-			elif self.theClass==SinglyLinkedList:
+			elif self.theClass==SinglyLinkedList or self.theClass==DoublyLinkedList:
 				list_variable_dict[funcIndex][-1][self.name]=self.theClass(linkedlistx,\
 				 linkedlisty+numberoflinkedlist*linkedlistheight, modelTypeDict[self.vartype], self.name)
-				exec_stack.addData(self.name,"LinkedList")
+				exec_stack.addData(self.name,"LinkedList",funcIndex)
 				numberoflinkedlist=numberoflinkedlist+1
 			elif self.theClass==BinarySearchTree:
 				list_variable_dict[funcIndex][-1][self.name]=self.theClass(treex,\
 				 treey, modelTypeDict[self.vartype], self.name)
-				exec_stack.addData(self.name,"BST")
+				exec_stack.addData(self.name,"BST",funcIndex)
 		return None
+
+class HashDeclaration():
+	def __init__(self,className,name,vartype,exp,snippet):
+		self.name=name
+		self.vartype=vartype
+		self.theClass=className
+		self.exp=exp
+		self.snippet=snippet
+
+	def exec(self):
+		list_variable_dict[funcIndex][-1][self.name]=self.theClass(self.exp.eval(),hashx,\
+		 hashy, modelTypeDict[self.vartype], self.name)
+		exec_stack.addData(self.name,"HashTable",funcIndex)
+
 
 ##variable class of array which can be probed and updated
 class Array(): 
@@ -342,7 +364,7 @@ class Block():
 		global mainIndex, list_variable_dict
 		mainIndex = mainIndex + 1
 		list_variable_dict[funcIndex].append({})
-		exec_stack.push({})
+		exec_stack.push({},funcIndex)
 		returnType = None
 		for executable in self.listExecutables:
 			# if type(executable) is list:
@@ -356,11 +378,11 @@ class Block():
 			if (temp != None):
 				mainIndex = mainIndex - 1
 				list_variable_dict[funcIndex].pop()
-				exec_stack.pop()
+				exec_stack.pop(funcIndex)
 				return temp
 		mainIndex = mainIndex - 1
 		list_variable_dict[funcIndex].pop()
-		exec_stack.pop()
+		exec_stack.pop(funcIndex)
 
 ##the class for for-loop containing declaration,conditions,block and updation
 class ForLoop():
@@ -731,7 +753,7 @@ class Member_function():
 		self.snippet = snippet
 
 	def eval(self):
-		return getattr(variableLookup(self.name), self.functname)()
+		return getattr(variableLookup(self.name)[0], self.functname)()
 
 	def exec(self):
 		self.eval()
@@ -744,7 +766,7 @@ class Multiple_member_function():
 		self.snippet = snippet
 
 	def eval(self):
-		return getattr(variableLookup(self.name), self.functname)(*map(lambda x: x.eval(),self.arguements))
+		return getattr(variableLookup(self.name)[0], self.functname)(*map(lambda x: x.eval(),self.arguements))
 
 	def exec(self):
 		self.eval()

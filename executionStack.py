@@ -1,5 +1,5 @@
 import graphics
-from headersForDataStructures import canvas, wait, headerText
+from headersForDataStructures import canvas, wait, headerText, codeText, drawCodeText
 
 bottomx = 20
 bottomy = 650
@@ -34,22 +34,27 @@ class Graphics:
 		self.estack = ExecutionStack()
 		self.functions = []
 
-	def makeFunctionFrame(self):
+	def makeFunctionFrame(self, name):
 		number = len(self.functions)
 		self.functions.append(FunctionStack(functionsx + (number%3)*(gap+funcnodeWidth), functionsy - (number//3)*deafaultFunctionHeight))
 		self.functions[number].push({})
+		self.functions[number].displayName(name)
 
 	def deleteFunctionFrame(self):
 		self.functions[-1].delete()
 		self.functions.pop()
 
-	def push(self, dictionary):
-		self.estack.push(dictionary)
+	def push(self, dictionary, funcIndex):
+		if funcIndex == 0:
+			self.estack.push(dictionary)
+		else:
+			self.functions[funcIndex-1].push(dictionary)
 
 	def modifyData(self, key, val, index, funcIndex):
 		if funcIndex==0:
 			self.estack.modifyData(key, val, index)
 		else:
+			#print(funcIndex)
 			self.functions[funcIndex - 1].modifyData(key, val, index)
 
 	def pop(self, funcIndex):
@@ -121,6 +126,10 @@ class FunctionStack:
 		self.y = y
 		self.size = 0
 
+	def displayName(self, name):
+		self.nameText = graphics.Text(graphics.Point(self.x + funcnodeWidth/2, self.y + 15), name)
+		self.nameText.draw(canvas)
+
 	def push(self, dictionary):
 		headerText.setText("Creating a new activation frame")
 		drawHeader()
@@ -157,13 +166,15 @@ class FunctionStack:
 	def delete(self):
 		while self.size > 0:
 			self.pop()
+		self.nameText.undraw()
 
 	def pop(self):
 		headerText.setText("Deleting the activation frame at the top of the stack")
 		drawHeader()
 		temp = self.head
 		self.size -= 1
-		self.head = self.head.next
+		if self.head:
+			self.head = self.head.next
 		temp.delete()
 		wait()
 

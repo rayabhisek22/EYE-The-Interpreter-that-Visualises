@@ -51,7 +51,8 @@ parser = ParserGenerator(
     'OPEN_SQUARE','CLOSE_SQUARE','keyINT','keyINT','keyINT','keyINT','keyINT','keyINT','keyFLOAT','keyFLOAT',
     'keySTRING','keyBOOL','FLOAT','INT','STRING','BOOL','VARIABLE', 'keyIF', 'keyFOR', 'keyWHILE',
     'keyELSE', 'keyELIF', 'keyCOUT', 'COUTOPER', 'keyCIN', 'CINOPER', 'ENDL','LINKEDLIST', 'DOT','STACK','QUEUE',
-    'BST', 'MAIN', 'RETURN', 'VOID', 'PLUSEQUAL', 'MINUSEQUAL', 'MULTEQUAL', 'DIVEQUAL', 'MODEQUAL'
+    'BST', 'MAIN', 'RETURN', 'VOID', 'PLUSEQUAL', 'MINUSEQUAL', 'MULTEQUAL', 'DIVEQUAL', 'MODEQUAL','DOUBLELIST',
+    'HASHTABLE'
     ]
 )
 
@@ -63,7 +64,8 @@ oper_to_funcname_dict = {'==': myIsEqual, '!=' : myIsNotEqual, '>=': myGreaterTh
 keyword_dictionary = {'int' : Int, 'bool' : Bool, 'float' : Float, 'string' : String } 
 
 ##@var data_struct_dictionary dictionary to give the class corresponding to the data structure
-data_struct_dictionary={'linkedlist':SinglyLinkedList, 'queue':Queue, 'stack':Stack, 'binarysearchtree':BinarySearchTree}
+data_struct_dictionary={'linkedList':SinglyLinkedList, 'queue':Queue, 'stack':Stack, 'binarySearchTree':BinarySearchTree,
+'doublyLinkedList': DoublyLinkedList, 'hashTable': HashTable}
 ##@var keyword_default_value_dict gives the default values of every data type
 keyword_default_value_dict = {'int' : 0, 'bool' : False, 'float' : 0.0, 'string' : "" } 
 
@@ -74,7 +76,7 @@ keyword_default_value_dict = {'int' : 0, 'bool' : False, 'float' : 0.0, 'string'
 @parser.production('givenprogram : givencode')
 ##@brief function to return the code as a list of global variables, functions and main_program
 def code_to_program(arglist):
-	print(arglist[0][1])
+	#print(arglist[0][1])
 	return arglist[0][0]
 
 ##@brief 'globals' contain all global variables and functions but not the main program 
@@ -533,11 +535,21 @@ def declare_variables(argList):
 @parser.production('declaration : STACK LESS keyword GREATER new_variables')
 @parser.production('declaration : QUEUE LESS keyword GREATER new_variables')
 @parser.production('declaration : BST LESS keyword GREATER new_variables')
+@parser.production('declaration : DOUBLELIST LESS keyword GREATER new_variables')
 def data_structure_init(argList):
 	executionList=[]
 	snippet = argList[0].getstr() + argList[1].getstr() + argList[2] + argList[3].getstr()+" " + argList[4][1]
 	for eachVar in argList[4][0]:
 		executionList.append(DataStructureDeclaration(data_struct_dictionary[argList[0].getstr()], eachVar,argList[2], snippet))
+	return [executionList, snippet]
+
+@parser.production('declaration : HASHTABLE LESS keyword GREATER new_variables OPEN_PARENS expression CLOSE_PARENS')
+def table_init(argList):
+	executionList=[]
+	snippet = argList[0].getstr() + argList[1].getstr() + argList[2] + argList[3].getstr()+" " + argList[4][1]\
+	 + argList[5].getstr() + argList[6][1]+ argList[7].getstr()
+	for eachVar in argList[4][0]:
+		executionList.append(HashDeclaration(data_struct_dictionary[argList[0].getstr()], eachVar,argList[2],argList[6][0], snippet))
 	return [executionList, snippet]
 
 @parser.production('new_variables : VARIABLE COMMA new_variables')
