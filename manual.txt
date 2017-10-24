@@ -1,4 +1,8 @@
-There are two files which are the most important ones:
- 1. ParserClasses : This is the files which contains the definitions of all the classes required for making the abstract syntax tree. This file is not to be touches by the user .
+Instructions for running:
+1. Write the code in a file(say eye.i)
+2. Run the command ./run.sh eye.i
 
-2. ParsingRules : This file contains all the rules required for parsing a given code. This is the files which the user has to run along with a command line argument giving the address of the file name.
+There are two files which are the most important ones:
+ 1. ParserClasses : This is the files which contains the definitions of all the classes required for making the abstract syntax tree.
+
+2. ParsingRules : This file contains all the rules required for parsing a given code after it has been properly tokenised by the lexer.py.

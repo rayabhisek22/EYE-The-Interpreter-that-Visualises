@@ -1,10 +1,14 @@
-string hello(string inp){
-    cout<<inp<<endl;
-   return ("Hello" + inp); 
-}
+int main()
+{
+    stack<int> s ;
+    linkedList<int> l;
+    queue<int> q;
 
-main_program{
-   string a;
-   cin>>a; 
-   cout<<hello(a)<<endl;
+    for(int i = 0; i < 20; i+=1)
+    {
+        s.push(i);
+        q.pushBack (i);
+        l.push(i);
+    }
+    cout<<endl;
 }

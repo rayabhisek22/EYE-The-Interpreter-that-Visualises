@@ -21,7 +21,8 @@
 # That's all you need to do
 
 ##@file
-#This file contains the rules used to parse the user's code
+#This file contains the rules which are used for parsing the user's code.
+#Before parsing, the code is tokenized using lexer.py.
 
 
 from lexer import lexer
