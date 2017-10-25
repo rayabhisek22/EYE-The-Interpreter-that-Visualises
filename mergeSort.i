@@ -13,33 +13,33 @@ void mergesort(int start, int end)
 		int middle = (start+end)/2;
 		mergesort(start, middle);
 		mergesort(middle, end);
-		int firstIndex = start, secondIndex = middle;
+		int fIndex = start, sIndex = middle;
 		int index = start;
 		int temp[n];
-		while ((firstIndex < middle) && (secondIndex < end))
+		while ((fIndex < middle) && (sIndex < end))
 		{
-			if (arr[firstIndex]<arr[secondIndex])
+			if (arr[fIndex]<arr[sIndex])
 			{
-				temp[index] = arr[firstIndex];
-				firstIndex += 1;
+				temp[index] = arr[fIndex];
+				fIndex += 1;
 			}
 			else
 			{
-				temp[index] = arr[secondIndex];
-				secondIndex += 1;
+				temp[index] = arr[sIndex];
+				sIndex += 1;
 			}
 			index += 1;
 		}
-		while (firstIndex < middle)
+		while (fIndex < middle)
 		{
-			temp[index] = arr[firstIndex];
-			firstIndex += 1;
+			temp[index] = arr[fIndex];
+			fIndex += 1;
 			index += 1;
 		}
-		while (secondIndex < end)
+		while (sIndex < end)
 		{
-			temp[index] = arr[secondIndex];
-			secondIndex += 1;
+			temp[index] = arr[sIndex];
+			sIndex += 1;
 			index += 1;
 		}
 		for (int i = start; i < end ; i +=1)
