@@ -1,8 +1,0 @@
-Instructions for running:
-1. Write the code in a file(say eye.i)
-2. Run the command ./run.sh eye.i
-
-There are two files which are the most important ones:
- 1. ParserClasses : This is the files which contains the definitions of all the classes required for making the abstract syntax tree.
-
-2. ParsingRules : This file contains all the rules required for parsing a given code after it has been properly tokenised by the lexer.py.
