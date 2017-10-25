@@ -411,5 +411,9 @@ class VisualArray:
 		self.array[index].changeColor("gray")
 
 	def delete(self):
+		global numberOfArrays
 		for i in range(self.size):
-			self.array[index].delete()
+			self.array[i].delete()
+		self.nameText.undraw()
+		del self
+		numberOfArrays-=1

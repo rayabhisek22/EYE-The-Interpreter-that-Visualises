@@ -12,7 +12,7 @@ def changeheader(s):
 	headerText.setText(s)
 	drawHeaderText()
 funcDict = {}
-array_dict={}
+array_dict=[{}]
 exec_stack = Graphics()
 list_variable_dict = [[{}]]
 funcIndex = 0
@@ -162,6 +162,8 @@ class PrimitiveDeclaration():
 		if self.varName in list_variable_dict[funcIndex][-1]:
 			raise Exception("Variable "+self.varName + " already declared")
 		x=self.varValue.eval()
+		if self.varType == Int:
+			x = int(x)
 		currFunc = list_variable_dict[funcIndex]
 		currFunc[-1][self.varName] = self.varType(x)
 		changetext(self.snippet)
@@ -188,7 +190,7 @@ class ArrayDeclaration():
 		if self.varName in list_variable_dict[funcIndex][-1]:
 			raise Exception("Variable "+self.varName + " already declared")
 		x=self.length.eval()
-		array_dict[self.varName]=VisualArray(x,self.varName)
+		array_dict[funcIndex][self.varName]=VisualArray(x,self.varName)
 		changetext(self.snippet)
 		exec_stack.addData(self.varName,"Array",funcIndex)
 		list_variable_dict[funcIndex][-1][self.varName] = Array(self.varType(self.varValue.eval()), x,self.varName)
@@ -237,6 +239,7 @@ class FunctionClass():
 		for i in range(len(self.parameters)):
 			val.append(arguements[i].eval())
 		funcIndex = funcIndex + 1
+		array_dict.append({})
 		exec_stack.makeFunctionFrame(name)
 		list_variable_dict.append([{}])
 		for i in range(len(self.parameters)):  #high probability of presence of a bug here.....
@@ -251,9 +254,12 @@ class FunctionClass():
 		temp = self.executable.exec()
 		exec_stack.deleteFunctionFrame()
 		funcIndex = funcIndex - 1
+		for visarr in array_dict[funcIndex + 1]:
+			array_dict[funcIndex+1][visarr].delete()
+		array_dict.pop()
 		list_variable_dict.pop()
 		if self.funcType == "void":
-			if temp != None:
+			if temp != "":
 				raise Exception("non-void value returned in a void function")
 		elif self.funcType == "int":
 			if type(temp) != 'int' and  not isinstance(temp, int) :
@@ -289,6 +295,7 @@ class FunctionCall():
 	##The function which actually calls the functionClass with list of values
 	def eval(self):
 		changeheader("Calling the function "+self.name)
+		changetext(self.snippet)
 		return funcDict[self.name].exec(self.value,self.name)
 
 ##initialization for our data structures
@@ -369,13 +376,19 @@ class Array():
 		if i >= self.length:
 			raise Exception("You are trying to accesss index " + str(i) + " of array " + str(self.name)\
 				+ " which is of length " + str(self.length))
-		array_dict[self.name].probe(i)
+		try:
+			array_dict[funcIndex][self.name].probe(i)
+		except:
+			array_dict[0][self.name].probe(i)
 		return self.array[i]
 	##Updates the value at a particular index
 	#@param i the index to be updated
 	#@param value the updated value
 	def update(self, i, value):
-		array_dict[self.name].update(i,value)
+		try:
+			array_dict[funcIndex][self.name].update(i, value)
+		except:
+			array_dict[0][self.name].update(i, value)
 		self.array[i].update(value)
 
 ##the basic block containing list of executable statements that can be run
