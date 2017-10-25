@@ -546,7 +546,7 @@ def declare_variables(argList):
 @parser.production('declaration : STACK fkeyword new_variables')
 @parser.production('declaration : QUEUE fkeyword new_variables')
 @parser.production('declaration : BST fkeyword new_variables')
-@parser.production('declaration : DOUBLELIST fkeyword GREATER new_variables')
+@parser.production('declaration : DOUBLELIST fkeyword new_variables')
 def data_structure_init(argList):
 	executionList=[]
 	snippet = argList[0].getstr() + "<" + argList[1] + ">"+" " + argList[2][1]

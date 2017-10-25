@@ -1,4 +1,5 @@
 from headersForDataStructures import *
+from SinglyLinkedList import numberoflinkedlist
 
 ##@brief Class contaning arrows to make a pointer between objects on the canvas
 class DoubleArrow:
@@ -412,6 +413,8 @@ class DoublyLinkedList:
 
 	##Deletes the entire list if it goes out of scope. Explicitly undraws all the graphics.
 	def delete(self):
+		global numberoflinkedlist
+		numberoflinkedlist[0]-=1
 		temp = self.head
 		while temp :
 			self.head = temp.next

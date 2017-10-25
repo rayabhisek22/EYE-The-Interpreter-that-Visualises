@@ -1,6 +1,8 @@
 from headersForDataStructures import *
 ##################################################################################################################
 
+numberoflinkedlist=[0]
+
 ##@brief Class which denotes a single node of a singly linked list
 #
 # Contains all the data members required to store the value in each node, the node that comes after it in the list and 
@@ -325,6 +327,8 @@ class SinglyLinkedList:
 
 	##Deletes the entire list if it goes out of scope. Explicitly undraws all the graphics.
 	def delete(self):
+		global numberoflinkedlist
+		numberoflinkedlist[0]-=1
 		temp = self.head
 		while temp :
 			self.head = temp.next
