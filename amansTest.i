@@ -1,14 +1,14 @@
 int main()
 {
-    stack<int> s ;
-    linkedList<int> l;
-    queue<int> q;
+    stack<   int> s ;
+    linkedList<int   > l;
+    queue<  int  > q;
 
-    for(int i = 0; i < 20; i+=1)
+    for(int inti = 0; inti < 20; inti+=1)
     {
-        s.push(i);
-        q.pushBack (i);
-        l.push(i);
+        s.push(inti);
+        q.pushBack (inti);
+        l.push(inti);
     }
     cout<<endl;
 }

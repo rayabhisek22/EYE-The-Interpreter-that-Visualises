@@ -795,7 +795,10 @@ class Return():
 		self.snippet = snippet
 
 	def exec(self):
-		return self.exp.eval()
+		x= self.exp.eval()
+		changeheader("returning the value for the function")
+		changetext(self.snippet)
+		return x
 
 
 class Member_function():
