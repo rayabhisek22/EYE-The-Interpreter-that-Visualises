@@ -546,7 +546,7 @@ class CinStatement():
 				input_list = input_list[1:]
 			else:
 				temp = input()
-				input_list = temp.split(" ")
+				input_list = temp.split()
 				var.update(PrimitiveDT(input_list[0]))
 				input_list = input_list[1:]
 		
