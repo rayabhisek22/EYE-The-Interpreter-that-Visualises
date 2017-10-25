@@ -1,13 +1,13 @@
-// #include<iostream>
+#include<iostream>
 
-// using namespace std;
+using namespace std;
 
 int arr[4];
 int n;
 
 void mergesort(int start, int end)
 {
-	if (start>=(end-1)){return;}
+	if (start>=end){return;}
 	else
 	{
 		int middle = (start+end)/2;

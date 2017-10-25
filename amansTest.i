@@ -1,9 +1,10 @@
 int main()
 {
-    for(int inti = 0; inti < 5; inti+=1)
+    for(int i = 0; i < 5; i += 1)
     {
+        cout<<i<<" ";
         stack<int> s;
-        s.push(inti);
+        cout<<"aman";
+        cout<<"hello"<<endl;
     }
-    cout<<endl;
 }
