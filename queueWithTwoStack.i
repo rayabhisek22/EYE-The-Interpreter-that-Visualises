@@ -1,17 +1,19 @@
 stack<int> s1;
+binarySearchTree<int> BinarySearchTree;
 stack<int> s2;
-
-int refill()
+queue<int> q;
+hashTable<int> h(9);
+void refill()
 {
     while(!s1.empty())
     {
         s2.push(s1.top());
         s1.pop();
     }
-    return 0;
+    return;
 }
 
-main_program{
+int main(){
     string s;
     cin>>s;
     while(true)
@@ -21,6 +23,9 @@ main_program{
             int n;
             cin>>n;
             s1.push(n);
+            q.pushBack(n);
+            h.push(n);
+            BinarySearchTree.insert(n);
         }
         elif (s == "top")
         {
@@ -37,6 +42,7 @@ main_program{
             {
                 cout<<s2.top()<<endl;
             }
+            cout<<q.front()<<endl;
         }
         elif (s == "pop")
         {
@@ -53,6 +59,7 @@ main_program{
             {
                 s2.pop();
             }
+            q.popFront();
         }
         else
         {
@@ -61,5 +68,3 @@ main_program{
         cin>>s;
     }
 }
-
-

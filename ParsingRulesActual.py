@@ -554,13 +554,13 @@ def data_structure_init(argList):
 		executionList.append(DataStructureDeclaration(data_struct_dictionary[argList[0].getstr()], eachVar,argList[1], snippet))
 	return [executionList, snippet]
 
-@parser.production('declaration : HASHTABLE LESS keyword GREATER new_variables OPEN_PARENS expression CLOSE_PARENS')
+@parser.production('declaration : HASHTABLE fkeyword new_variables OPEN_PARENS expression CLOSE_PARENS')
 def table_init(argList):
 	executionList=[]
-	snippet = argList[0].getstr() + argList[1].getstr() + argList[2] + argList[3].getstr()+" " + argList[4][1]\
-	 + argList[5].getstr() + argList[6][1]+ argList[7].getstr()
-	for eachVar in argList[4][0]:
-		executionList.append(HashDeclaration(data_struct_dictionary[argList[0].getstr()], eachVar,argList[2],argList[6][0], snippet))
+	snippet = argList[0].getstr() + "<" + argList[1] + ">"+" " + argList[2][1]\
+	 + argList[3].getstr() + argList[4][1]+ argList[5].getstr()
+	for eachVar in argList[2][0]:
+		executionList.append(HashDeclaration(data_struct_dictionary[argList[0].getstr()], eachVar,argList[1],argList[4][0], snippet))
 	return [executionList, snippet]
 
 @parser.production('new_variables : VARIABLE COMMA new_variables')
