@@ -11,6 +11,6 @@ int fib(int n)
 	return fib(n-1)+fib(n-2);
 }
 
-main_program{
+int main(){
 	cout<<fib(4);
 }
