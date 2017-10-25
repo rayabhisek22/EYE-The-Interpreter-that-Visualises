@@ -257,18 +257,18 @@ class FunctionClass():
 				raise Exception("non-void value returned in a void function")
 		elif self.funcType == "int":
 			if type(temp) != 'int' and  not isinstance(temp, int) :
-				raise Exception("non integer value returned in a int function")
+				raise Exception("non-integer value returned in a int function")
 
 		elif self.funcType == "bool":
 			if type(temp) != 'bool' and  not isinstance(temp, bool):
-				raise Exception("non integer value returned in a int function")
+				raise Exception("non-boolean value returned in a boolean function")
 		elif self.funcType == "string":
 			if type(temp) != 'str' and  not isinstance(temp, str):
-				raise Exception("non integer value returned in a int function")
+				raise Exception("non-string value returned in a string function")
 
 		elif self.funcType == "float":
 			if type(temp) != 'float' and  not isinstance(temp, float):
-				raise Exception("non integer value returned in a int function")
+				raise Exception("non-float value returned in a float function")
 		return temp
 
 ##The class which actually calls the function		
@@ -528,7 +528,7 @@ class CinStatement():
 				input_list = input_list[1:]
 			else:
 				temp = input()
-				input_list = temp.split()
+				input_list = temp.split(" ")
 				var.update(PrimitiveDT(input_list[0]))
 				input_list = input_list[1:]
 		
@@ -566,7 +566,10 @@ class String(PrimitiveDT):
 	##the constructor
 	#@param the value of datatype
 	def __init__(self, value='""'):
-		self.value = value[1:-1]
+		if len(value) > 0 and value[0] == '"' and value[-1] == '"':
+			self.value = value[1:-1]
+		else:
+			self.value = value
 	##returns the type of value
 	def giveType(self):
 		return str
