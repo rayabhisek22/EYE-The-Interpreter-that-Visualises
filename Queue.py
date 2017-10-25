@@ -2,6 +2,8 @@ from headersForDataStructures import *
 #######################################################################################################################
 # 															QUEUE
 
+numberofqueues=[0]
+
 ##Class which contains all the graphics and data needed by a node in the queue
 class QueueNode:
 	##Constructor for the class
@@ -227,6 +229,8 @@ class Queue:
 
 	##Function to undraw all the graphics related to the queue and then delete all the data members.
 	def delete(self):
+		global numberofqueues
+		numberofqueues[0]-=1
 		temp = self.head
 		while temp:
 			self.head = temp.next

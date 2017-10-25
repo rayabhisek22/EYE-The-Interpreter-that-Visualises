@@ -22,16 +22,13 @@ input_list = []
 
 stacky=650
 stackx=1210
-numberofstacks=0
 queuex=1150
 queuey=300
-numberofqueues=0
 stackwidth=70
 queueheight=40
 linkedlistheight=40
 linkedlistx=1150
 linkedlisty=150
-numberoflinkedlist=0
 treex=1100
 treey=80
 hashx=750
@@ -321,20 +318,20 @@ class DataStructureDeclaration():
 		else:
 			changetext(self.snippet)
 			if self.theClass==Stack:
-				list_variable_dict[funcIndex][-1][self.name]=self.theClass(stackx-numberofstacks*stackwidth,\
+				list_variable_dict[funcIndex][-1][self.name]=self.theClass(stackx-numberofstacks[0]*stackwidth,\
 				 stacky, modelTypeDict[self.vartype], self.name)
 				exec_stack.addData(self.name,"Stack",funcIndex)
-				numberofstacks=numberofstacks+1
+				numberofstacks[0]=numberofstacks[0]+1
 			elif self.theClass==Queue:
 				list_variable_dict[funcIndex][-1][self.name]=self.theClass(queuex,\
-				 queuey+numberofqueues*queueheight, modelTypeDict[self.vartype], self.name)
+				 queuey+numberofqueues[0]*queueheight, modelTypeDict[self.vartype], self.name)
 				exec_stack.addData(self.name,"Queue",funcIndex)
-				numberofqueues=numberofqueues+1
+				numberofqueues[0]=numberofqueues[0]+1
 			elif self.theClass==SinglyLinkedList or self.theClass==DoublyLinkedList:
 				list_variable_dict[funcIndex][-1][self.name]=self.theClass(linkedlistx,\
-				 linkedlisty+numberoflinkedlist*linkedlistheight, modelTypeDict[self.vartype], self.name)
+				 linkedlisty+numberoflinkedlist[0]*linkedlistheight, modelTypeDict[self.vartype], self.name)
 				exec_stack.addData(self.name,"LinkedList",funcIndex)
-				numberoflinkedlist=numberoflinkedlist+1
+				numberoflinkedlist[0]=numberoflinkedlist[0]+1
 			elif self.theClass==BinarySearchTree:
 				list_variable_dict[funcIndex][-1][self.name]=self.theClass(treex,\
 				 treey, modelTypeDict[self.vartype], self.name)
@@ -391,6 +388,8 @@ class Array():
 			array_dict[0][self.name].update(i, value)
 		self.array[i].update(value)
 
+dataStructTypes = [Stack, Queue, BinarySearchTree, SinglyLinkedList, DoublyLinkedList, HashTable]
+
 ##the basic block containing list of executable statements that can be run
 class Block():
 	##the constructor
@@ -418,10 +417,16 @@ class Block():
 			temp = executable.exec()
 			if (temp != None):
 				mainIndex = mainIndex - 1
+				for element in list_variable_dict[funcIndex][-1]:
+					if type(list_variable_dict[funcIndex][-1][element]) in dataStructTypes:
+						list_variable_dict[funcIndex][-1][element].delete()
 				list_variable_dict[funcIndex].pop()
 				exec_stack.pop(funcIndex)
 				return temp
 		mainIndex = mainIndex - 1
+		for element in list_variable_dict[funcIndex][-1]:
+			if type(list_variable_dict[funcIndex][-1][element]) in dataStructTypes:
+				list_variable_dict[funcIndex][-1][element].delete()
 		list_variable_dict[funcIndex].pop()
 		exec_stack.pop(funcIndex)
 

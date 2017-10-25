@@ -1,6 +1,9 @@
-from headersForDataStructures import *####################################################################################################################
+from headersForDataStructures import *
+####################################################################################################################
 
 #                                    STACKS
+
+numberofstacks=[0]
 
 ##Class to represent a node in a stack both graphically and as an Abstract Data Type element.
 class StackNode:
@@ -120,6 +123,8 @@ class Stack:
 
 	##Delete the stack if it goes out of scope - explicitly undraws all related graphics
 	def delete(self):
+		global numberofstacks
+		numberofstacks[0] -= 1
 		temp = self.head
 		while temp:
 			self.head = temp.next
