@@ -7,7 +7,7 @@ int n;
 
 void mergesort(int start, int end)
 {
-	if (start>=end){return;}
+	if (start>=(end-1)){return;}
 	else
 	{
 		int middle = (start+end)/2;
