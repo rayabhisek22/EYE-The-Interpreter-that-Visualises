@@ -1,3 +1,4 @@
+
 int x=10;
 
 int gcd(int a,int b)
@@ -22,6 +23,9 @@ int factorial(int n)
 	{
 	return  1;
 	}
+
+int factorial(int n)
+{
 	return n*factorial(n-1);
 }
 
@@ -43,4 +47,6 @@ main_program
 	}
 	cout<<h.find(49)<<endl;
 	h.erase(98);
+	
+	cout<<factorial(5);
 }

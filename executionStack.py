@@ -20,7 +20,7 @@ arrayBegx=20
 numberOfArrays=0
 arrayOffset = 50
 
-colorList = ["lightgreen"]*30
+colorList = ["#a2ffa0"]*1 + ["#ff943d"]*3 + ["#faff00"]*3 +   ["#10c9e5"]*3 + ["#f693ff"]*29
 
 def drawHeader():
 	try:
@@ -98,6 +98,11 @@ class FuncNode:
 			self.data[element].draw(canvas)
 		wait()
 
+	def redraw(self):
+		for element in self.data:
+			self.data[element].undraw()
+			self.data[element].draw(canvas)
+
 	def addData(self, key, val):
 		size = len(self.data)
 		self.data[key] = graphics.Text(graphics.Point(self.x + funcnodeWidth/2, self.y + textHeight/2 + \
@@ -106,6 +111,7 @@ class FuncNode:
 		self.rectangle.p1.y-=textHeight
 		self.rectangle.undraw()
 		self.rectangle.draw(canvas)
+		self.redraw()
 		self.y-=textHeight
 		for element in self.data:
 			self.data[element].move(0, -textHeight)
@@ -117,13 +123,13 @@ class FuncNode:
 		self.data[key].draw(canvas)
 		wait()
 
-	def deleteData(self, key):
-		self.data[key].undraw()
-		del self.data[key]
-
 	def delt(self,key):
 		self.data[key].undraw()
 		del self.data[key]
+		self.rectangle.p1.y += textHeight
+		self.rectangle.undraw()
+		self.rectangle.draw(canvas)
+		self.redraw()
 
 	def delete(self):
 		for element in self.data:
@@ -169,13 +175,6 @@ class FunctionStack:
 			temp = temp.next
 			index -=1
 		temp.modifyData(key, val)
-
-	def deleteData(self, key,index):
-		temp = self.head
-		while (index > 0):
-			temp = temp.next
-			index -= 1
-		temp.delteData(key, val)
 
 	def deleteData(self,key,index):
 		temp = self.head
@@ -231,17 +230,24 @@ class Node:
 
 	def addData(self, key, val):
 		size = len(self.data)
+		#print((size/2)*textHeight, -self.rectangle.p1.y + self.rectangle.p2.y)
 		self.data[key] = graphics.Text(graphics.Point(self.x + ((size%2)*(nodeWidth)/2)+(nodeWidth)/4, self.y + textHeight/2 + \
 			(size//2)*textHeight), str(key) + " = " + str(val))
 		self.data[key].draw(canvas)
-		if (size%2 == 0):
+		if (size%2 == 0 and (size/2)*textHeight + 20 > (-self.rectangle.p1.y + self.rectangle.p2.y)):
 			self.rectangle.p1.y-=textHeight
 			self.rectangle.undraw()
 			self.rectangle.draw(canvas)
+			self.redraw()
 			self.y-=textHeight
 			for element in self.data:
 				self.data[element].move(0, -textHeight)
 		wait()
+
+	def redraw(self):
+		for element in self.data:
+			self.data[element].undraw()
+			self.data[element].draw(canvas)
 
 	def modifyData(self, key, newVal):
 		self.data[key].undraw()
@@ -251,7 +257,9 @@ class Node:
 
 	def delt(self,key):
 		self.data[key].undraw()
+		#print(len(self.data))
 		del self.data[key]
+		#print(len(self.data))
 
 	def delete(self):
 		for element in self.data:
@@ -296,7 +304,6 @@ class ExecutionStack:
 			temp = temp.next
 			index -=1
 		temp.delt(key)
-
 
 	def pop(self):
 		headerText.setText("Deleting the activation frame at the top of the stack")

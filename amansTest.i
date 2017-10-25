@@ -1,19 +1,14 @@
-bool susu(int i){
-    return i%2==0;
-}
+int main()
+{
+    stack<int> s ;
+    linkedList<int> l;
+    queue<int> q;
 
-main_program{
-    int n;
-    cin>>n;
-    stack<int> s;
-    for(int i = 0; i < n; i = i + 1)
+    for(int i = 0; i < 20; i+=1)
     {
         s.push(i);
+        q.pushBack (i);
+        l.push(i);
     }
-    for(int i = 0; i < n; i = i + 1)
-    {
-        int a = s.top();
-        cout<<susu(a)<<endl;
-        s.pop();
-    }
+    cout<<endl;
 }

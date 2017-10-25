@@ -10,7 +10,7 @@
 #
 #\section running How to run your code?
 #
-#First of all you need to have following softwares and libraires installed in you mahcine. If not already installed, the instructions of installing are given along with the name:
+#First of all you need to have following softwares and libraires installed in you machine. In case they are not already installed, the instructions of installing are given below along with the name:
 #
 #	1. python3	:	sudo apt-get install python3.6
 #	2. rply		:	sudo pip3 install rply
@@ -19,13 +19,10 @@
 #After saving the file (say with a  name filename.i), run the following command:
 #<br> <b><center>./run.sh filename.i</center></b>
 # That's all you need to do
-#\section tp <add more stuff>
-#
-#Anyone with any ideas add stuff to this page...the code for this page is at the top of ParsingRulesActual.py
-#
 
-
-
+##@file
+#This file contains the rules which are used for parsing the user's code.
+#Before parsing, the code is tokenized using lexer.py.
 
 
 from lexer import lexer
@@ -227,16 +224,30 @@ def function_call(argList):
 def func_declaration_to_class (argList):
 	snippet = argList[0] + argList[1].getstr() + argList[2].getstr()\
 	+ argList[3].getstr() + argList[4][1]
-	return [FuncDeclaration(argList[1].getstr(), [], argList[4][0], snippet), snippet]
+	return [FuncDeclaration(argList[0], argList[1].getstr(), [], argList[4][0], snippet), snippet]
 
 @parser.production('func-declaration : keyword VARIABLE OPEN_PARENS vars CLOSE_PARENS block')
 ##@return functinonDeclaration object of function with parameters 
 def func_declaration_to_class (argList):
 	snippet =  argList[0] + argList[1].getstr()\
 	 + argList[2].getstr() + argList[3][1] + argList[4].getstr() + argList[5][1]
-	return [FuncDeclaration(argList[1].getstr(), argList[3][0], argList[5][0], snippet),snippet]
+	return [FuncDeclaration(argList[0], argList[1].getstr(), argList[3][0], argList[5][0], snippet),snippet]
 
 
+#declarations
+@parser.production('func-declaration : VOID VARIABLE OPEN_PARENS CLOSE_PARENS block')
+##@return functionDeclaration object of function with no parameters 
+def func_declaration_to_class (argList):
+	snippet = argList[0].getstr() + argList[1].getstr() + argList[2].getstr()\
+	+ argList[3].getstr() + argList[4][1]
+	return [FuncDeclaration(argList[0].getstr(), argList[1].getstr(), [], argList[4][0], snippet), snippet]
+
+@parser.production('func-declaration : VOID VARIABLE OPEN_PARENS vars CLOSE_PARENS block')
+##@return functinonDeclaration object of function with parameters 
+def func_declaration_to_class (argList):
+	snippet =  argList[0].getstr() + argList[1].getstr()\
+	 + argList[2].getstr() + argList[3][1] + argList[4].getstr() + argList[5][1]
+	return [FuncDeclaration(argList[0].getstr(), argList[1].getstr(), argList[3][0], argList[5][0], snippet),snippet]
 
 @parser.production('vars : var COMMA vars')
 ##@return list of arguments to a function in function declaration 
