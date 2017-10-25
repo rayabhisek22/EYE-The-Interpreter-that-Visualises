@@ -49,7 +49,7 @@ parser = ParserGenerator(
     'keySTRING','keyBOOL','FLOAT','INT','STRING','BOOL','VARIABLE', 'keyIF', 'keyFOR', 'keyWHILE',
     'keyELSE', 'keyELIF', 'keyCOUT', 'COUTOPER', 'keyCIN', 'CINOPER', 'ENDL','LINKEDLIST', 'DOT','STACK','QUEUE',
     'BST', 'MAIN', 'RETURN', 'VOID', 'PLUSEQUAL', 'MINUSEQUAL', 'MULTEQUAL', 'DIVEQUAL', 'MODEQUAL','DOUBLELIST',
-    'HASHTABLE'
+    'HASHTABLE', 'fINT', 'fFLOAT', 'fSTRING', 'fBOOL'
     ]
 )
 
@@ -542,16 +542,16 @@ def declare_variables(argList):
 			executionList.append(PrimitiveDeclaration(eachVar[0], keyword_dictionary[argList[0]], eachVar[1], snippet)) #list_variable_dict[mainIndex][eachVar[0]] = keyword_dictionary[argList[0]](eachVar[1])
 	return [executionList, snippet]
 
-@parser.production('declaration : LINKEDLIST LESS keyword GREATER new_variables')
-@parser.production('declaration : STACK LESS keyword GREATER new_variables')
-@parser.production('declaration : QUEUE LESS keyword GREATER new_variables')
-@parser.production('declaration : BST LESS keyword GREATER new_variables')
-@parser.production('declaration : DOUBLELIST LESS keyword GREATER new_variables')
+@parser.production('declaration : LINKEDLIST fkeyword new_variables')
+@parser.production('declaration : STACK fkeyword new_variables')
+@parser.production('declaration : QUEUE fkeyword new_variables')
+@parser.production('declaration : BST fkeyword new_variables')
+@parser.production('declaration : DOUBLELIST fkeyword GREATER new_variables')
 def data_structure_init(argList):
 	executionList=[]
-	snippet = argList[0].getstr() + argList[1].getstr() + argList[2] + argList[3].getstr()+" " + argList[4][1]
-	for eachVar in argList[4][0]:
-		executionList.append(DataStructureDeclaration(data_struct_dictionary[argList[0].getstr()], eachVar,argList[2], snippet))
+	snippet = argList[0].getstr() + "<" + argList[1] + ">"+" " + argList[2][1]
+	for eachVar in argList[2][0]:
+		executionList.append(DataStructureDeclaration(data_struct_dictionary[argList[0].getstr()], eachVar,argList[1], snippet))
 	return [executionList, snippet]
 
 @parser.production('declaration : HASHTABLE LESS keyword GREATER new_variables OPEN_PARENS expression CLOSE_PARENS')
@@ -590,6 +590,26 @@ def keyword_to_string(argList):
 		return 'bool'
 	elif argList[0].gettokentype() == 'keySTRING':
 		return 'string'
+
+#########################################################################################################################
+# all parser rules for a keyword
+@parser.production('fkeyword : fINT')
+@parser.production('fkeyword : fFLOAT')
+@parser.production('fkeyword : fBOOL')
+@parser.production('fkeyword : fSTRING')
+def keyword_to_string(argList):
+	"""converts the keyword to its correponding string which
+		is to be give to the declaration block"""
+	if argList[0].gettokentype() == 'fINT':
+		return 'int'
+	elif argList[0].gettokentype() == 'fFLOAT':
+		return 'float'
+	elif argList[0].gettokentype() == 'fBOOL':
+		return 'bool'
+	elif argList[0].gettokentype() == 'fSTRING':
+		return 'string'
+
+
 
 #########################################################################################################################
 # all parser rules for default_assigns
