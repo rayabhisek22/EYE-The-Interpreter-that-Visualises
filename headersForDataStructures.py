@@ -33,7 +33,7 @@ circleRadius = 15
 arrowLength = 10
 headerPoint = graphics.Point(650, 20)#point where current action will be displayed
 headerText = graphics.Text(headerPoint, "")#header text
-codeText = graphics.Text(graphics.Point(headerPoint.x, headerPoint.y + 20), "")
+codeText = graphics.Text(graphics.Point(headerPoint.x, headerPoint.y + 25), "")
 headerText.setSize(15)
 
 ##@brief Defines how much to wait before the execution of two steps
