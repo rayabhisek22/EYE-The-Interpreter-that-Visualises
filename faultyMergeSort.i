@@ -20,31 +20,31 @@ void mergesort(int start, int end)
 		{
 			if (arr[fIndex]<arr[sIndex])
 			{
-				temp[index] = arr[fIndex];
+				tmp[index] = arr[fIndex];
 				fIndex += 1;
 			}
 			else
 			{
-				temp[index] = arr[sIndex];
+				tmp[index] = arr[sIndex];
 				sIndex += 1;
 			}
 			index += 1;
 		}
 		while (fIndex < middle)
 		{
-			temp[index] = arr[fIndex];
+			tmp[index] = arr[fIndex];
 			fIndex += 1;
 			index += 1;
 		}
 		while (sIndex < end)
 		{
-			temp[index] = arr[sIndex];
+			tmp[index] = arr[sIndex];
 			sIndex += 1;
 			index += 1;
 		}
 		for (int i = start; i < end ; i +=1)
 		{
-			arr[i] = temp[i];
+			arr[i] = tmp[i];
 		}
 	}
 	return;
