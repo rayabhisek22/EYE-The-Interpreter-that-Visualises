@@ -14,7 +14,8 @@ funcnodeHeight = nodeHeight
 deafaultFunctionHeight = 175
 gap = 10
 
-arrayElementWidth = arrayElementHeight = 20
+arrayElementWidth =  25
+arrayElementHeight = 20
 arrayBegy=60
 arrayBegx=20
 numberOfArrays=0
