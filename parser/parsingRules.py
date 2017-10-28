@@ -25,8 +25,8 @@
 #Before parsing, the code is tokenized using lexer.py.
 
 
-from lexer import lexer
-from ParsingClassesActual import *
+from ../lexer/lexer import lexer
+from parsingClasses import *
 from rply import ParserGenerator
 
 import sys

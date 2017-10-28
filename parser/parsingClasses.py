@@ -1,8 +1,8 @@
 from rply.token import *
 import sys
 #from headersForDataStructures import SinglyLinkedList, Queue, Stack, BinarySearchTree
-from dataStructures import *
-from executionStack import VisualArray, Graphics, canvas, codeText, drawCodeText, headerText, drawHeaderText
+from ../dataStructures/dataStructures import *
+from ../dataStructures/executionStack import VisualArray, Graphics, canvas, codeText, drawCodeText, headerText, drawHeaderText
 
 def changetext(s):
 	codeText.setText(s)
