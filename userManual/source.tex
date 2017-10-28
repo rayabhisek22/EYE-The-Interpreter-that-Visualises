@@ -46,8 +46,17 @@ The functions are exactly similar to C++, but everything is passed by value and 
 \item If-Elseif-else statements-They are implemented as in C++. The block of every condition should be inside a {} bracket
 \item The for-loops and while-loop have been implemented with their usual meaning in C++.
 \end{itemize}
+
+
 \section{Data Structures}
-We have defined several of the common data structures used by programmers and we go on to explain how to declare instances of these data structures and the member functions that it contains.
+We have defined several of the common data structures used by programmers and we go on to explain how to declare instances of these data structures and the member functions that it contains.\\
+The legend we have followed is described as follows:
+\begin{enumerate}
+\item Light Green - normal element
+\item Light Blue - element is being probed
+\item Dark Blue - the element is the element that we are looking for
+\item Red - the element is to be deleted
+\end{enumerate}
 \subsection{Stack}
 This declares the data structure called stack, which is basically a first-in-first-out or FIFO kind of data structure. To define it use the following signature:
 \begin{verbatim}
@@ -133,4 +142,136 @@ This supports functions like inserting an element at an index, searching for an 
     dl.find(100) //returns true if an element is found
 \end{verbatim}
 
+\section{Sample Code}
+Here is a simple sample code for bubble sort:
+\begin{verbatim}
+    int main()
+    {
+        int length = 5;
+        int arr[length];
+        for (int i = 0; i < length; i = i + 1)
+        {
+            arr[i] = (3*i) % 5;
+        }
+        for (int i = 0; i < length ; i = i + 1)
+        {
+            int j = i;
+            while(j < length - 1)
+            {
+                if (arr[j+1] < arr[j])
+                {
+                    int temp = arr[j+1];
+                    arr[j+1] = arr[j];
+                    arr[j] = temp;
+                }
+                j = j + 1;
+            }
+        }
+    }
+
+\end{verbatim}
+The code for a simple recursive program to calculate fibonacci numbers follows:
+\begin{verbatim}
+    int fib(int n)
+    {
+        if(n==0)
+        {
+            return 0;
+        }
+        elif(n==1)
+        {
+            return 1;
+        }
+        return fib(n-1)+fib(n-2);
+    }
+    
+    int main(){
+        cout<<fib(4);
+    }
+\end{verbatim}
+The code for implementing and viewing various data structures is as follows:
+\begin{verbatim}
+    stack<int> Stack;
+    binarySearchTree<int> BinarySearchTree;
+    queue<int> Queue;
+    hashTable<int> HashTable(6);
+    int arr[10];
+    
+    int main(){
+        for(int i = 3; i >= 0; i-=1)
+        {
+            Stack.push(i);
+            BinarySearchTree.insert((i*3)%7);
+            Queue.pushFront(i);
+            HashTable.push(i*2);
+            arr[5-i] = i; 
+        }
+        for(int i = 4; i < 7; i+=1)
+        {
+            Stack.push(i);
+            BinarySearchTree.insert(((i*3)%7) - 4);
+            Queue.pushFront(i);
+            HashTable.push(i*2);
+            arr[i] = i; 
+        }
+    }
+\end{verbatim}
+The code for implementing mergesort is given as follows:
+\begin{verbatim}
+     int arr[4];
+    int n;
+    
+    void mergesort(int start, int end)
+    {
+        if (start>=(end-1)){return;}
+        else{
+            int middle = (start+end)/2;
+            mergesort(start, middle);
+            mergesort(middle, end);
+            int fIndex = start, sIndex = middle;
+            int index = start;
+            int tmp[n];
+            while ((fIndex < middle) && (sIndex < end)){
+                if (arr[fIndex]<arr[sIndex]){
+                    tmp[index] = arr[fIndex];
+                    fIndex += 1;
+                }
+                else{
+                    tmp[index] = arr[sIndex];
+                    sIndex += 1;
+                }
+                index += 1;
+            }
+            while (fIndex < middle){
+                tmp[index] = arr[fIndex];
+                fIndex += 1;
+                index += 1;
+            }
+            while (sIndex < end){
+                tmp[index] = arr[sIndex];
+                sIndex += 1;
+                index += 1;
+            }
+            for (int i = start; i < end ; i +=1){
+                arr[i] = tmp[i];
+            }
+        }
+        return;
+    }
+    
+    int main()
+    {
+        cin>>n;
+        for (int i = 0 ; i < n  ; i += 1){
+            cin>>arr[i];
+        }
+        mergesort(0, n);
+        for (int i = 0 ; i < n ; i += 1){
+            cout<<arr[i]<<" ";
+        }
+        cout<<endl;
+    }
+\end{verbatim}
+
 \end{document}
+

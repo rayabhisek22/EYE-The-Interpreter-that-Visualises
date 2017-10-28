@@ -1,0 +1,376 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage}
+\usepackage{qtree}
+\usepackage{float}
+\usepackage{placeins}
+\title{CS251: Proposal}
+\author{3 Idiots\\
+160050005\\
+160050008\\
+160050028}
+%\usepackage{bera}
+\date{\today}
+\usepackage{url}
+\usepackage{tcolorbox, graphicx, amssymb, amsmath}
+\begin{document}
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+\begin{center}
+{\Huge \bf EYE, The Interpreter that Visualises}
+\end{center}
+\section{ABSTRACT} 
+\begin{itemize}
+\item We aim to create an {\bf Interpreter} for our own language (syntactically similar to C++) and provide a visual representation of the \textit {“behind-the-scenes”} {\bf memory allocation} and other processes executed by the interpreter
+
+\item We would also develop graphical representations of the {\bf execution stack} of the program as it is being executed as well as the {\bf environment} in which functions are called and executed 
+
+\item There would be special structures to visually represent common {\bf data structures} like queues, trees, linked lists, stacks and others on a canvas, which would be updated every time a method is called
+
+\item Essentially, this would be a \textit {comprehensive tool} to visualise program execution in {\bf real time}
+
+\end{itemize}
+\section{INTRODUCTION AND MOTIVATION} 
+\begin{itemize}
+\item The difficulties faced by us in our Algorithms class inspired us to create a tool that would give a very \textit {intuitive} and \textit {in-depth} visualisation and {\bf feel of the algorithms} we were learning about. 
+
+\item We realised that being able to see an algorithm execute (for example, seeing the state of an array after every iteration of the {\bf insertion sort algorithm}, or the probe sequence in a binary search tree) would go a long way in making us \textit {proficient} in developing our own algorithms. 
+
+\item This can also prove to be a good tool to teach {\bf introductory courses} on programming to those without much prior experience (for example, in the \textit {CS101} course) as it would really help develop a deep understanding of what it means to code and how the code you write is actually being executed by the compiler. Having knowledge of the functioning of a compiler is of great use in any field related to computer science. 
+
+\item Another motivation behind this project was to develop a {\bf debugging} tool that would not be as non-descriptive as a segmentation fault and not need as much effort to debug as raw C++ source code. We can {\bf trace the execution} of the code until we come across the error to find memory leaks, to catch logical shortcomings or corner cases. 
+\end{itemize}
+
+\section{The Final Product}
+The final product we developed contains an interpreter which takes a file (with eye-styled code) as input and executes it step by step, while simultaneously ensuring changes in the graphics and visualisations. Comprehensive instructions regarding the software requirements and running instructions can be found in the user manual. Here is a screenshot of the panel that is displayed while the program is being executed:
+
+\includegraphics[width = \textwidth]{mergeSort.png}
+\\\\\\
+In the screenshot one can see that at the top we have a line which tells us what task the interpreter is carrying out currently. Below that we have a code snippet displayed, which shows the actual code that the user has written which is being currently executed. On the bottom left we have the execution stack which represents the differnent scopes as well. We see that at the bottom we have the global variables and as we move up we have different rectangle representing the different activation frames, with the second lowest one denoting that of the main program.\\
+Everything else represents the heap memory, that is the various arrays, data structures, etc that are assigned memory in the heap. We can see that at present, we have arrays both of which are declared in the heap, namely "arr". At the bottom, to the right of the execution stack we have the function stacks, which denote the activation frame of all the functions that are active. \\
+So, the screenshot denotes the output that we get when we run a program that implements mergesort on an array of length 4 with values 4,3, 2 and 1. However, this code has a small bug and this causes a very un-descriptive run-time error ("segmentation fault") on executing in C++. However, in this screenshot, we see that the frame with the same "start" and "end" values has been made numerous times and this means that an infinite number of function frames are being created. This is because the base case has been written incorrectly and this error is very easy to detect using Eye, but would be difficult to debug in C++.
+\\
+
+\includegraphics[width = 0.9\textwidth]{dataStructs.png}
+\\ \\
+In this screenshot, we can see the various data structures that we have implemented to the right. They are all defined in the heap and we have developed representations for binary search trees, hash tables, linked lists and stacks.
+
+\section {The Code}
+We have documented the code well and we have divided it into folders as well which represent one module each. We have the parser directory that contains the two files - parsingClasses - which defines the classes we use to store each of the programming constructs and parsingRules - which defines all the rules for parsing. The directory called lexer contains the rules for lexing the user code. The dataStructures directory contains the graphics library we used and our implementations of all the data structures, execution stack, etc.
+
+\section{LITERATURE SURVEY AND PRIOR ARTWORK}
+\begin{itemize}
+\item Extensive research has been done on the field of interpreters previously. There are many interpreters for the language C++ like Cint, Cling etc. Though {\bf Cint and Cling} have most of the functionality related to C++, none of them implement \textit{all} of them. 
+
+
+\item Attempts have been made to create graphical visualizations of programs. People have always been interested in this field and we found a research paper\cite{paper} dating right back to 1983.
+
+\includegraphics[width=0.9\textwidth]{paper1975.png}
+
+\item As for the {\bf graphical representation} of code,there exist some sites (\textit {https://visualgo.net/en/sorting?slide=1}, \textit {https://www.cs.usfca.edu/~galles/visualization/Algorithms.html}) where you can visualize basic data structures for already decided algorithms. \\There are not many platforms that allow visualisation of user-input code. However, we found this link on the internet: \textit {http://www.pythontutor.com/cpp.html\#mode=edit} which is a visualisation environment which does similar things but for python. The counterpart for C++ is still in the experimental phase.
+
+\end{itemize}
+\section{PROBLEM STATEMENT} 
+Develop an interpreter for a small rule-based language of your own using Python3 and its libraries. The interpreter must depict, in real time, the execution environment, data structures, variables and memory allocation to give the user a comprehensive overview of the interpreter working and code execution.
+\section{SOFTWARE AND HARDWARE REQUIREMENTS}
+
+\subsection{Python3}
+
+The entire code will be written in python3 and we will be using its libraries extensively, some of which are as follow:
+\begin{itemize}
+\item {\bf rply}: we will be utilizing its following classes:
+
+\begin{itemize}
+\item {\bf LexerGenerator} – for lexical analysis of the user's code
+\item {\bf BaseBox} – for defining our own rules for the abstract syntax trees (These are trees that define the grammar of any language) which would be utilized for interpreting
+\item {\bf ParserGenerator} – to do the most important and involved task... parsing!
+
+\end{itemize}
+
+\item {\bf graphics.py}: is an open source library. We will be using it for the following
+\begin{itemize}
+\item To build basic {\bf geometrical shapes} like rectangles, circles, lines, and much more, which would in turn be used to build structures to visualise common data structures.
+\item To add {\bf animation} to the objects on the canvas to animate execution of functions and make it easier to understand what is happening.
+\end{itemize}
+\end{itemize}
+
+	
+\subsection{Doxygen and Latex}We will utilize these tool for two purposes: 
+\begin{itemize}
+    \item to maintain documentation of our code as we expect it to become extremely large
+    \item to develop a reference manual for Eye, enlisting all its features, standard libraries and member functions.
+\end{itemize}
+
+\subsection{HTML5/CSS}
+We plan to build a simple web-based user interface for our project.
+
+\subsection {Git and GitHub}We will use this extensively to maintain the code base and allow different team members to simultaneously work on different modules conveniently. 
+\section{IMPLEMENTATION}
+The implementation of our project can be broken down into the following modules:
+\begin{itemize}
+\item Lexer
+\item Parser
+\item Interpreter
+\item Graphics
+\end{itemize}
+% \begin{tikzpicture}[node distance = 2cm, auto]
+% \node [block2](code){code};
+% \node [block, right of=code](Lexer){Lexer};
+% \node [block, right of=Lexer](Parser){Parser};
+% \node [block, right of=Parser](Interpreter){Interpreter};
+% \node [block2, right of=Interpreter](output){output};
+% \path [line](code) -- (Lexer)
+% \path [line](Lexer) -- (Parser)
+% \path [line](Parser) -- (Interpreter)
+% \path [line](Interpreter) -- (output)
+% \end{tikzpicture}
+$$code \longrightarrow \framebox{Lexer} \longrightarrow \framebox{Parser} \longrightarrow \framebox{Interpreter} \longrightarrow output$$
+\subsubsection{\large{Lexer}}
+\begin{center}
+\begin{figure}
+\includegraphics[width = 0.9\textwidth]{lexer.png}
+
+\caption{Sample Lexer}
+\label{fig:lexer}
+\end{figure}
+\end{center}
+\begin{itemize}
+\item We will use the \textbf{rply} library to tokenise each element of the user's code.
+\item The \textbf{lexergenerator} class'
+\textbf{add() method} allows us define rules to allot tokens to different parts of the code.
+\item Using the \textbf{ignore() method},we can exclude irrelevant elements like whitspaces.
+\item The \textbf{build() method} builds all the rules and calling the lexer.lex() function with the user code as input, we get a \textbf{lexerstream} object.
+\item In Figure \ref{fig:lexer}, we define rules to tokenise the input string, like assigning the token `assignment' to `='. Whitespaces have been ignored. \\The \textbf{next() method} of the lexerstream object created on tokenising the string `5 =5', gives us the tokens in order. %Some examples of tokens that can be added as rules are \begin{itemize}
+%\item Assignment for `='
+%\item continue, if, for, int
+%\item plus for `+'
+%\item names of variables
+%\end{itemize}
+\end{itemize}
+\subsubsection{Parser}
+\begin{itemize}
+\item We will define classes for all major programming constructs and the aim of parsing is to convert the tokenised user code into instances of these classes. Examples of a few of these classes are assignment, for loops, while loops, cin and cout, functions, etc.
+%\begin{itemize}
+%\item assignment
+%\item expression
+%\item for
+%\item while
+%\item cout,cin
+%\item functions
+%\end{itemize}
+\item Each class will have data members to store the necessary information and functions that are specific to the programming construct. This will enable us to execute the code eventually. The parser will detect keywords and create instances of these classes.
+\item Consider the example of a `for' loop. It will have the following four data members-
+\begin{itemize}
+\item Initialization- block object
+\item Condition- expression object
+\item Updation- block object
+\item Actual code to be executed repeatedly- block object
+\end{itemize}
+Now, an expression is basically code that can be evaluated to produce one single value. A block object is a list of one or more statements and a statement itself can be defined as:
+
+\Tree [.Block Declaration Assignment IOstream conditional loops ]
+
+\item Every datatype in our language will be stored in a corresponding datatype in python. For example, a string in C++ will be stored in a string in python and complex data structures like stacks, queues and trees will be stored in classes defined by us.
+\item As another example, the class used to represent the declaration statement has two data members:
+\begin{itemize}
+\item Type of variable being referred
+\item Assignment type object which itself will contain 
+\begin{itemize}
+    \item Name of the variable stored as a string
+    \item Value to be assigned stored as an expression object
+\end{itemize}
+\end{itemize}
+%while that used to store a function will have the following:
+%\begin{itemize}
+%\item Function type
+%\item list of arguements
+%\item Block objects
+%\end{itemize}
+\item Similarly for all other constructs, this table depicts the data members and what each class will represent.
+
+
+\begin{center}
+\renewcommand{\arraystretch}{2}
+\begin{tabular}{ |c|c|c| }
+%\setlength\extrarowheight{}{5pt}
+\hline
+\textbf{Parser Class} & \textbf{Its Data Members} & \textbf{What it Represents}\\
+\hline
+ Identifier & letter(letter|digit)* & Name of a variable \\ 
+ \hline
+ Variable & identifier|identifier[expression] & Variable or array element \\  
+ \hline
+ Term & raw data|variables|(expression) & A value\\
+ \hline
+ Expression & (unary operator)* term (binary operator term)* & Anything that can be evaluated \\
+ \hline
+ Statement & declaration|assignment|cout/cin|loops & Constructs of different kinds \\  
+ \hline
+ Block & statement(statement)* & One or more statements   \\
+ \hline
+ Assignment & variable and expression & Statements with an “=” sign \\ 
+ \hline
+ Declaration & variable type and assignment type & Variable declarations \\  
+ \hline
+ Cout/cin & List of expressions/variables & Input and output objects    \\
+ \hline
+ Conditionals & Expressions for conditions and blocks to execute & If – else if – else constructs \\ 
+ \hline
+ For loop & Intialisation, updation, condtion and 
+block & For loop constructs \\  
+\hline
+ While loop & Condition and block & While loop constructs\\
+ \hline
+ Functions & Name, argument list and block & Function Declarations \\  
+ \hline
+ Function Calls & Function name and list of arguments passed & Actual execution of functions\\
+ \hline
+\end{tabular}
+
+\end{center}\\
+\item In Figure \ref{fig:bookExtract2}, we see the rules for parsing all sorts of expressions. Once the expression has been parsed and stored in the aforementioned classes, evaluating them only requires us to call the corresponding python operators.
+
+\end{itemize}
+\subsubsection{{\large Interpreter}}
+\begin{itemize}
+%\item In this stage,we actually substitute the relevant expressions and give a scope to a function and a variable and a value to a variable
+\item Before we can actually begin parsing, we must store all the variables and functions that the user has defined in a `symbol table'. The symbol table for functions is simply a dictionary, where the key is the function name and the value will be an instance of the class used to store functions.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+\includegraphics[width=0.8\textwidth]{interpreter1.png}
+    %\caption{Caption}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{interpreter2.png}
+    \caption{Rules for parsing and evaluating all sorts of expression. This is from a reference book \cite{textbook} we found on interpreters and compilers}
+    \label{fig:bookExtract2}
+\end{figure}
+\begin{itemize}
+\item Now, to store variables, we will use a list of dictionaries where the key is the name of the variable and the value is a python object of the same kind as that in the user's program. For example, if the user defines a string called myString with value ``SSL'', the value associated with the key `myString' will be a python object of type string with the value `SSL'. To maintain scope of variables, the last entry in the list will contain all variables defined only in the current scope, while the first element of the list will contain all the global variables. To find the value of a variable, we start searching from the last entry in the list and work our way backwards.
+%\item At any given point this list will only include the variables that are currently in scope.
+%\item The index of the list is an indicator of the level of scope of the variable.eg. 0 index indicates that the variable is global and so on.
+\item When we encounter a `\}', the last entry of the list is deleted.
+%\item The dictionary has a string(variable name) as its key and class of the variable as its value.
+\item Whenever a function is called, a new list is created which has the same global variables and the parameters of the function are at position 1.
+%\item When interpreting, to get a value of a variable, if it is a number datatype (or similar), that value is returned. If it is a variable, then we look up and give the value.
+%\item If it is an expression, we evaluate it according to the rules of an expression.
+\item We are now set to execute the code using appropriate rules for executing for loops, if loops, etc.
+\end{itemize}
+
+\subsection{Graphics}
+%\begin{itemize}
+For every common data structure, the standard member functions will be modified to implement an intuitive visualisation of the data stored. However, to prevent over-crowding and ensure ease-of-understanding, we will limit the size and number of such data structures.\\
+Also, we will represent the execution stack and environment in which each line is executed and evaluated. We represent a particular scope as a rectangular block and display in it the names and values of every variables at each stage. Figure \ref{fig:rough} shows a crude
+visualisation model.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{rough.png}
+%\label{}
+\label{fig:rough}
+\end{figure}
+%\item However there will be a limit on the instances of a datatype to fit in all the required things.
+
+%\end{itemize}
+
+\section{FEASIBILITY} 
+This platform has great feasibility with respect to real-world scenarios. Eye is a great tool for understanding the working of basic algorithms and for debugging simple programs. This would also be a phenomenal teaching tool for courses like CS213 and CS101 to demonstrate common problems and algorithms like the railroad problem, LPT algorithm in machine scheduling and sorting algorithms. It will give students insight into the basic working principles of an interpreter and help them develop a deep and thorough understanding of algorithms.\\
+However, we realise that it is impractical to implement all the varied features of C++ and hence, we will not include concepts like pointers, inheritance and polymorphism.\\
+%Moreover the fact that we are coding it in our own language(though similar to C++) could restrict its usage.
+We strongly believe that this can serve as a template to develop more functionality to make debugging possible for complex programs. This will help simplify the task of all programmers significantly and save a lot of time, energy and frustration. 
+
+\\
+\textbf{{\large Based on the inputs given by Prof. Kavi Arya after our presentation in class, we are adding the following sections}}
+
+\section{Proposed Deliverables}
+Our deliverables would include the following:
+\begin{enumerate}
+    \item Build lexer, parser and interpreter modules to handle the following programming constructs:
+    \begin{enumerate}
+        \item Mathematical expressions including the +, -, *, / and \% operators
+        \item Boolean expressions including the or, and and not operators
+        \item Assignment statements
+        \item Arrays
+        \item Declaration statements
+        \item If, If-else and If-else if-else blocks
+        \item For loops
+        \item While loops
+        \item Functions
+    \end{enumerate}
+    \item Develop implementations for the following non-primitive data structures which would include visualisations for their common member functions:
+    \begin{enumerate}
+        \item Linked Lists-doubly and singly linked
+        \item Stacks
+        \item Queues
+        \item Hash Tables
+        \item Trees
+        \item Heaps
+    \end{enumerate}
+    \item Develop a comprehensive, easy-to-understand interface to depict the execution environment and the scope of different variables. The state of all variables and classes will be maintained at all times.
+    %\item Implement a simple web-based user interface using Django, HTML and CSS.
+    \item Eye will be able to visualise simple algorithms and how the data evolves on running the algorithms. For example, we will represent the state of the array after each iteration of a sorting algorithm.
+\end{enumerate}
+
+\section{What we Actually Accomplished}
+We are proud to be able to say that we have been able to implement the entire project and actually develop all that was mentioned in the deliverables. We have built the entire lexer and parser modules as well as developed visualisations of all common data structures. We have not only been able to meet the goal that Professor Kavi Arya had set for us (of showing a simple bubble sort or insertion sort program), but have been able to accomplish much more (like complex recursive sort methods eg. mergesort).\\
+The deliverables we have delivered are as follow:
+\begin{enumerate}
+    \item 
+Here is a list of the programming constructs that Eye can lex, parse and execute:
+\begin{enumerate}
+        \item Mathematical expressions including the +, -, *, / and \% operators
+        \item Boolean expressions including the or, and and not operators
+        \item Assignment statements
+        \item Arrays
+        \item Declaration statements
+        \item If, If-else and If-else if-else blocks
+        \item For loops
+        \item While loops
+        \item Functions
+    \end{enumerate}
+    
+\item 
+We have also implemented the following abstract data types with their common methods (along with intuitive and comprehensive visualisations) to understand their functions:
+\begin{enumerate}
+        \item Linked Lists-doubly and singly linked
+        \item Stacks
+        \item Queues
+        \item Hash Tables
+        \item Trees
+        \item Heaps
+    \end{enumerate}
+\item We have built a console using the graphics library which depicts the execution stack, the variables that are currently present in the execution environment along with their scopes as well as visualisations for common data structures as has been described in the third section.
+\item 
+We have also been able to depict comprehensively and in a very intuitive fashion how the data evolves when an algorithm is executed. It is very easy to understand the various sorting routines using Eye.
+
+\end{enumerate}
+
+\section{Proposed Timeline}
+We will build the project in three iterations and in each iteration, we will include some more constructs and complete all the related modules. This means that after a given iteration, the program will be able to tokenise, parse, execute and visualise all statements belonging to a particular programming construct. \\
+We will have 3 iterations, each lasting one week. We will aim to including the following constructs in each construct:
+\begin{enumerate}
+    \item Mathematical and Boolean expressions, assignments and declarations
+    \item For loops, if loops, while loops
+    \item Non-primitive data structures
+\end{enumerate}
+We have kept a week at the end to iron out bugs, optimise and document the code and complete parts that might not have been completed on schedule.
+
+\section{The Timeline we Actually Followed}
+We pretty much followed the timeline that we had proposed based on the suggestions and feedback we received in class after our proposal presentation. Here is the final timeline:
+\begin{itemize}
+\item Week 1: Mathematical and Boolean expressions, assignments and declarations
+\item Week 2: For loops, if loops (conditionals) and while loops
+\item Week 3: Non-primitive data structures (stacks, trees, hash tables, etc.)
+\item Week 4: Functions, documenting the code, removing bugs in the code and developing the user manual
+\end{itemize}
+
+\bibliography{bib}
+\bibliographystyle{unsrt}
+
+\end{document}

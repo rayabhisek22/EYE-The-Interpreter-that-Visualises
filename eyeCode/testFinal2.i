@@ -1,4 +1,4 @@
-main_program
+int main()
 {
     int length = 5;
     int arr[length];
