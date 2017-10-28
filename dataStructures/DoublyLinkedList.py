@@ -1,5 +1,5 @@
-from headersForDataStructures import *
-from SinglyLinkedList import numberoflinkedlist
+from .headersForDataStructures import *
+from .SinglyLinkedList import numberoflinkedlist
 
 ##@brief Class contaning arrows to make a pointer between objects on the canvas
 class DoubleArrow:
@@ -79,7 +79,6 @@ class DoubleArrow:
 
 
 
-from headersForDataStructures import *
 ##################################################################################################################
 
 ##@brief Class which denotes a single node of a doubly linked list

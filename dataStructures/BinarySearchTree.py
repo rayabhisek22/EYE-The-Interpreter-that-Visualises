@@ -1,4 +1,4 @@
-from headersForDataStructures import *
+from .headersForDataStructures import *
 
 nodeSpace = 3*circleRadius
 verticalGap = 3*circleRadius

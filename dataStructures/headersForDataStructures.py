@@ -8,7 +8,7 @@
 #exec_stacl->addData(varname, x, funcIndex)
 #exec_stack->modifyData(varname, value, funcIndex, index (lowest is 0 and upper is length of stack))
 
-import graphics
+from . import graphics
 import time
 
 

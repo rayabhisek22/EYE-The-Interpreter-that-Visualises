@@ -1,4 +1,4 @@
-from headersForDataStructures import *
+from .headersForDataStructures import *
 ####################################################################################################################
 
 #                                    STACKS

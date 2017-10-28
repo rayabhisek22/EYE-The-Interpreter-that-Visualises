@@ -1,4 +1,4 @@
-from headersForDataStructures import *
+from .headersForDataStructures import *
 
 textHeight = 20
 textWidth = 20

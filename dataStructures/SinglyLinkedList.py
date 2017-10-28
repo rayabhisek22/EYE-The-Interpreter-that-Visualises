@@ -1,4 +1,4 @@
-from headersForDataStructures import *
+from .headersForDataStructures import *
 ##################################################################################################################
 
 numberoflinkedlist=[0]

@@ -1,5 +1,5 @@
-import graphics
-from headersForDataStructures import canvas, wait, headerText, codeText, drawCodeText, drawHeader as drawHeaderText
+from . import graphics
+from .headersForDataStructures import canvas, wait, headerText, codeText, drawCodeText, drawHeader as drawHeaderText
 
 bottomx = 20
 bottomy = 650

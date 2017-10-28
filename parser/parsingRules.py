@@ -24,8 +24,19 @@
 #This file contains the rules which are used for parsing the user's code.
 #Before parsing, the code is tokenized using lexer.py.
 
+import os,os.path, sys
+curfilePath = os.path.abspath(__file__)
 
-from ../lexer/lexer import lexer
+# this will return current directory in which python file resides.
+curDir = os.path.abspath(os.path.join(curfilePath, os.pardir))
+
+# this will return parent directory.
+parentDir = os.path.abspath(os.path.join(curDir, os.pardir))
+
+sys.path.insert(0,parentDir)
+
+#from ... import lexer
+from lexer.lexer import lexer
 from parsingClasses import *
 from rply import ParserGenerator
 
