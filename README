@@ -4,6 +4,9 @@ ________________________________________________________________________________
 The "report" direcory contains the project report and the slides, and the "userManual" directory contains the user manual.
 ------------------------------------------------------------------------------------------------------------------
 
+------------------------------------------------------------------------------------------------------------------
+We have deleted the .git folder as it was 40 MB and adding it caused the file size to exceed the limit on moodle
+------------------------------------------------------------------------------------------------------------------
 
 
 One can find the instructions for installing the libraries we need and how to run the code in the user manual in the userManual directory.

@@ -96,7 +96,7 @@ The entire code will be written in python3 and we will be using its libraries ex
 \end{itemize}
 \end{itemize}
 
-	
+    
 \subsection{Doxygen and Latex}We will utilize these tool for two purposes: 
 \begin{itemize}
     \item to maintain documentation of our code as we expect it to become extremely large
@@ -137,10 +137,10 @@ $$code \longrightarrow \framebox{Lexer} \longrightarrow \framebox{Parser} \longr
 \end{figure}
 \end{center}
 \begin{itemize}
-\item We will use the \textbf{rply} library to tokenise each element of the user's code.
+\item We used the \textbf{rply} library to tokenise each element of the user's code.
 \item The \textbf{lexergenerator} class'
 \textbf{add() method} allows us define rules to allot tokens to different parts of the code.
-\item Using the \textbf{ignore() method},we can exclude irrelevant elements like whitspaces.
+\item Using the \textbf{ignore() method},we excluded irrelevant elements like whitspaces.
 \item The \textbf{build() method} builds all the rules and calling the lexer.lex() function with the user code as input, we get a \textbf{lexerstream} object.
 \item In Figure \ref{fig:lexer}, we define rules to tokenise the input string, like assigning the token `assignment' to `='. Whitespaces have been ignored. \\The \textbf{next() method} of the lexerstream object created on tokenising the string `5 =5', gives us the tokens in order. %Some examples of tokens that can be added as rules are \begin{itemize}
 %\item Assignment for `='
@@ -151,7 +151,7 @@ $$code \longrightarrow \framebox{Lexer} \longrightarrow \framebox{Parser} \longr
 \end{itemize}
 \subsubsection{Parser}
 \begin{itemize}
-\item We will define classes for all major programming constructs and the aim of parsing is to convert the tokenised user code into instances of these classes. Examples of a few of these classes are assignment, for loops, while loops, cin and cout, functions, etc.
+\item We defined classes for all major programming constructs and the aim of parsing is to convert the tokenised user code into instances of these classes. Examples of a few of these classes are assignment, for loops, while loops, cin and cout, functions, etc.
 %\begin{itemize}
 %\item assignment
 %\item expression
@@ -160,8 +160,8 @@ $$code \longrightarrow \framebox{Lexer} \longrightarrow \framebox{Parser} \longr
 %\item cout,cin
 %\item functions
 %\end{itemize}
-\item Each class will have data members to store the necessary information and functions that are specific to the programming construct. This will enable us to execute the code eventually. The parser will detect keywords and create instances of these classes.
-\item Consider the example of a `for' loop. It will have the following four data members-
+\item Each class has data members to store the necessary information and functions that are specific to the programming construct. This  enabled us to execute the code eventually. The parser will detect keywords and create instances of these classes.
+\item Consider the example of a `for' loop. It has the following four data members-
 \begin{itemize}
 \item Initialization- block object
 \item Condition- expression object
@@ -172,7 +172,7 @@ Now, an expression is basically code that can be evaluated to produce one single
 
 \Tree [.Block Declaration Assignment IOstream conditional loops ]
 
-\item Every datatype in our language will be stored in a corresponding datatype in python. For example, a string in C++ will be stored in a string in python and complex data structures like stacks, queues and trees will be stored in classes defined by us.
+\item Every datatype in our language is stored in a corresponding datatype in python. For example, a string in C++ is stored in a string in python and complex data structures like stacks, queues and trees will be stored in classes defined by us.
 \item As another example, the class used to represent the declaration statement has two data members:
 \begin{itemize}
 \item Type of variable being referred
@@ -188,7 +188,7 @@ Now, an expression is basically code that can be evaluated to produce one single
 %\item list of arguements
 %\item Block objects
 %\end{itemize}
-\item Similarly for all other constructs, this table depicts the data members and what each class will represent.
+\item Similarly for all other constructs, this table depicts the data members and what each class  represents.
 
 
 \begin{center}
@@ -230,7 +230,7 @@ block & For loop constructs \\
 \end{tabular}
 
 \end{center}\\
-\item In Figure \ref{fig:bookExtract2}, we see the rules for parsing all sorts of expressions. Once the expression has been parsed and stored in the aforementioned classes, evaluating them only requires us to call the corresponding python operators.
+\item In Figure \ref{fig:bookExtract2}, we see the rules for parsing all sorts of expressions. Once the expression has been parsed and stored in the aforementioned classes, evaluating them only required us to call the corresponding python operators.
 
 \end{itemize}
 \subsubsection{{\large Interpreter}}
@@ -252,7 +252,7 @@ block & For loop constructs \\
     \label{fig:bookExtract2}
 \end{figure}
 \begin{itemize}
-\item Now, to store variables, we will use a list of dictionaries where the key is the name of the variable and the value is a python object of the same kind as that in the user's program. For example, if the user defines a string called myString with value ``SSL'', the value associated with the key `myString' will be a python object of type string with the value `SSL'. To maintain scope of variables, the last entry in the list will contain all variables defined only in the current scope, while the first element of the list will contain all the global variables. To find the value of a variable, we start searching from the last entry in the list and work our way backwards.
+\item Now, to store variables, we used a list of dictionaries where the key is the name of the variable and the value is a python object of the same kind as that in the user's program. For example, if the user defines a string called myString with value ``SSL'', the value associated with the key `myString' will be a python object of type string with the value `SSL'. To maintain scope of variables, the last entry in the list contains all variables defined only in the current scope, while the first element of the list contains all the global variables. To find the value of a variable, we start searching from the last entry in the list and work our way backwards.
 %\item At any given point this list will only include the variables that are currently in scope.
 %\item The index of the list is an indicator of the level of scope of the variable.eg. 0 index indicates that the variable is global and so on.
 \item When we encounter a `\}', the last entry of the list is deleted.
@@ -265,8 +265,8 @@ block & For loop constructs \\
 
 \subsection{Graphics}
 %\begin{itemize}
-For every common data structure, the standard member functions will be modified to implement an intuitive visualisation of the data stored. However, to prevent over-crowding and ensure ease-of-understanding, we will limit the size and number of such data structures.\\
-Also, we will represent the execution stack and environment in which each line is executed and evaluated. We represent a particular scope as a rectangular block and display in it the names and values of every variables at each stage. Figure \ref{fig:rough} shows a crude
+For every common data structure, the standard member functions have been modified to implement an intuitive visualisation of the data stored. However, to prevent over-crowding and ensure ease-of-understanding, we limited the size and number of such data structures.\\
+Also, we  represented the execution stack and environment in which each line is executed and evaluated. We represent a particular scope as a rectangular block and display in it the names and values of every variables at each stage. Figure \ref{fig:rough} shows a crude
 visualisation model.
 
 \begin{figure}[H]
