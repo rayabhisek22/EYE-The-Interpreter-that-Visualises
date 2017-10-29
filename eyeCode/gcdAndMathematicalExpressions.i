@@ -32,7 +32,7 @@ int g(int x)
 	return x/x*y+y/x;
 } 
 
-main_program{
+int main(){
 	stack<int> st;
 	int x=4;
 	st.push(x+2);

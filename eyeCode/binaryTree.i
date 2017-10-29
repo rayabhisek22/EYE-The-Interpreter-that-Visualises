@@ -1,4 +1,4 @@
-main_program{
+int main(){
 	binarySearchTree<int> bst;
 	for (int i = 1 ; i < 6 ; i = i + 1){
 		bst.insert(0);
