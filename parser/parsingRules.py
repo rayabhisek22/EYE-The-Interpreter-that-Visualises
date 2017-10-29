@@ -24,12 +24,16 @@
 #This file contains the rules which are used for parsing the user's code.
 #Before parsing, the code is tokenized using lexer.py.
 
+import os, sys, inspect
 
-from lexer import lexer
-from ParsingClassesActual import *
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir) 
+
+from lexer.lexer import lexer
+from parsingClasses import *
 from rply import ParserGenerator
 
-import sys
 # lines = []
 # for line in sys.stdin:
 #     lines.append(line)
