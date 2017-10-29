@@ -1,3 +1,6 @@
+##@file
+#This file contains the code for checking that lexer works correctly.
+
 from lexer import lexer
 import sys
 
