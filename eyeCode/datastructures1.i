@@ -1,4 +1,4 @@
-main_program {
+int main() {
     int length = 5;
     stack<int> st, st1;
     queue<int> qu,qu1;
