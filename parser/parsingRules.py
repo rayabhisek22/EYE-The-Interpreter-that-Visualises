@@ -16,28 +16,17 @@
 #	2. rply		:	sudo pip3 install rply
 #
 #After installing is completed, you can write your code in a text file (preferred extension is .i).
-#After saving the file (say with a  name filename.i), run the following command:
-#<br> <b><center>./run.sh filename.i</center></b>
-# That's all you need to do
+#After saving the file (say with a name filename.i), run the following command:
+#<br> <b><center>./run.sh <path_to_filename.i></center></b>
+# That's all you need to do.
 
 ##@file
 #This file contains the rules which are used for parsing the user's code.
 #Before parsing, the code is tokenized using lexer.py.
 
-import os,os.path, sys
-curfilePath = os.path.abspath(__file__)
 
-# this will return current directory in which python file resides.
-curDir = os.path.abspath(os.path.join(curfilePath, os.pardir))
-
-# this will return parent directory.
-parentDir = os.path.abspath(os.path.join(curDir, os.pardir))
-
-sys.path.insert(0,parentDir)
-
-#from ... import lexer
-from lexer.lexer import lexer
-from parsingClasses import *
+from lexer import lexer
+from ParsingClassesActual import *
 from rply import ParserGenerator
 
 import sys
@@ -52,7 +41,7 @@ import sys
 #the function has to take a single argument which is the list of all matched patterns
 #also the function return a list of two elements, one of which is the main return format and other one the corresponding code snippet
 parser = ParserGenerator(
-    # a list of all token names, accepted by the parser.
+    ## a list of all token names, accepted by the parser.
     [
     'COMMA','SEMICOLON','PLUS','MINUS','MUL','DIV','OR','AND','MOD','NOT','LESSEQUAL','GREATEREQUAL',
     'LESS','GREATER','EQUAL','ISEQUAL','NOTEQUAL','OPEN_PARENS','CLOSE_PARENS','OPEN_BRACES','CLOSE_BRACES',
@@ -64,16 +53,18 @@ parser = ParserGenerator(
     ]
 )
 
+##@brief dictionary to given the class corresponding to the operator
 ##@var oper_to_funcname_dict dictionary to given the class corresponding to the operator
 oper_to_funcname_dict = {'==': myIsEqual, '!=' : myIsNotEqual, '>=': myGreaterThanEqualTo, '<':myLessThan, '>':myGreaterThan,
  '<=': myLessThanEqualTo}
-
+##@brief dictionary to given the class corresponding to the data type
 ##@var keyword_dictionary dictionary to given the class corresponding to the data type
 keyword_dictionary = {'int' : Int, 'bool' : Bool, 'float' : Float, 'string' : String } 
-
+##@brief dictionary to give the class corresponding to the data structure
 ##@var data_struct_dictionary dictionary to give the class corresponding to the data structure
 data_struct_dictionary={'linkedList':SinglyLinkedList, 'queue':Queue, 'stack':Stack, 'binarySearchTree':BinarySearchTree,
 'doublyLinkedList': DoublyLinkedList, 'hashTable': HashTable}
+##@brief gives the default values of every data type
 ##@var keyword_default_value_dict gives the default values of every data type
 keyword_default_value_dict = {'int' : 0, 'bool' : False, 'float' : 0.0, 'string' : "" } 
 
@@ -99,25 +90,32 @@ def code_of_main(arglist):
 def code_of_main(arglist):
 	return [[arglist[0][0]], arglist[0][1]]
 
+##@brief checks for function declarations
 @parser.production('globals : func-declaration globals')
 ##@return the function_declaration code
 def func_declare_in_globals(arglist):
 	return [[arglist[0][0]] + arglist[1][0], arglist[0][1] + arglist[1][1]]
 
+
+##@brief checks for global declaration
 @parser.production('globals : declaration SEMICOLON globals')
 ##@return the global variable declaration
 def declare_in_globals(arglist):
 	return [arglist[0][0] + arglist[2][0], arglist[0][1] + arglist[1].getstr() + arglist[2][1]]
 
+
+##@brief checks for function declarations
 @parser.production('globals : func-declaration')
 ##@return function declaration code
 def func_declare(arglist):
 	return [[arglist[0][0]], arglist[0][1]]
+##@brief checks for global declaration
 @parser.production('globals : declaration SEMICOLON')
 ##@return the global declaration
 def declare_global(argList):
 	return [argList[0][0], argList[0][1] + argList[1].getstr()]
 
+##@brief checks for main program
 @parser.production('main : MAIN block') #block for now... will change it as we proceed
 ##@return the block of code in main program 
 def main_p(argList):
@@ -140,10 +138,12 @@ def exec_all_statements(argList):
 
 #########################################################################################################################
 # all parser rules for statements
+##@brief parser rules for multiple statement
 @parser.production('statements : statement statements')
 ##@return list of statements 
 def multiple_statement(argList):
 	return [argList[0][0] + argList[1][0], argList[0][1] + argList[1][1]]
+##@brief parser rules for the last statement
 @parser.production('statements : statement')
 ##@return one single statement 
 def single_statement(argList):
@@ -151,69 +151,88 @@ def single_statement(argList):
 
 #########################################################################################################################
 # all parser rules for a single statement
+##@brief rules for general block
 @parser.production('statement : block')
 ##@return a statement can be a block, returns the block object 
 def statement_block(argList):
 	return [argList[0][0], argList[0][1]]
+##@brief rules for declaration statement
 @parser.production('statement : declaration SEMICOLON')
 ##@return the list of declaration objects in a statement 
 def declaration_statement(argList):
 	return [argList[0][0], argList[0][1] + argList[1].getstr()]
+##@brief rules for assignment statement 
 @parser.production('statement : assignment SEMICOLON')
 ##@return the assignment statement object 
 def assignment_statement(argList):
 	return [[argList[0][0]], argList[0][1] + argList[1].getstr()]
+##@brief rules for for loop
 @parser.production('statement : for-block')
+##@brief rules for while loop
 @parser.production('statement : while-block')
 ##@return the list of objects for for-loops and while-loops 
 def exec_type_of_statement(argList):
 	""" executes particualar type of statement"""
 	return [[argList[0][0]], argList[0][1]]
 
+##@brief rules for if statement with else 
 @parser.production('statement : if-block elif-blocks else-block')
 ##@return the if statement object list when if followed by one or more elif followed by else blocks are present
 def if_elifs_else(argList):
 	return [[IfStatement(argList[0][0] + argList[1][0] + argList[2][0])], argList[0][1] + argList[1][1] + argList[2][1]]
+
+##@brief rules for if statement with only elif
 @parser.production('statement : if-block elif-blocks')
 ##@return if statement object when if followed by elifs but no else 
 def if_elifs(argList):
 	return [[IfStatement(argList[0][0] + argList[1][0])], argList[0][1] + argList[1][1]]
+
+##@brief rules for if statement with else no elif
 @parser.production('statement : if-block else-block')
 ##@return if statement object when if followed by else 
 def if_else(argList):
 	return [[IfStatement(argList[0][0] + argList[1][0])], argList[0][1] + argList[1][1]]
+
+##@brief rules for if statement with only if
 @parser.production('statement : if-block')
 ##@return if statement object when only if 
 def if_only(argList):
 	return [[IfStatement(argList[0][0])], argList[0][1]]
 
+##@brief rules for cout statement
 @parser.production('statement : output-stream SEMICOLON')
 ##@return list of cout objects  
 def output_stream(argList):
 	snippet =  argList[0][1] + argList[1].getstr()
 	return [[CoutStatement(argList[0][0], snippet)],snippet]
+##@brief rules for cin statement
 @parser.production('statement : input-stream SEMICOLON')
 ##@return list of input objects 
 def input_stream(argList):
 	snippet =  argList[0][1] + argList[1].getstr()
 	return [[CinStatement(argList[0][0], snippet)],snippet]
+##@brief rules for class_function_objects
 @parser.production('statement : class-functions-object SEMICOLON')
 ##@return object representing call to a member function of a class 
 def make_exec(argList):
 	return [[argList[0][0]], argList[0][1] + argList[1].getstr()]
 
+
+##@brief rules for void return statements
 @parser.production('statement : RETURN SEMICOLON')
 ##@return the object 'Return' in case of void function 
 def void_return(argList):
 	snippet = argList[0].getstr()+" " + argList[1].getstr()
 	return [[Return(String(),snippet)], snippet]
 
+##@brief rules for expression return statements
 @parser.production('statement : RETURN expression SEMICOLON')
 ##@return the 'Return' object followed by expression 
 def nonvoid_return(argList):
 	snippet = argList[0].getstr() +" "+ argList[1][1]  + argList[2].getstr()
 	return [[Return(argList[1][0], snippet)], snippet]
 
+##@brief rules for function call statements
 @parser.production('statement : function-call SEMICOLON')
 ##@return object representing call to a user defined function 
 def function_call(argList):
@@ -230,6 +249,7 @@ def function_call(argList):
 
 #########################################################################################################################
 #declarations
+##@brief rules for function declarations
 @parser.production('func-declaration : keyword VARIABLE OPEN_PARENS CLOSE_PARENS block')
 ##@return functionDeclaration object of function with no parameters 
 def func_declaration_to_class (argList):
@@ -237,6 +257,7 @@ def func_declaration_to_class (argList):
 	+ argList[3].getstr() + argList[4][1]
 	return [FuncDeclaration(argList[0], argList[1].getstr(), [], argList[4][0], snippet), snippet]
 
+##@brief rules for function declarations
 @parser.production('func-declaration : keyword VARIABLE OPEN_PARENS vars CLOSE_PARENS block')
 ##@return functinonDeclaration object of function with parameters 
 def func_declaration_to_class (argList):
@@ -244,8 +265,8 @@ def func_declaration_to_class (argList):
 	 + argList[2].getstr() + argList[3][1] + argList[4].getstr() + argList[5][1]
 	return [FuncDeclaration(argList[0], argList[1].getstr(), argList[3][0], argList[5][0], snippet),snippet]
 
+##@brief rules for function declarations
 
-#declarations
 @parser.production('func-declaration : VOID VARIABLE OPEN_PARENS CLOSE_PARENS block')
 ##@return functionDeclaration object of function with no parameters 
 def func_declaration_to_class (argList):
@@ -253,6 +274,7 @@ def func_declaration_to_class (argList):
 	+ argList[3].getstr() + argList[4][1]
 	return [FuncDeclaration(argList[0].getstr(), argList[1].getstr(), [], argList[4][0], snippet), snippet]
 
+##@brief rules for function declarations
 @parser.production('func-declaration : VOID VARIABLE OPEN_PARENS vars CLOSE_PARENS block')
 ##@return functinonDeclaration object of function with parameters 
 def func_declaration_to_class (argList):
@@ -260,16 +282,19 @@ def func_declaration_to_class (argList):
 	 + argList[2].getstr() + argList[3][1] + argList[4].getstr() + argList[5][1]
 	return [FuncDeclaration(argList[0].getstr(), argList[1].getstr(), argList[3][0], argList[5][0], snippet),snippet]
 
+##@brief rules for arguments of function declaration
 @parser.production('vars : var COMMA vars')
 ##@return list of arguments to a function in function declaration 
 def multiple_ar(argList):
 	return [[argList[0][0]] + argList[2][0], argList[0][1] + argList[1].getstr() + argList[2][1]]
 
+##@brief rules for single argument of function declarations
 @parser.production('vars : var')
 ##@return list of a single argument in function declaration
 def single_var(argList):
 	return [[argList[0][0]],argList[0][1]]
 
+##@brief rules for arguments structure of function declarations
 @parser.production('var : keyword VARIABLE')
 ##@return single argument in function declaration 
 def argument_variable(argList):
@@ -277,12 +302,14 @@ def argument_variable(argList):
 
 
 #calls
+##@brief rules for function call without arguments
 @parser.production('function-call : VARIABLE OPEN_PARENS CLOSE_PARENS')
 ##@return function call to a function with no arugment 
 def nonparameter_func_call(argList):
 	snippet =  argList[0].getstr() + argList[1].getstr() + argList[2].getstr()
 	return [FunctionCall(argList[0].getstr(), [], snippet), snippet]
 
+##@brief rules for function call with multiple arguments
 @parser.production('function-call : VARIABLE OPEN_PARENS expressions CLOSE_PARENS')
 ##@return functino call to a function with arguments 
 def parameter_func_call(argList):
@@ -297,6 +324,7 @@ def parameter_func_call(argList):
 
 
 
+##@brief rules for call to a class method
 @parser.production('class-functions-object : class-functions')
 ##@return list of call to a member functions of our defined class 
 def class_function_to_object(argList):
@@ -306,23 +334,27 @@ def class_function_to_object(argList):
 	else:
 		return [Multiple_member_function(argList[0][0], snippet), snippet]
 
+##@brief rules for call to a class method without arguments
 @parser.production('class-functions : VARIABLE DOT VARIABLE OPEN_PARENS CLOSE_PARENS')
 ##@return call to  a single member function with no arguments
 def function_call(argList):
 	return [[argList[0].getstr(),argList[2].getstr()], argList[0].getstr() + argList[1].getstr() + argList[2].getstr()\
 	+ argList[3].getstr() + argList[4].getstr()]
 
+##@brief rules for call to a class method with arguments
 @parser.production('class-functions : VARIABLE DOT VARIABLE OPEN_PARENS expressions CLOSE_PARENS')
 ##@return  call to a single member function with arguments
 def function_call_2(argList):
 	return [[argList[0].getstr(),argList[2].getstr(),argList[4][0]], argList[0].getstr() + argList[1].getstr()\
 	+ argList[2].getstr() + argList[3].getstr() + argList[4][1] + argList[5].getstr()]
 
+##@brief rules for multiple expression separated by comma
 @parser.production('expressions : expression COMMA expressions')
 ##@return list of arguements at the time of function calls 
 def list_of_expression(argList):
 	return [[argList[0][0]]+ argList[2][0], argList[0][1] + argList[1].getstr() + argList[2][1]]
 
+##@brief rules for last expression in multiple expressions separated by commas
 @parser.production('expressions : expression')
 ##@return list of a single argument to a function call 
 def list_of_expression(argList):
@@ -337,18 +369,22 @@ def list_of_expression(argList):
 
 #########################################################################################################################
 # all parser rules for a if block which can either be a single statement or a block
+##@brief rules for multiple assignments
 @parser.production('assignments : assignment COMMA assignments')
 ##@return the list of assignments in the first black of for loop
 def multiple_assign(argList):
     return [[argList[0][0]] + argList[2][0], argList[0][1] + argList[1].getstr() + argList[2][1]]
 
+##@brief rules for single assignment
 @parser.production('assignments : assignment')
 ##@returns the list of a single assignment
 def single_assign(argList):
     return [[argList[0][0]], argList[0][1]]
 
 
+##@brief rules for for loop with assignments in place of declaration
 @parser.production('for-block : keyFOR OPEN_PARENS assignments SEMICOLON expression SEMICOLON assignment CLOSE_PARENS block')
+##@brief rules for for loop
 @parser.production('for-block : keyFOR OPEN_PARENS declaration SEMICOLON expression SEMICOLON assignment CLOSE_PARENS block')
 ##@return for-block object containing declaration(may be assignment), assignment and condition 
 def block_of_for(argList):
@@ -357,6 +393,7 @@ def block_of_for(argList):
 	+ argList[8][1]
 	return [ForLoop(argList[2][0], argList[4][0], argList[6][0], argList[8][0], snippet), snippet]
 
+##@brief rules for for loop without declaration
 @parser.production('for-block : keyFOR OPEN_PARENS SEMICOLON expression SEMICOLON assignment CLOSE_PARENS block')
 ##@return for-block object containing only assignment and condition 
 def block_of_for(argList):
@@ -365,7 +402,10 @@ def block_of_for(argList):
 	+ argList[7][1]
 	return [ForLoop([], argList[3][0], argList[5][0], argList[7][0], snippet), snippet]
 
+##@brief rules for for loop with assignment and no condition
 @parser.production('for-block : keyFOR OPEN_PARENS assignments SEMICOLON SEMICOLON assignment CLOSE_PARENS block')
+
+##@brief rules for for loop without condition
 @parser.production('for-block : keyFOR OPEN_PARENS declaration SEMICOLON SEMICOLON assignment CLOSE_PARENS block')
 ##@return for-block object containing declaration(may be assignment), assignment and condition 
 def block_of_for(argList):
@@ -374,7 +414,9 @@ def block_of_for(argList):
 	+ argList[7][1]
 	return [ForLoop(argList[2][0], dummyForLoop(), argList[5][0], argList[6][0], snippet), snippet]
 
+##@brief rules for for loop with assignments and no updation
 @parser.production('for-block : keyFOR OPEN_PARENS assignments SEMICOLON expression SEMICOLON CLOSE_PARENS block')
+##@brief rules for for loop without updation
 @parser.production('for-block : keyFOR OPEN_PARENS declaration SEMICOLON expression SEMICOLON CLOSE_PARENS block')
 ##@return for-block object containing declaration(may be assignment), assignment and condition 
 def block_of_for(argList):
@@ -383,7 +425,9 @@ def block_of_for(argList):
 	+ argList[7][1]
 	return [ForLoop(argList[2][0], argList[4][0], dummyForLoop(), argList[7][0], snippet), snippet]
 
+##@brief rules for for loop with assignment and no condition and no updation
 @parser.production('for-block : keyFOR OPEN_PARENS assignments SEMICOLON SEMICOLON CLOSE_PARENS block')
+##@brief rules for for loop with no condition and updation
 @parser.production('for-block : keyFOR OPEN_PARENS declaration SEMICOLON SEMICOLON CLOSE_PARENS block')
 ##@return for-block object containing declaration(may be assignment), assignment and condition 
 def block_of_for(argList):
@@ -392,6 +436,7 @@ def block_of_for(argList):
 	+ argList[6][1]
 	return [ForLoop(argList[2][0], dummyForLoop(), dummyForLoop(), argList[6][0], snippet), snippet]
 
+##@brief rules for for loop with no initialization and condition
 @parser.production('for-block : keyFOR OPEN_PARENS SEMICOLON SEMICOLON assignment CLOSE_PARENS block')
 ##@return for-block object containing only assignment and condition 
 def block_of_for(argList):
@@ -399,7 +444,7 @@ def block_of_for(argList):
 	+ argList[2].getstr() + argList[3].getstr() + argList[4][1] + argList[5].getstr()\
 	+ argList[6][1]
 	return [ForLoop([], dummyForLoop(), argList[4][0], argList[6][0], snippet), snippet]
-
+##@brief rules for for loop with no initialization and updation
 @parser.production('for-block : keyFOR OPEN_PARENS SEMICOLON expression SEMICOLON CLOSE_PARENS block')
 ##@return for-block object containing only assignment and condition 
 def block_of_for(argList):
@@ -407,7 +452,7 @@ def block_of_for(argList):
 	+ argList[2].getstr() + argList[3][1] + argList[4].getstr() + argList[5].getstr()\
 	+ argList[6][1]
 	return [ForLoop([], argList[3][0], dummyForLoop(), argList[6][0], snippet), snippet]
-
+##@brief rules for for loop with no initialization, no condition and no updation
 @parser.production('for-block : keyFOR OPEN_PARENS SEMICOLON SEMICOLON CLOSE_PARENS block')
 ##@return for-block object containing only assignment and condition 
 def block_of_for(argList):
@@ -428,6 +473,7 @@ def block_of_for(argList):
 
 #########################################################################################################################
 # all parser rules for a if block which can either be a single statement or a block
+##@brief rules for while loop 
 @parser.production('while-block : keyWHILE OPEN_PARENS expression CLOSE_PARENS block')
 ##@return while-loop object containing condition
 def block_of_for(argList):
@@ -449,18 +495,27 @@ def block_of_for(argList):
 # all parser rules for a if block which can either be a single statement or a block
 ##@brief object containing expressions to be output(includes endl)
 @parser.production('output-stream : keyCOUT coutopers')
+##@return the list of elements to be printed
 def output_stream(argList):
 	return [argList[1][0],argList[0].getstr() + argList[1][1]]
+##@brief object containing expressions to be output(includes endl)
 @parser.production('coutopers : COUTOPER ENDL coutopers')
+##@return the list containing new line character
 def coutoper_endl_coutopers(argList):
 	return [[String("\n")] + argList[2][0], argList[0].getstr() + argList[1].getstr() + argList[2][1]]
+##@brief object containing expressions to be output(includes endl)
 @parser.production('coutopers : COUTOPER expression coutopers')
+##@return the list of elements to be printed
 def coutoper_expression_coutopers(argList):
 	return [[argList[1][0]] + argList[2][0], argList[0].getstr() + argList[1][1] + argList[2][1]]
+##@brief object containing expressions to be output(includes endl)
 @parser.production('coutopers : COUTOPER ENDL')
+##@return the list  containing new line character
 def coutoper_endl(argList):
 	return [[String('"\n"')], argList[0].getstr() + argList[1].getstr() ]
+##@brief object containing expressions to be output(includes endl)
 @parser.production('coutopers : COUTOPER expression')
+##@return the list of elements to be printed
 def coutoper_expression(argList):
 	return [[argList[1][0]], argList[0].getstr() + argList[1][1]]
 
@@ -479,11 +534,16 @@ def coutoper_expression(argList):
 ##@brief list containing variables to be input
 @parser.production('input-stream : keyCIN cinopers')
 def input_stream(argList):
+##@return list of variables to be filled with input
 	return [argList[1][0], argList[0].getstr() + argList[1][1]]
+##@brief list containing variables to be input
 @parser.production('cinopers : CINOPER variable cinopers')
+##@return list of variables to be filled with input
 def cinoper_expression_coutopers(argList):
 	return [[argList[1][0]] + argList[2][0], argList[0].getstr() + argList[1][1] + argList[2][1]]
+##@brief list containing variables to be input
 @parser.production('cinopers : CINOPER variable')
+##@return list of variables to be filled with input
 def cinoper_expression(argList):
 	return [[argList[1][0]], argList[0].getstr() + argList[1][1]]
 
@@ -502,21 +562,29 @@ def cinoper_expression(argList):
 # all parser rules for a if block which can either be a single statement or a block
 ##@brief the conditions of if-block, elif-block, else-block and their corresponding functions
 @parser.production('if-block : keyIF OPEN_PARENS expression CLOSE_PARENS block')
+##@return list of all statements required for running the if block
 def if_statement_runner(argList):
 	return [[[argList[2][0], argList[4][0]]], argList[0].getstr() + argList[1].getstr() + argList[2][1] + argList[3].getstr()\
 	+ argList[4][1]]
-
+##@brief the conditions of if-block, elif-block, else-block and their corresponding functions
 @parser.production('elif-blocks : elif-block elif-blocks')
+##@return list of all statements required for running the if block
 def elif_blocks1(argList):
 	return [argList[0][0] + argList[1][0], argList[0][1] + argList[1][1]]
+##@brief the conditions of if-block, elif-block, else-block and their corresponding functions
 @parser.production('elif-blocks : elif-block')
+##@return list of all statements required for running the if block
 def elif_blocks2(argList):
 	return [argList[0][0], argList[0][1]]
+##@brief the conditions of if-block, elif-block, else-block and their corresponding functions
 @parser.production('elif-block : keyELIF OPEN_PARENS expression CLOSE_PARENS block')
+##@return list of all statements required for running the if block
 def elif_block(argList):
 	return [[[argList[2][0], argList[4][0]]], argList[0].getstr() + argList[1].getstr() + argList[2][1] + argList[3].getstr()\
 	+ argList[4][1]]
+##@brief the conditions of if-block, elif-block, else-block and their corresponding functions
 @parser.production('else-block : keyELSE block')
+##@return list of all statements required for running the if block
 def else_block(argList):
 	return [[[Bool(True), argList[1][0]]], argList[0].getstr() + argList[1][1]]
 
@@ -534,8 +602,9 @@ def else_block(argList):
 
 #########################################################################################################################
 # all parser rules for a single declaration
-
+##@brief rules for variable declaration
 @parser.production('declaration : keyword default_assigns')
+##@return list of all declarations
 def declare_variables(argList):
 	""" declares one or more than one variables
 		keyword is a string which contains name of type
@@ -558,6 +627,8 @@ def declare_variables(argList):
 @parser.production('declaration : QUEUE fkeyword new_variables')
 @parser.production('declaration : BST fkeyword new_variables')
 @parser.production('declaration : DOUBLELIST fkeyword new_variables')
+##@brief rules for declaring data structures
+##@return data structure declaration
 def data_structure_init(argList):
 	executionList=[]
 	snippet = argList[0].getstr() + "<" + argList[1] + ">"+" " + argList[2][1]
@@ -566,6 +637,8 @@ def data_structure_init(argList):
 	return [executionList, snippet]
 
 @parser.production('declaration : HASHTABLE fkeyword new_variables OPEN_PARENS expression CLOSE_PARENS')
+##@brief rules for declaring hash table
+##@return list of hash table declaration
 def table_init(argList):
 	executionList=[]
 	snippet = argList[0].getstr() + "<" + argList[1] + ">"+" " + argList[2][1]\
@@ -575,6 +648,8 @@ def table_init(argList):
 	return [executionList, snippet]
 
 @parser.production('new_variables : VARIABLE COMMA new_variables')
+##@brief rules for getting list of variables
+##@return list of all variables
 def list_of_variables(argList):
 	return [argList[2][0]+[argList[0].getstr()], argList[0].getstr() + argList[1].getstr() + argList[2][1]]
 
@@ -802,22 +877,23 @@ def plus_term_plus_term_to_simplex(argList):
 	return [BinaryOp(myOr, argList[0][0], argList[2][0],snippet),snippet ]
 
 @parser.production('simplex :  PLUS term')
-def plus_term_to_simplex(argList):
+def plus_term_plus_term_to_simplex(argList):
 	snippet = argList[0].getstr() + argList[1][1]
 	return [UnaryOp(myPlus, argList[1][0],snippet), snippet]
 
 @parser.production('simplex :  MINUS term')
-def plus_term_to_simplex(argList):
+def plus_term_plus_term_to_simplex(argList):
 	snippet = argList[0].getstr() + argList[1][1]
 	return [UnaryOp(myMinus, argList[1][0],snippet), snippet]
 
 
 @parser.production('simplex : term')
-def plus_term_to_simplex(argList):
+def plus_term_plus_term_to_simplex(argList):
 	return [argList[0][0], argList[0][1]]
 #########################################################################################################################
 # all parser rules for term
 ##@brief these are the rules for 'term' which is used in defining simple expressions 
+#@return list of class containing operator
 @parser.production('term : term MUL factor')
 @parser.production('term : term DIV factor')
 def factor_mul_to_term(argList):
@@ -826,17 +902,20 @@ def factor_mul_to_term(argList):
 		return [BinaryOp(myMult, argList[0][0], argList[2][0],snippet), snippet]
 	else:
 		return [BinaryOp(myDiv, argList[0][0], argList[2][0],snippet), snippet]
-
+##@brief these are the rules for 'term' which is used in defining simple expressions 
+#@return list of class containing operator
 @parser.production('term : term MOD factor')
 def factor_mod_to_term(argList):
 	snippet = argList[0][1] + argList[1].getstr() + argList[2][1]
 	return [BinaryOp(myMod, argList[0][0], argList[2][0], snippet), snippet]
-
+##@brief these are the rules for 'term' which is used in defining simple expressions 
+#@return list of class containing operator
 @parser.production('term : term AND factor')
 def factor_and_to_term(argList):
 	snippet = argList[0][1] + argList[1].getstr() + argList[2][1]
 	return [BinaryOp(myAnd, argList[0][0], argList[2][0], snippet), snippet]
-
+##@brief these are the rules for 'term' which is used in defining simple expressions 
+#@return list of class containing operator
 @parser.production('term : factor')
 def factor_to_term(argList):
 	return [argList[0][0],argList[0][1]]
@@ -844,38 +923,54 @@ def factor_to_term(argList):
 
 #########################################################################################################################
 # all parser rules for factor
-##brief these are the rules for defining 'factor' which is used in definition of term	
+##@brief these are the rules for defining 'factor' which is used in definition of term	
+#@return list of the corresponding matching factor
 @parser.production('factor : variable')
 def variable_to_factor(argList):
 	return [argList[0][0], argList[0][1]]
 
 @parser.production('factor : class-functions-object')
 @parser.production('factor : function-call')
+##@brief these are the rules for defining 'factor' which is used in definition of term	
+#@return list of the corresponding matching factor
+
 def classFuncobject_to_expression(argList):
 	return [argList[0][0], argList[0][1]] #need to check whether working properly
+##@brief these are the rules for defining 'factor' which is used in definition of term	
+#@return list of the corresponding matching factor
 
 @parser.production('factor : INT')
 def int_to_factor(argList):
 	return [Int(int(argList[0].getstr())), argList[0].getstr()]
+##@brief these are the rules for defining 'factor' which is used in definition of term	
+#@return list of the corresponding matching factor
 
 @parser.production('factor : FLOAT')
 def float_to_factor(argList):
 	return [Float(float(argList[0].getstr())),argList[0].getstr()]
+##@brief these are the rules for defining 'factor' which is used in definition of term	
+#@return list of the corresponding matching factor
 
 @parser.production('factor : STRING')
 def string_to_factor(argList):
 	return [String(argList[0].getstr()), argList[0].getstr()]
+##@brief these are the rules for defining 'factor' which is used in definition of term	
+#@return list of the corresponding matching factor
 
 @parser.production('factor : BOOL')
 def bool_to_factor(argList):
 	if argList[0].getstr() == 'true':
 		return [Bool(True), argList[0].getstr()]
 	return [Bool(False), argList[0].getstr()]
+##@brief these are the rules for defining 'factor' which is used in definition of term	
+#@return list of the corresponding matching factor
 
 @parser.production('factor : NOT factor')
 def notfactor_to_factor(argList):
 	snippet = argList[0].getstr() + argList[1][1]
 	return [UnaryOp(myNot,argList[1][0], snippet), snippet]
+##@brief these are the rules for defining 'factor' which is used in definition of term	
+#@return list of the corresponding matching factor
 
 @parser.production('factor : OPEN_PARENS expression CLOSE_PARENS')
 
