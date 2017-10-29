@@ -1,3 +1,6 @@
+##@file
+#This file contains the definitions of classes for generating abstract syntax trees.
+
 from rply.token import *
 import sys
 #from headersForDataStructures import SinglyLinkedList, Queue, Stack, BinarySearchTree

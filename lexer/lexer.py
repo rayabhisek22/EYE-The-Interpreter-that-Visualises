@@ -1,3 +1,6 @@
+##@file
+#This file contains the regular expressions for tokenising the given code using LexerGenerator class of rply.
+
 from rply import LexerGenerator
 lg = LexerGenerator()
 lg.ignore(r'(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)')

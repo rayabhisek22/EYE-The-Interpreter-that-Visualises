@@ -1,3 +1,6 @@
+##@file
+#This file contains the definition of Binary Search Tree and its data members and methods.
+
 from .headersForDataStructures import *
 
 nodeSpace = 3*circleRadius

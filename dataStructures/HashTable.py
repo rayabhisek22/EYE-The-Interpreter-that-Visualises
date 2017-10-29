@@ -1,3 +1,6 @@
+##@file
+#This file contains the definition of Hash Table and its data members and methods.
+
 from .headersForDataStructures import *
 
 textHeight = 20

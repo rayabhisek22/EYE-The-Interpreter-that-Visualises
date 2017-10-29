@@ -1,3 +1,6 @@
+
+##@file
+#This file contains functions for changing the executionStack according to the requirement.
 from . import graphics
 from .headersForDataStructures import canvas, wait, headerText, codeText, drawCodeText, drawHeader as drawHeaderText
 

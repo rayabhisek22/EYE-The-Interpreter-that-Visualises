@@ -1,4 +1,6 @@
-from .headersForDataStructures import *
+
+##@file
+#This file contains the definition of Doubly Linked List and its data members and methods.from .headersForDataStructures import *
 from .SinglyLinkedList import numberoflinkedlist
 
 ##@brief Class contaning arrows to make a pointer between objects on the canvas

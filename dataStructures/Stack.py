@@ -1,3 +1,6 @@
+##@file
+#This file contains the definition of stack and its data members and methods.
+
 from .headersForDataStructures import *
 ####################################################################################################################
 

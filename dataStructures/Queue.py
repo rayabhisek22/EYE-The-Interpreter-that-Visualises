@@ -1,3 +1,6 @@
+##@file
+#This file contains the definition of Queue and its data members and methods.
+
 from .headersForDataStructures import *
 #######################################################################################################################
 # 															QUEUE
