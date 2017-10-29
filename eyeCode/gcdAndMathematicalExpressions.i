@@ -1,4 +1,4 @@
-int gcd(int a,int b)
+	int gcd(int a,int b)
 {
 	if(a%b==0)
 	{
@@ -10,7 +10,7 @@ int gcd(int a,int b)
 	}
 }
 int y=2;
-int f(int i)
+float f(int i)
 {
 	int a[i];
 	for(int j=0;j<i;j +=1)
