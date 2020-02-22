@@ -3,6 +3,7 @@
 // using namespace std;
 
 int n;
+int arr[6];
 
 void mergesort(int start, int end)
 {
@@ -52,7 +53,6 @@ void mergesort(int start, int end)
 int main()
 {
 	cin>>n;
-	int arr[n];
 	for (int i = 0 ; i < n  ; i += 1)
 	{
 		cin>>arr[i];
