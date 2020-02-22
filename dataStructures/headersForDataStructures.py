@@ -49,14 +49,19 @@ nextButtonText = graphics.Text(graphics.Point(nextButtonLeftTop.x + buttonWidth/
 nextButtonText.setFill("white")
 nextButtonText.draw(canvas)
 
+def mouseClickInBox(mouseClickPoint, leftTop, width, height):
+	if mouseClickPoint is None: return False
+	return (mouseClickPoint.x >= leftTop.x and mouseClickPoint.x <= leftTop.x + width) or (mouseClickPoint.y >= leftTop.y and mouseClickPoint.y <= leftTop.y + height)
+
 ##@brief Defines how much to wait before the execution of two steps
 def wait():
 	# Check if the click was within the next button
 	buttonPressed = False
-	while not buttonPressed:
-		mouseClick = canvas.getMouse()
-		if (mouseClick.x >= nextButtonLeftTop.x and mouseClick.x <= nextButtonLeftTop.x + buttonWidth) and (mouseClick.y >= nextButtonLeftTop.y and mouseClick.y <= nextButtonLeftTop.y + buttonHeight):
-			buttonPressed = True
+	while True:
+		correctClick = mouseClickInBox(canvas.checkMouse(),nextButtonLeftTop, buttonWidth, buttonHeight)
+		correctKey = canvas.checkKey() == "Right"
+		if correctKey or correctClick: break
+		time.sleep(0.1)
 
 ##@brief Class contaning arrows to make a pointer between objects on the canvas
 class rightArrow:
