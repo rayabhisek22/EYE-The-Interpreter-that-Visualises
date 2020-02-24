@@ -39,11 +39,29 @@ headerText = graphics.Text(headerPoint, "")#header text
 codeText = graphics.Text(graphics.Point(headerPoint.x, headerPoint.y + 25), "")
 headerText.setSize(15)
 
+## Init for stepper
+nextButtonLeftTop = graphics.Point(1230, 25)
+buttonHeight, buttonWidth = 20, 40
+nextButton = graphics.Rectangle(graphics.Point(nextButtonLeftTop.x + buttonWidth, nextButtonLeftTop.y + buttonHeight), nextButtonLeftTop)
+nextButton.setFill("dark green")
+nextButton.draw(canvas)
+nextButtonText = graphics.Text(graphics.Point(nextButtonLeftTop.x + buttonWidth/2, nextButtonLeftTop.y + buttonHeight/2), "Next")
+nextButtonText.setFill("white")
+nextButtonText.draw(canvas)
+
+def mouseClickInBox(mouseClickPoint, leftTop, width, height):
+	if mouseClickPoint is None: return False
+	return (mouseClickPoint.x >= leftTop.x and mouseClickPoint.x <= leftTop.x + width) or (mouseClickPoint.y >= leftTop.y and mouseClickPoint.y <= leftTop.y + height)
+
 ##@brief Defines how much to wait before the execution of two steps
 def wait():
-	#define how to wait...sleep or mouse click or something else
-	#canvas.getMouse()
-	time.sleep(0.1)
+	# Check if the click was within the next button
+	buttonPressed = False
+	while True:
+		correctClick = mouseClickInBox(canvas.checkMouse(),nextButtonLeftTop, buttonWidth, buttonHeight)
+		correctKey = canvas.checkKey() == "Right"
+		if correctKey or correctClick: break
+		time.sleep(0.1)
 
 ##@brief Class contaning arrows to make a pointer between objects on the canvas
 class rightArrow:

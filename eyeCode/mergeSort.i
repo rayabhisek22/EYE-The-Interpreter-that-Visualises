@@ -2,8 +2,8 @@
 
 // using namespace std;
 
-int arr[4];
 int n;
+int arr[6];
 
 void mergesort(int start, int end)
 {
