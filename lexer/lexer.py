@@ -3,7 +3,7 @@
 
 from rply import LexerGenerator
 lg = LexerGenerator()
-lg.ignore(r'(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)')
+lg.ignore(r'(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)|(#.*)')
 lg.ignore(r'\s+')
 lg.ignore(r'\n+')
 lg.add('RETURN', r"return")

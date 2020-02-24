@@ -273,7 +273,7 @@ class BinarySearchTree:
 	def searchHelper(self, node, val):
 		if node == None:
 			headerText.undraw()
-			return None
+			return 0
 		else:
 			node.probe()
 			if node.data == val:
@@ -281,7 +281,7 @@ class BinarySearchTree:
 				wait()
 				node.changeColor("light green")
 				headerText.undraw()
-				return node
+				return 1
 			if node.data > val:
 				return self.searchHelper(node.left, val)
 			elif node.data < val:
@@ -309,7 +309,7 @@ class BinarySearchTree:
 			if self.height == 0:
 				wait()
 				headerText.undraw()
-				return None
+				return 0
 			else:
 				return self.searchHelper(self.root, val)
 
